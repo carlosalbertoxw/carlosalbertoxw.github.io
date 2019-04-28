@@ -40,37 +40,8 @@
             </div>
         </nav>
         <div id="content" class="container" style="text-align: justify">
-            <h5 class="center">Desarrollo de Software</h5>
-            <br>
-			<h5>Android</h5>
-            <p>Java, Consumo de servicios REST, Almacenamiento en Base de datos SQLite, Diseño de interfaces</p>
-            <h5>LAMP Stack</h5>
-            <p>Orientado a objetos, Servicios REST, JWT, Patrones de diseño, Conexión a base de datos</p>
-            <h5>ASP.Net C#</h5>
-            <p>MVC, Servicios REST (Web Api), JWT, Conexión a base de datos</p>
-			<h5>Java EE</h5>
-            <p>JSPs - Servlets, Spring MVC, Servicios REST, JWT, Patrones de diseño, Conexión a base de datos</p>
-            <h5>Java SE</h5>
-            <p>JFrame, Patrones de diseño, Conexión a base de datos</p>
-            <h5>Front end</h5>
-            <p>HTML5, CSS3, JavaScript, JQuery, AJAX, JSON</p>
-            <h5>Diseño web responsivo</h5>
-            <p>Bootstrap, Materialize</p>
-            <h5>Base de datos</h5>
-            <p>
-                MySQL, MariaDB, SQL Server, PostgreSQL<br>
-                DDL, DML, Vistas, Procedimientos, Subconsultas
-            </p>
-            <h5>Amazon web services</h5>
-            <p>EC2, EFS, S3, VPC, Load Balancers, Auto scaling groups, Security groups, RDS, Route53, CloudWatch, IAM, WorkMail, Certificate Manager</p>
-            <h5>Sistemas operativos</h5>
-            <p>Linux, Windows</p>
-            <h5>Control de versiones y repositorios</h5>
-            <p>Git, GitHub</p>
-            <h5>Redes CISCO</h5>
-            <p>Configuración básica, VLANs, Protocolos de enrutamiento, VoIP, STP, Quality of Service</p>
-            <h5>Analítica y SEO</h5>
-            <p>Google analytics, Google webmasters, Open graph, Meta tags, Robots.txt</p>
+			<h5 class="center">Desarrollo de Software</h5>
+            <div id="proyectos"></div>
         </div>
         <footer class="green">
             <div class="container">
@@ -83,5 +54,67 @@
         <script src="js/materialize.min.js"></script>
         <script src="js/javascript.js"></script>
         <script src="js/analytics.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function () {
+				getRepositoroies();
+			});
+			
+			function getRepositoroies(repository) {
+				$.ajax({
+					url: "https://api.github.com/users/carlosalbertoxw/repos",
+					method: "GET",
+					async: true,
+					success: function (result, status, xhr) {
+						var t = '';
+						t+="<br><h5>Servicios REST</h5>";
+						t+=getRepository(result,'CRUD-Servicios-REST-Java-Spring');
+						t+=getRepository(result,'CRUD-Servicios-REST-ASP.NET-CSharp');
+						t+=getRepository(result,'CRUD-Servicios-REST-PHP-OO');
+						t+="<br><h5>Aplicaciones web</h5>";
+						t+=getRepository(result,'Encuestas-JSPs-Servlets');
+						t+=getRepository(result,'Encuestas-ASP.NET-CSharp');
+						t+=getRepository(result,'Encuestas-PHP-OO');
+						t+="<br><h5>Android</h5>";
+						t+=getRepository(result,'CRUDAndroidServiciosREST-RT');
+						t+=getRepository(result,'CRUD-Android-SQLite');
+						t+="<br><h5>Ejercicios</h5>";
+						t+=getRepository(result,'EjerciciosJava');
+						t+=getRepository(result,'EjerciciosDotNetCSharp');
+						t+=getRepository(result,'EjerciciosPHP');
+						t+=getRepository(result,'EjerciciosJavaScript');
+						t+="<br><h5>Ejemplos JWT</h5>";
+						t+=getRepository(result,'Ejemplos-JWT-Java');
+						t+=getRepository(result,'Ejemplos-JWT-DotNet-CSharp');
+						t+=getRepository(result,'Ejemplos-JWT-PHP');
+						t+=getRepository(result,'EjemplosJWTAndroid');
+						t+="<br><h5>Java SE</h5>";
+						t+=getRepository(result,'JavaSE-DB4O');
+						t+=getRepository(result,'JavaSE-XML-File');
+						t+="<br><h5>Proyectos Java</h5>";
+						t+=getRepository(result,'JavaQuartzScheduler');
+						t+=getRepository(result,'JavaServletFilter');
+						t+="<br><h5>Proyectos JavaScript</h5>";
+						t+=getRepository(result,'Chat-nodejs-socketio');
+						t+=getRepository(result,'Api-restful-favoritos');
+						t+=getRepository(result,'Favoritos');
+						$('#proyectos').html(t);
+					},
+					error: function (xhr, status, error) {
+						console.log("Error al obtener repositorios de github. Descripción: "+error);
+					}
+				});
+			}
+			
+			function getRepository(result,repository) {
+				var t='';
+				for(var i=0;i<result.length;i++){
+					if(repository==result[i].name){
+						t = '<div><h5><a target="_blank" class="green-text" href="'+result[i].html_url+'">'+result[i].name+'</a></h5>'+result[i].description+'</div>';
+						break;
+					}
+				}
+				return t;
+			}
+		</script>
     </body>
 </html>
