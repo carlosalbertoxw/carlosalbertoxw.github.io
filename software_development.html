@@ -56,10 +56,10 @@
         <script src="js/analytics.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function () {
-				getRepositoroies();
+				getRepositories();
 			});
 			
-			function getRepositoroies(repository) {
+			function getRepositories(repository) {
 				$.ajax({
 					url: "https://api.github.com/users/carlosalbertoxw/repos",
 					method: "GET",
