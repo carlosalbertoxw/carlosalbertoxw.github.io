@@ -65,42 +65,40 @@
 					method: "GET",
 					async: true,
 					success: function (result, status, xhr) {
-						var t = '';
-						t+="<br><h5>Servicios REST</h5>";
-						t+=getRepository(result,'CRUD-Servicios-REST-Java-Spring');
-						t+=getRepository(result,'CRUD-Servicios-REST-ASP.NET-CSharp');
-						t+=getRepository(result,'CRUD-Servicios-REST-PHP-OO');
-						t+="<br><h5>Aplicaciones web</h5>";
-						t+=getRepository(result,'Encuestas-JSPs-Servlets');
-						t+=getRepository(result,'Encuestas-ASP.NET-CSharp');
-						t+=getRepository(result,'Encuestas-PHP-OO');
-						t+="<br><h5>Android</h5>";
-						t+=getRepository(result,'CRUDAndroidServiciosREST-RT');
-						t+=getRepository(result,'CRUD-Android-SQLite');
-						t+="<br><h5>Ejercicios</h5>";
-						t+=getRepository(result,'EjerciciosJava');
-						t+=getRepository(result,'EjerciciosDotNetCSharp');
-						t+=getRepository(result,'EjerciciosPHP');
-						t+=getRepository(result,'EjerciciosJavaScript');
-						t+="<br><h5>Ejemplos JWT</h5>";
-						t+=getRepository(result,'Ejemplos-JWT-Java');
-						t+=getRepository(result,'Ejemplos-JWT-DotNet-CSharp');
-						t+=getRepository(result,'Ejemplos-JWT-PHP');
-						t+=getRepository(result,'EjemplosJWTAndroid');
-						t+="<br><h5>Java SE</h5>";
-						t+=getRepository(result,'JavaSE-DB4O');
-						t+=getRepository(result,'JavaSE-XML-File');
-						t+="<br><h5>Proyectos Java</h5>";
-						t+=getRepository(result,'JavaQuartzScheduler');
-						t+=getRepository(result,'JavaServletFilter');
-						t+="<br><h5>Proyectos JavaScript</h5>";
-						t+=getRepository(result,'Chat-nodejs-socketio');
-						t+=getRepository(result,'Api-restful-favoritos');
-						t+=getRepository(result,'Favoritos');
-						$('#proyectos').html(t);
+						$('#proyectos').append("<br><h5>Servicios REST</h5>");
+						$('#proyectos').append(getRepository(result,'CRUD-Servicios-REST-Java-Spring'));
+						$('#proyectos').append(getRepository(result,'CRUD-Servicios-REST-ASP.NET-CSharp'));
+						$('#proyectos').append(getRepository(result,'CRUD-Servicios-REST-PHP-OO'));
+						$('#proyectos').append("<br><h5>Aplicaciones web</h5>");
+						$('#proyectos').append(getRepository(result,'Encuestas-JSPs-Servlets'));
+						$('#proyectos').append(getRepository(result,'Encuestas-ASP.NET-CSharp'));
+						$('#proyectos').append(getRepository(result,'Encuestas-PHP-OO'));
+						$('#proyectos').append("<br><h5>Android</h5>");
+						$('#proyectos').append(getRepository(result,'CRUDAndroidServiciosREST-RT'));
+						$('#proyectos').append(getRepository(result,'CRUD-Android-SQLite'));
+						$('#proyectos').append("<br><h5>Ejercicios</h5>");
+						$('#proyectos').append(getRepository(result,'EjerciciosJava'));
+						$('#proyectos').append(getRepository(result,'EjerciciosDotNetCSharp'));
+						$('#proyectos').append(getRepository(result,'EjerciciosPHP'));
+						$('#proyectos').append(getRepository(result,'EjerciciosJavaScript'));
+						$('#proyectos').append("<br><h5>Ejemplos JWT</h5>");
+						$('#proyectos').append(getRepository(result,'Ejemplos-JWT-Java'));
+						$('#proyectos').append(getRepository(result,'Ejemplos-JWT-DotNet-CSharp'));
+						$('#proyectos').append(getRepository(result,'Ejemplos-JWT-PHP'));
+						$('#proyectos').append(getRepository(result,'EjemplosJWTAndroid'));
+						$('#proyectos').append("<br><h5>Java SE</h5>");
+						$('#proyectos').append(getRepository(result,'JavaSE-DB4O'));
+						$('#proyectos').append(getRepository(result,'JavaSE-XML-File'));
+						$('#proyectos').append("<br><h5>Proyectos Java</h5>");
+						$('#proyectos').append(getRepository(result,'JavaQuartzScheduler'));
+						$('#proyectos').append(getRepository(result,'JavaServletFilter'));
+						$('#proyectos').append("<br><h5>Proyectos JavaScript</h5>");
+						$('#proyectos').append(getRepository(result,'Chat-nodejs-socketio'));
+						$('#proyectos').append(getRepository(result,'Api-restful-favoritos'));
+						$('#proyectos').append(getRepository(result,'Favoritos'));
 					},
 					error: function (xhr, status, error) {
-						console.log("Error al obtener repositorios de github. Descripción: "+error);
+						$('#proyectos').append("Error al obtener repositorios de github.");
 					}
 				});
 			}
