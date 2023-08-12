@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Navbar, Icon, NavItem, Dropdown, Divider } from "react-materialize";
+import { Navbar, Icon, NavItem, Dropdown } from "react-materialize";
 
 const Nav = () => (
   <>
@@ -27,13 +27,9 @@ const Nav = () => (
         }
       >
         <Link href="/git">Git</Link>
-        <Divider />
         <Link href="/blockchain-cryptocurrencies">Blockchain y Criptomonedas</Link>
-        <Divider />
         <Link href="/productivity">Productividad</Link>
-        <Divider />
         <Link href="/english">Inglés</Link>
-        <Divider />
       </Dropdown>
       <NavItem href="/links">Enlaces</NavItem>
     </Navbar>
