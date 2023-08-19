@@ -96,6 +96,24 @@ export default function SoftwareDevelopment() {
                     <Link
                       target="_blank"
                       className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2023/08/docker.html"
+                    >
+                      Docker
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2023/08/docker-compose.html"
+                    >
+                      Docker Compose
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
                       href="https://blog.carlosalbertoxw.com/2023/04/ciclo-de-vida-del-desarrollo-de-software.html"
                     >
                       Ciclo de Vida del Desarrollo de Software
@@ -110,9 +128,27 @@ export default function SoftwareDevelopment() {
                     <Link
                       target="_blank"
                       className="green-text text-darken-3"
-                      href="https://github.com/carlosalbertoxw/nextjs-github-pages-example"
+                      href="https://github.com/carlosalbertoxw/web-extensions-samples"
                     >
-                      nextjs-github-pages-example
+                      web-extensions-samples
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://github.com/carlosalbertoxw/HTTPSVerifier"
+                    >
+                      HTTPSVerifier
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://github.com/carlosalbertoxw/nextjs-github-actions"
+                    >
+                      nextjs-github-actions
                     </Link>
                   </li>
                 </ol>
