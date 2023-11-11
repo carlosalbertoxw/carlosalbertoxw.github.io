@@ -45,6 +45,17 @@ export default function Links() {
               </a>
             </p>
             <p className="center">
+              TikTok <br />
+              <a
+                rel="nofollow"
+                target="blank"
+                className="green-text text-darken-3"
+                href="https://www.tiktok.com/@carlosalbertoxw"
+              >
+                tiktok.com/@carlosalbertoxw
+              </a>
+            </p>
+            <p className="center">
               Linkedin <br />
               <a
                 rel="nofollow"
