@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Navbar, Icon, NavItem, Dropdown } from "react-materialize";
 
 const Nav = () => {
-  const isDesktop = useMediaQuery('(min-width:520px)');
+  const isDesktop = useMediaQuery('(min-width:600px)');
 
   return (
     <>
