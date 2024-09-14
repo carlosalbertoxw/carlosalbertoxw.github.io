@@ -14,8 +14,8 @@ export default function SoftwareDevelopment() {
             <h5 className="center">Desarrollo de Software</h5>
             <p>
               Profesionalmente, me he desempeñado en el campo del desarrollo de
-              software durante los últimos 5 años en una empresa de consultoría
-              de tecnología de la información (TI). Durante este tiempo, mi
+              software desde el año 2017 en una empresa de consultoría
+              de tecnologías de la información (TI). Durante este tiempo, mi
               labor se ha centrado en proporcionar apoyo en la creación de
               nuevas funcionalidades de aplicaciones existentes y solucionar
               problemas operativos de raíz en los departamentos de TI de
