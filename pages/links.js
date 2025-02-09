@@ -56,6 +56,28 @@ export default function Links() {
               </a>
             </p>
             <p className="center">
+              Instagram <br />
+              <a
+                rel="nofollow"
+                target="blank"
+                className="green-text text-darken-3"
+                href="https://www.instagram.com/carlosalbertoxw"
+              >
+                instagram.com/carlosalbertoxw
+              </a>
+            </p>
+            <p className="center">
+              X <br />
+              <a
+                rel="nofollow"
+                target="blank"
+                className="green-text text-darken-3"
+                href="https://www.x.com/carlosalbertoxw"
+              >
+                x.com/carlosalbertoxw
+              </a>
+            </p>
+            <p className="center">
               Linkedin <br />
               <a
                 rel="nofollow"

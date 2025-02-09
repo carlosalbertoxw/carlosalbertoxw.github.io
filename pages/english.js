@@ -44,24 +44,6 @@ export default function English() {
                     Duolingo
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    target="_blank"
-                    className="green-text text-darken-3"
-                    href="https://blog.carlosalbertoxw.com/2023/02/elsa-speak.html"
-                  >
-                    Elsa Speak
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    target="_blank"
-                    className="green-text text-darken-3"
-                    href="https://blog.carlosalbertoxw.com/2023/03/cambly.html"
-                  >
-                    Cambly
-                  </Link>
-                </li>
               </ol>
             </div>
           </div>
