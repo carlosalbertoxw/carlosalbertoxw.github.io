@@ -69,9 +69,27 @@ export default function SoftwareDevelopment() {
                     <Link
                       target="_blank"
                       className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2025/05/entorno-para-desarrollo-en-java.html"
+                    >
+                      Entorno para desarrollo en Java
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
                       href="https://blog.carlosalbertoxw.com/2023/04/entorno-para-desarrollo-en-javascript.html"
                     >
                       Entorno para desarrollo en Javascript
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2025/05/entorno-para-desarrollo-en-python.html"
+                    >
+                      Entorno para desarrollo en Python
                     </Link>
                   </li>
                   <li>
@@ -114,6 +132,15 @@ export default function SoftwareDevelopment() {
                     <Link
                       target="_blank"
                       className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2025/05/pruebas-unitarias-en-el-desarrollo-de-software.html"
+                    >
+                      Pruebas unitarias en el desarrollo de software
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
                       href="https://blog.carlosalbertoxw.com/2023/04/ciclo-de-vida-del-desarrollo-de-software.html"
                     >
                       Ciclo de Vida del Desarrollo de Software
@@ -128,18 +155,36 @@ export default function SoftwareDevelopment() {
                     <Link
                       target="_blank"
                       className="green-text text-darken-3"
-                      href="https://github.com/carlosalbertoxw/web-extensions-samples"
+                      href="https://github.com/carlosalbertoxw/AlgorithmExercisesCSharp"
                     >
-                      web-extensions-samples
+                      Algorithm Exercises C#
                     </Link>
                   </li>
                   <li>
                     <Link
                       target="_blank"
                       className="green-text text-darken-3"
-                      href="https://github.com/carlosalbertoxw/HTTPSVerifier"
+                      href="https://github.com/carlosalbertoxw/AlgorithmExercisesJava"
                     >
-                      HTTPSVerifier
+                      Algorithm Exercises Java
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://github.com/carlosalbertoxw/AlgorithmExercisesTS"
+                    >
+                      Algorithm Exercises TypeScript
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://github.com/carlosalbertoxw/AlgorithmExercisesPython"
+                    >
+                      Algorithm Exercises Python
                     </Link>
                   </li>
                   <li>
@@ -149,6 +194,15 @@ export default function SoftwareDevelopment() {
                       href="https://github.com/carlosalbertoxw/nextjs-github-actions"
                     >
                       nextjs-github-actions
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://github.com/carlosalbertoxw/web-extensions-samples"
+                    >
+                      web-extensions-samples
                     </Link>
                   </li>
                 </ol>
