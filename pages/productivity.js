@@ -44,33 +44,6 @@ export default function Productivity() {
                     ¿Cómo mejorar la productividad?
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    target="_blank"
-                    className="green-text text-darken-3"
-                    href="https://blog.carlosalbertoxw.com/2023/02/platzi.html"
-                  >
-                    Platzi
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    target="_blank"
-                    className="green-text text-darken-3"
-                    href="https://blog.carlosalbertoxw.com/2023/05/google-bard.html"
-                  >
-                    Google Bard
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    target="_blank"
-                    className="green-text text-darken-3"
-                    href="https://blog.carlosalbertoxw.com/2023/03/chatgpt.html"
-                  >
-                    ChatGPT
-                  </Link>
-                </li>
               </ol>
             </div>
           </div>

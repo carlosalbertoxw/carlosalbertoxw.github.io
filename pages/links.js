@@ -1,3 +1,4 @@
+import Link from "next/link";
 import MyHead from "../components/my-head";
 import Nav from "../components/nav";
 import Footer from "../components/footer";
@@ -13,80 +14,80 @@ export default function Links() {
             <h5 className="center">Enlaces</h5>
             <p className="center">
               Blog <br />
-              <a
+              <Link
                 rel="nofollow"
                 target="blank"
                 className="green-text text-darken-3"
                 href="https://blog.carlosalbertoxw.com/"
               >
                 blog.carlosalbertoxw.com
-              </a>
+              </Link>
             </p>
             <p className="center">
               GitHub <br />
-              <a
+              <Link
                 rel="nofollow"
                 target="blank"
                 className="green-text text-darken-3"
                 href="https://github.com/carlosalbertoxw"
               >
                 github.com/carlosalbertoxw
-              </a>
+              </Link>
             </p>
             <p className="center">
               YouTube <br />
-              <a
+              <Link
                 rel="nofollow"
                 target="blank"
                 className="green-text text-darken-3"
                 href="https://www.youtube.com/carlosalbertoxw"
               >
                 youtube.com/carlosalbertoxw
-              </a>
+              </Link>
             </p>
             <p className="center">
               TikTok <br />
-              <a
+              <Link
                 rel="nofollow"
                 target="blank"
                 className="green-text text-darken-3"
                 href="https://www.tiktok.com/@carlosalbertoxw"
               >
                 tiktok.com/@carlosalbertoxw
-              </a>
+              </Link>
             </p>
             <p className="center">
               Instagram <br />
-              <a
+              <Link
                 rel="nofollow"
                 target="blank"
                 className="green-text text-darken-3"
                 href="https://www.instagram.com/carlosalbertoxw"
               >
                 instagram.com/carlosalbertoxw
-              </a>
+              </Link>
             </p>
             <p className="center">
               X <br />
-              <a
+              <Link
                 rel="nofollow"
                 target="blank"
                 className="green-text text-darken-3"
                 href="https://www.x.com/carlosalbertoxw"
               >
                 x.com/carlosalbertoxw
-              </a>
+              </Link>
             </p>
             <p className="center">
               Linkedin <br />
-              <a
+              <Link
                 rel="nofollow"
                 target="blank"
                 className="green-text text-darken-3"
                 href="https://www.linkedin.com/in/carlosalbertoxw"
               >
                 linkedin.com/in/carlosalbertoxw
-              </a>
+              </Link>
             </p>
           </div>
         </div>

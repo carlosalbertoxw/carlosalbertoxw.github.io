@@ -32,44 +32,97 @@ export default function EntrepreneurshipFinance() {
               Esta página se irá actualizando conforme vaya publicando más
               conceptos sobre emprendimiento y finanzas en mi blog personal.
             </p>
-            <ol>
-              <li>
-                <Link
-                  target="_blank"
-                  className="green-text text-darken-3"
-                  href="https://blog.carlosalbertoxw.com/2023/03/un-consejo-financiero.html"
-                >
-                  Un consejo financiero
-                </Link>
-              </li>
-              <li>
-                <Link
-                  target="_blank"
-                  className="green-text text-darken-3"
-                  href="https://blog.carlosalbertoxw.com/2016/11/como-lograr-la-libertad-financiera.html"
-                >
-                  ¿Cómo Lograr la Libertad Financiera?
-                </Link>
-              </li>
-              <li>
-                <Link
-                  target="_blank"
-                  className="green-text text-darken-3"
-                  href="https://blog.carlosalbertoxw.com/2016/10/consejos-para-vender-un-producto-o-servicio.html"
-                >
-                  Consejos para Vender un Producto o Servicio
-                </Link>
-              </li>
-              <li>
-                <Link
-                  target="_blank"
-                  className="green-text text-darken-3"
-                  href="https://blog.carlosalbertoxw.com/2023/04/consejos-para-mejorar-las-habilidades-de-comunicacion-y-venta.html"
-                >
-                  Consejos para mejorar las habilidades de comunicación y venta
-                </Link>
-              </li>
-            </ol>
+            <div className="row">
+              <div className="col l6 m6 s12">
+                <ol>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2023/03/un-consejo-financiero.html"
+                    >
+                      Un Consejo Financiero
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2026/01/un-consejo-legal.html"
+                    >
+                      Un Consejo Legal
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2026/01/un-consejo-contable.html"
+                    >
+                      Un Consejo Contable
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2026/01/un-consejo-de-mercadotecnia.html"
+                    >
+                      Un Consejo de Mercadotecnia
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2026/01/un-consejo-de-seguridad-informatica.html"
+                    >
+                      Un Consejo de Seguridad Informática
+                    </Link>
+                  </li>              
+                </ol>
+              </div>
+              <div className="col l6 m6 s12">
+                <ol>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2016/11/como-lograr-la-libertad-financiera.html"
+                    >
+                      ¿Cómo Lograr la Libertad Financiera?
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2016/10/consejos-para-vender-un-producto-o-servicio.html"
+                    >
+                      Consejos para Vender un Producto o Servicio
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2023/04/consejos-para-mejorar-las-habilidades-de-comunicacion-y-venta.html"
+                    >
+                      Consejos para mejorar las habilidades de comunicación y venta
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2026/01/modelo-de-negocios-canvas.html"
+                    >
+                      Modelo de Negocios Canvas
+                    </Link>
+                  </li>
+                </ol>
+              </div>
+            </div>
             <p>
               Si te interesa hablar sobre ahorro e inversiones y los diferentes
               productos financieros que existen, o simplemente quieres compartir
