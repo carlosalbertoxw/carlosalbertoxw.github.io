@@ -40,9 +40,9 @@ export default function EntrepreneurshipFinance() {
                     <Link
                       target="_blank"
                       className="green-text text-darken-3"
-                      href="https://blog.carlosalbertoxw.com/2026/01/tipo-de-inversiones.html"
+                      href="https://blog.carlosalbertoxw.com/2026/01/tipos-de-inversiones.html"
                     >
-                      Tipo de Inversiones
+                      Tipos de Inversiones
                     </Link>
                   </li>
                   <li>
