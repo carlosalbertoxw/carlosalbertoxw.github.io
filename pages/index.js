@@ -12,7 +12,7 @@ export default function Home() {
         
         <div className="row">
           <div className="col l6 m6 s12 center">
-            <h5>Productos</h5>
+            <h5>Aplicaciones / Extensiones</h5>
             <dev>
               <Link
                 target="_blank"
@@ -20,6 +20,14 @@ export default function Home() {
                 href="https://chromewebstore.google.com/detail/ogfgecooebcghjojlklphjjajaegcpen?utm_source=item-share-cb"
               >
                 HTTPS Verifier
+              </Link>
+              &nbsp;|&nbsp;
+              <Link
+                target="_blank"
+                className="green-text text-darken-3"
+                href="https://github.com/carlosalbertoxw/HTTPSVerifier"
+              >
+                Repositorio de GitHub
               </Link>
               <p>
                 Extensión web de Google Chrome que comprueba y garantiza que las páginas web y sus recursos asociados, como enlaces, imágenes y archivos CSS y JavaScript, utilicen conexiones HTTPS seguras.
@@ -30,7 +38,6 @@ export default function Home() {
             <h5>Utilidades</h5>
             <dev>
               <Link
-                target="_blank"
                 className="green-text text-darken-3"
                 href="utilities/Base64Converter"
               >
