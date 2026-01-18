@@ -40,6 +40,15 @@ export default function EntrepreneurshipFinance() {
                     <Link
                       target="_blank"
                       className="green-text text-darken-3"
+                      href="https://blog.carlosalbertoxw.com/2026/01/tipo-de-inversiones.html"
+                    >
+                      Tipo de Inversiones
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      target="_blank"
+                      className="green-text text-darken-3"
                       href="https://blog.carlosalbertoxw.com/2023/03/un-consejo-financiero.html"
                     >
                       Un Consejo Financiero

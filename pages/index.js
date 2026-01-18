@@ -9,39 +9,37 @@ export default function Home() {
       <MyHead title="Inicio - Carlos Alberto" />
       <Nav />
       <main className="container">
-        <div className="main-card">
-          <h1 className="header center green-text text-darken-3">
-            Carlos Alberto
-          </h1>
-          <h5 className="header center">
-            Emprendedor y Desarrollador de Software
-          </h5>
-        </div>
+        
         <div className="row">
           <div className="col l6 m6 s12 center">
-            <h5>Emprendimiento y Finanzas</h5>
-            <p>
-              Me gusta analizar e identificar oportunidades de mejora en las
-              cosas que me rodean o que realizo para desarrollar proyectos que
-              realicen esas mejoras.
-            </p>
-            <Link
-              className="btn green darken-3"
-              href="entrepreneurship-finance"
-            >
-              Ver más
-            </Link>
+            <h5>Productos</h5>
+            <dev>
+              <Link
+                target="_blank"
+                className="green-text text-darken-3"
+                href="https://chromewebstore.google.com/detail/ogfgecooebcghjojlklphjjajaegcpen?utm_source=item-share-cb"
+              >
+                HTTPS Verifier
+              </Link>
+              <p>
+                Extensión web de Google Chrome que comprueba y garantiza que las páginas web y sus recursos asociados, como enlaces, imágenes y archivos CSS y JavaScript, utilicen conexiones HTTPS seguras.
+              </p>
+            </dev>
           </div>
           <div className="col l6 m6 s12 center">
-            <h5>Desarrollo de Software</h5>
-            <p>
-              Soy una persona introvertida. Me gusta aprender cosas nuevas y
-              mejorar constantemente para llegar a ser un gran ingeniero de
-              software.
-            </p>
-            <Link className="btn green darken-3" href="software-development">
-              Ver más
-            </Link>
+            <h5>Utilidades</h5>
+            <dev>
+              <Link
+                target="_blank"
+                className="green-text text-darken-3"
+                href="utilities/Base64Converter"
+              >
+                Convertidor Base64
+              </Link>
+              <p>
+                Herramienta para convertir texto a codificación Base64 y viceversa
+              </p>
+            </dev>
           </div>
         </div>
       </main>
