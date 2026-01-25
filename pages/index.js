@@ -39,12 +39,23 @@ export default function Home() {
             <dev>
               <Link
                 className="green-text text-darken-3"
-                href="utilities/Base64Converter"
+                href="utilities/base64converter"
               >
                 Convertidor Base64
               </Link>
               <p>
-                Herramienta para convertir texto a codificación Base64 y viceversa
+                Herramienta para convertir texto a codificación Base64 y viceversa.
+              </p>
+            </dev>
+            <dev>
+              <Link
+                className="green-text text-darken-3"
+                href="utilities/pdf-page-splitter"
+              >
+                Divisor de Páginas de PDF
+              </Link>
+              <p>
+                Herramienta para segmentar PDFs en archivos individuales por página.
               </p>
             </dev>
           </div>
