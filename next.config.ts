@@ -2,7 +2,6 @@
 const nextConfig = {
   output: 'export',
   reactStrictMode: true,
-  swcMinify: true,
   // Use the prefix for GitHub Pages
   basePath: '',
   assetPrefix: '/',
