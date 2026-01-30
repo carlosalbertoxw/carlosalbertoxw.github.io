@@ -56,7 +56,7 @@ const Navbar = () => {
                   onMouseLeave={() => setIsDropdownOpen(false)}
                   className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200"
                 >
-                  <Link href="/git" className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors" onClick={() => setIsDropdownOpen(false)}>Git & GitHub</Link>
+                  <Link href="/git" className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors" onClick={() => setIsDropdownOpen(false)}>Git</Link>
                   <Link href="/blockchain-cryptocurrencies" className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors" onClick={() => setIsDropdownOpen(false)}>Blockchain</Link>
                   <Link href="/productivity" className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors" onClick={() => setIsDropdownOpen(false)}>Productividad</Link>
                   <Link href="/english" className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors" onClick={() => setIsDropdownOpen(false)}>Inglés</Link>

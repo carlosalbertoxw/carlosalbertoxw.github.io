@@ -54,7 +54,7 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Columna: Utilidades */}
+          {/* Columna: Tools */}
           <section>
             <div className="flex items-center mb-8">
               <div className="bg-emerald-600/10 p-2 rounded-lg mr-4">
@@ -62,12 +62,12 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 011-1h1a2 2 0 100-4H7a1 1 0 01-1-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-slate-800">Utilidades</h2>
+              <h2 className="text-2xl font-bold text-slate-800">Herramientas</h2>
             </div>
 
             <div className="space-y-6">
-              {/* Utilidad 1 */}
-              <Link href="/utilities/base64converter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
+              {/* tool 1 */}
+              <Link href="/tools/base64converter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
                 <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
                   Convertidor Base64
                 </h3>
@@ -76,8 +76,8 @@ export default function Home() {
                 </p>
               </Link>
 
-              {/* Utilidad 2 */}
-              <Link href="/utilities/pdf-page-splitter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
+              {/* tool 2 */}
+              <Link href="/tools/pdf-page-splitter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
                 <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
                   Divisor de Páginas de PDF
                 </h3>
