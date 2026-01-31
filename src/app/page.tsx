@@ -13,12 +13,8 @@ export default function Home() {
           </p>
         </div>
       </section>
-
-      {/* Contenido Principal */}
       <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          
-          {/* Columna: Aplicaciones / Extensiones */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">          
           <section>
             <div className="flex items-center mb-8">
               <div className="bg-blue-600/10 p-2 rounded-lg mr-4">
@@ -28,7 +24,6 @@ export default function Home() {
               </div>
               <h2 className="text-2xl font-bold text-slate-800">Aplicaciones & Extensiones</h2>
             </div>
-
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-bold text-slate-900 mb-2">HTTPS Verifier</h3>
               <div className="flex gap-4 mb-4 text-sm font-medium">
@@ -53,8 +48,6 @@ export default function Home() {
               </p>
             </div>
           </section>
-
-          {/* Columna: Tools */}
           <section>
             <div className="flex items-center mb-8">
               <div className="bg-emerald-600/10 p-2 rounded-lg mr-4">
@@ -64,9 +57,7 @@ export default function Home() {
               </div>
               <h2 className="text-2xl font-bold text-slate-800">Herramientas</h2>
             </div>
-
             <div className="space-y-6">
-              {/* tool 1 */}
               <Link href="/tools/base64converter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
                 <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
                   Convertidor Base64
@@ -75,8 +66,14 @@ export default function Home() {
                   Herramienta para convertir texto a codificación Base64 y viceversa de forma instantánea.
                 </p>
               </Link>
-
-              {/* tool 2 */}
+              <Link href="/tools/base64FileConverter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
+                  Convertidor de Archivos a Base64
+                </h3>
+                <p className="text-slate-600 text-sm">
+                  Herramienta para convertir archivos a codificación Base64 y viceversa de forma instantánea.
+                </p>
+              </Link>
               <Link href="/tools/pdf-page-splitter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
                 <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
                   Divisor de Páginas de PDF
@@ -87,7 +84,6 @@ export default function Home() {
               </Link>
             </div>
           </section>
-
         </div>
       </div>
     </main>
