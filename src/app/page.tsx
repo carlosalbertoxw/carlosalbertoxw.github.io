@@ -68,7 +68,7 @@ export default function Home() {
               </Link>
               <Link href="/tools/base64FileConverter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
                 <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
-                  Convertidor de Archivos a Base64
+                  Convertidor de Archivos Base64
                 </h3>
                 <p className="text-slate-600 text-sm">
                   Herramienta para convertir archivos a codificación Base64 y viceversa de forma instantánea.
