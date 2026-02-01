@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Enlaces - Carlos Alberto",
+  title: "Enlaces",
   description: "Conecta conmigo a través de mis redes sociales y plataformas.",
 };
 

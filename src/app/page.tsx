@@ -74,12 +74,20 @@ export default function Home() {
                   Herramienta para convertir archivos a codificación Base64 y viceversa de forma instantánea.
                 </p>
               </Link>
-              <Link href="/tools/pdf-page-splitter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
+              <Link href="/tools/pdfPageSplitter" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
                 <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
                   Divisor de Páginas de PDF
                 </h3>
                 <p className="text-slate-600 text-sm">
                   Segmenta archivos PDF en documentos individuales por página de manera segura.
+                </p>
+              </Link>
+              <Link href="/tools/compoundInterestCalculator" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
+                  Calculadora de Interés Compuesto
+                </h3>
+                <p className="text-slate-600 text-sm">
+                  Herramienta para calcular el crecimiento del interés compuesto a lo largo del tiempo basado en la frecuencia, el capital y la tasa.
                 </p>
               </Link>
             </div>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Inglés - Carlos Alberto",
+  title: "Inglés",
   description: "Recursos, herramientas y consejos para dominar el idioma inglés.",
 };
 

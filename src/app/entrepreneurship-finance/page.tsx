@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Emprendimiento y Finanzas",
-  description: "Publicaciones y consejos sobre finanzas personales y emprendimiento de Carlos Alberto.",
+  description: "Publicaciones y consejos sobre finanzas personales y emprendimiento.",
 };
 
 const commonAdvice = [

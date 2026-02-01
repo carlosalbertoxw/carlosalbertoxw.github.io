@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Desarrollo de Software",
-  description: "Trayectoria profesional y recursos de aprendizaje de Carlos Alberto.",
+  description: "Trayectoria profesional y recursos de aprendizaje.",
 };
 
 const tools = [

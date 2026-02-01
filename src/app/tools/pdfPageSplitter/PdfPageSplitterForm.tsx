@@ -3,7 +3,7 @@ import { useState } from "react";
 import { PDFDocument } from "pdf-lib";
 import JSZip from "jszip";
 
-export default function PDFPageSplitter() {
+export default function PdfPageSplitterForm() {
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -68,7 +68,6 @@ export default function PDFPageSplitter() {
 
         <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden">
           <div className="p-8 md:p-12">
-            {/* Dropzone Area */}
             <div className={`relative border-2 border-dashed rounded-2xl p-8 transition-all flex flex-col items-center justify-center
               ${file ? 'border-emerald-200 bg-emerald-50/30' : 'border-slate-200 bg-slate-50 hover:border-red-300'}`}>
               
@@ -102,7 +101,6 @@ export default function PDFPageSplitter() {
               )}
             </div>
 
-            {/* Action Button */}
             <button
               onClick={splitPDFToZip}
               disabled={!file || loading}
@@ -127,7 +125,6 @@ export default function PDFPageSplitter() {
               )}
             </button>
 
-            {/* Privacy Shield */}
             <div className="mt-8 flex items-center justify-center gap-2 text-slate-400 bg-slate-50 py-3 rounded-xl border border-slate-100">
               <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.946-2.56 9.12-6.433 11.49a1 1 0 01-1.134 0C6.56 16.12 4 11.946 4 7.001c0-.68.056-1.35.166-2.001zm9.497 10.301A11.002 11.002 0 0016.001 7c0-.622-.046-1.233-.133-1.833a10.954 10.954 0 01-5.868-2.617 10.954 10.954 0 01-5.868 2.617c-.087.6-.133 1.211-.133 1.833 0 4.408 2.297 8.147 5.736 10.301a1 1 0 001.066 0z" clipRule="evenodd" />

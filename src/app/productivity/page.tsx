@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Productividad - Carlos Alberto",
+  title: "Productividad",
   description: "Estrategias y consejos para mejorar el enfoque y la eficiencia personal.",
 };
 
