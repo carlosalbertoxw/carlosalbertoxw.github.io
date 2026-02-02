@@ -88,7 +88,7 @@ export default function Git() {
             Si crees que puedo ayudarte en algo, no dudes en contactarme.
           </p>
           <Link 
-            href="/contact" 
+            href="/links" 
             className="text-orange-600 font-bold hover:text-orange-700 underline decoration-2 underline-offset-4"
           >
             Contactar

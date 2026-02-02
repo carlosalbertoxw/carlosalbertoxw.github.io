@@ -116,7 +116,7 @@ export default function EntrepreneurshipFinance() {
                 Si crees que puedo ayudarte en algo, no dudes en contactarme.
               </p>
               <Link 
-                href="/contact" 
+                href="/links" 
                 className="inline-block bg-white text-emerald-700 px-6 py-2 rounded-lg font-bold text-sm hover:bg-emerald-50 transition-colors"
               >
                 Contactar

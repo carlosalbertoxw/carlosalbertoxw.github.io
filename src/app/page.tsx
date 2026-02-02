@@ -82,6 +82,14 @@ export default function Home() {
                   Segmenta archivos PDF en documentos individuales por página de manera segura.
                 </p>
               </Link>
+              <Link href="/tools/textToBinary" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
+                  Traductor de Texto a Binario
+                </h3>
+                <p className="text-slate-600 text-sm">
+                  Convierte texto a código binario y viceversa de forma rápida.
+                </p>
+              </Link>
               <Link href="/tools/compoundInterestCalculator" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
                 <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
                   Calculadora de Interés Compuesto
