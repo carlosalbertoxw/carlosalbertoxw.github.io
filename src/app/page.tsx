@@ -98,6 +98,22 @@ export default function Home() {
                   Herramienta para calcular el crecimiento del interés compuesto a lo largo del tiempo basado en la frecuencia, el capital y la tasa.
                 </p>
               </Link>
+              <Link href="/tools/randomString" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
+                  Generador de Texto Aleatorio
+                </h3>
+                <p className="text-slate-600 text-sm">
+                  Crea cadenas de texto, contraseñas seguras y secuencias de caracteres aleatorias al instante. Personaliza longitud, símbolos y números.
+                </p>
+              </Link>
+              <Link href="/tools/randomNumbers" className="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-300 hover:shadow-md transition-all group">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 mb-2 transition-colors">
+                  Generador de Números Aleatorios
+                </h3>
+                <p className="text-slate-600 text-sm">
+                  Genera números al azar de forma gratuita. Configura rangos personalizados, cantidad de números y evita repeticiones.
+                </p>
+              </Link>
             </div>
           </section>
         </div>
