@@ -95,7 +95,7 @@ const Navbar = () => {
             <div className="grid grid-cols-2 gap-1">
               <Link href="/git" className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md">Git</Link>
               <Link href="/english" className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md">Inglés</Link>
-              <Link href="/blockchain" className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md">Blockchain</Link>
+              <Link href="/blockchain-cryptocurrencies" className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md">Blockchain</Link>
               <Link href="/productivity" className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md">Productividad</Link>
             </div>
           </div>
