@@ -18,7 +18,7 @@ const tools = [
   { name: "Docker", href: "https://blog.carlosalbertoxw.com/2023/08/docker.html" },
   { name: "Docker Compose", href: "https://blog.carlosalbertoxw.com/2023/08/docker-compose.html" },
   { name: "Pruebas Unitarias", href: "https://blog.carlosalbertoxw.com/2025/05/pruebas-unitarias-en-el-desarrollo-de-software.html" },
-  { name: "Ciclo de Vida (SDLC)", href: "https://blog.carlosalbertoxw.com/2023/04/ciclo-de-vida-del-desarrollo-de-software.html" },
+  { name: "Ciclo de Vida del Desarrollo de Software", href: "https://blog.carlosalbertoxw.com/2023/04/ciclo-de-vida-del-desarrollo-de-software.html" },
 ];
 
 const exercises = [
@@ -41,7 +41,7 @@ export default function SoftwareDevelopment() {
           </h1>
           <div className="prose prose-slate lg:prose-lg mx-auto text-slate-600 leading-relaxed text-justify">
             <p>
-              Profesionalmente, me he desempeñado en el campo del desarrollo de software desde el año **2017** en una empresa de consultoría de TI. Mi labor se centra en la creación de nuevas funcionalidades y la resolución de problemas operativos de raíz para diversas empresas.
+              Profesionalmente, me he desempeñado en el campo del desarrollo de software desde el año **2017** en una empresa de consultoría de TI. Especializado en automatización de procesos operativos, análisis y levantamiento de requerimientos funcionales y desarrollo de soluciones escalables orientadas al usuario. Enfoque en la optimización de tiempos operativos, mejora continua y resolución de problemas desde su causa raíz, asegurando estabilidad, eficiencia y mantenibilidad en los sistemas.
             </p>
             <p>
               Aquí comparto publicaciones y ejercicios que podrían servir como guía para otros y como validación de mis conocimientos.
