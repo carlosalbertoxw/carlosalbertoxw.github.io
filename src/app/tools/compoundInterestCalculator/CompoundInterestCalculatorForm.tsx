@@ -57,6 +57,16 @@ export default function CompoundInterestCalculator() {
 
   return (
     <main className="min-h-screen bg-slate-100 py-10 px-4 md:px-10 font-sans">
+      {/* CABECERA */}
+      <div className="max-w-6xl mx-auto mb-10 text-center md:text-left">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-3 tracking-tight">
+          Calculadora de Interés Compuesto
+        </h1>
+        <p className="text-slate-500 text-lg max-w-2xl">
+          Herramienta para calcular el crecimiento del interés a lo largo del tiempo basado en la frecuencia, capital y tasa.
+        </p>
+      </div>
+
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         <div className="bg-white p-8 rounded-3xl shadow-lg border border-slate-200 h-fit">

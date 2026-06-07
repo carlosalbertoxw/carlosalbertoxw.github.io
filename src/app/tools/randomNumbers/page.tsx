@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import RandomNumbers from "./RandomNumbers";
+import RandomNumbersForm from "./RandomNumbersForm";
 
 export const metadata: Metadata = {
   title: "Generador de Números Aleatorios",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <RandomNumbers />;
+  return <RandomNumbersForm />;
 }

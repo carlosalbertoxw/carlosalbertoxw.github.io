@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import PdfMerger from "./PdfMerger";
+import PdfMergerForm from "./PdfMergerForm";
 
 export const metadata: Metadata = {
   title: "Unir PDF",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <PdfMerger />;
+  return <PdfMergerForm />;
 }

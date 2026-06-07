@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import RandomString from "./RandomString";
+import RandomStringForm from "./RandomStringForm";
 
 export const metadata: Metadata = {
   title: "Generador de Texto Aleatorio",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <RandomString />;
+  return <RandomStringForm />;
 }
