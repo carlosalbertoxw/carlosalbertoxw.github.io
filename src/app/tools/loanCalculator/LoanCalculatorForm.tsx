@@ -9,6 +9,7 @@ interface LoanRow {
   insurance: number;
   principal: number;
   interest: number;
+  tax: number; // NUEVO: Impuesto sobre el interés
   balance: number;
 }
 
@@ -17,6 +18,7 @@ export default function LoanCalculator() {
   const [annualRate, setAnnualRate] = useState<number>(12);
   const [months, setMonths] = useState<number>(24);
   const [monthlyInsurance, setMonthlyInsurance] = useState<number>(250);
+  const [taxRate, setTaxRate] = useState<number>(16); // NUEVO: Porcentaje de impuesto (ej. IVA)
   const [amortizationSystem, setAmortizationSystem] = useState<"frances" | "aleman" | "americano">("frances");
   
   const [amortizationTable, setAmortizationTable] = useState<LoanRow[]>([]);
@@ -24,6 +26,7 @@ export default function LoanCalculator() {
     firstPayment: 0, 
     totalInterest: 0, 
     totalInsurance: 0,
+    totalTax: 0, // NUEVO: Total de impuestos pagados
     totalPaid: 0 
   });
 
@@ -34,6 +37,7 @@ export default function LoanCalculator() {
       
       let currentBalance = loanAmount;
       let totalInterestAccumulated = 0;
+      let totalTaxAccumulated = 0;
       let firstMonthPayment = 0;
       const table: LoanRow[] = [];
 
@@ -61,12 +65,18 @@ export default function LoanCalculator() {
           baseMonthlyPayment = principalPayment + interestPayment;
         }
 
+        // NUEVO: Cálculo del impuesto sobre los intereses de este mes
+        const taxPayment = interestPayment * (taxRate / 100);
+
         currentBalance -= principalPayment;
         // Evitar números negativos ínfimos por redondeo de JavaScript
         if (currentBalance < 0.01) currentBalance = 0; 
 
         totalInterestAccumulated += interestPayment;
-        const totalMonthlyPayment = baseMonthlyPayment + monthlyInsurance;
+        totalTaxAccumulated += taxPayment;
+        
+        // La cuota total ahora incluye el impuesto
+        const totalMonthlyPayment = baseMonthlyPayment + monthlyInsurance + taxPayment;
 
         if (i === 1) {
           firstMonthPayment = totalMonthlyPayment;
@@ -79,6 +89,7 @@ export default function LoanCalculator() {
           insurance: monthlyInsurance,
           principal: principalPayment,
           interest: interestPayment,
+          tax: taxPayment,
           balance: currentBalance,
         });
       }
@@ -89,7 +100,8 @@ export default function LoanCalculator() {
         firstPayment: firstMonthPayment,
         totalInterest: totalInterestAccumulated,
         totalInsurance: totalInsuranceAccumulated,
-        totalPaid: loanAmount + totalInterestAccumulated + totalInsuranceAccumulated,
+        totalTax: totalTaxAccumulated,
+        totalPaid: loanAmount + totalInterestAccumulated + totalInsuranceAccumulated + totalTaxAccumulated,
       });
       
       setAmortizationTable(table);
@@ -98,7 +110,7 @@ export default function LoanCalculator() {
     if (loanAmount > 0 && months > 0) {
       runCalculation();
     }
-  }, [loanAmount, annualRate, months, monthlyInsurance, amortizationSystem]);
+  }, [loanAmount, annualRate, months, monthlyInsurance, taxRate, amortizationSystem]);
 
   return (
     <main className="min-h-screen bg-slate-100 py-10 px-4 md:px-10 font-sans">
@@ -109,7 +121,7 @@ export default function LoanCalculator() {
           Calculadora de Préstamos
         </h1>
         <p className="text-slate-500 text-lg max-w-2xl">
-          Calcula tu cuota, compara sistemas de amortización y visualiza tu tabla de pagos incluyendo seguros u otros gastos.
+          Calcula tu cuota, compara sistemas de amortización y visualiza tu tabla de pagos incluyendo seguros, impuestos y otros gastos.
         </p>
       </div>
 
@@ -169,14 +181,26 @@ export default function LoanCalculator() {
                   <option value="americano">Sistema Americano (Interés Fijo)</option>
                 </select>
               </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Seguro / Gastos Fijos Mensuales ($)</label>
-                <input 
-                  type="number" 
-                  value={monthlyInsurance} 
-                  onChange={(e) => setMonthlyInsurance(Number(e.target.value))} 
-                  className="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-bold outline-none focus:ring-2 focus:ring-rose-500 transition-shadow" 
-                />
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Gastos Extra ($)</label>
+                  <input 
+                    type="number" 
+                    value={monthlyInsurance} 
+                    onChange={(e) => setMonthlyInsurance(Number(e.target.value))} 
+                    className="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-bold outline-none focus:ring-2 focus:ring-rose-500 transition-shadow" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Impuestos (%)</label>
+                  <input 
+                    type="number" 
+                    value={taxRate} 
+                    onChange={(e) => setTaxRate(Number(e.target.value))} 
+                    className="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-bold outline-none focus:ring-2 focus:ring-rose-500 transition-shadow" 
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -187,9 +211,9 @@ export default function LoanCalculator() {
               Cuota Inicial (Mes 1)
             </span>
             <div className="text-3xl md:text-4xl font-black">${totals.firstPayment.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-            {monthlyInsurance > 0 && (
-              <span className="text-xs font-medium opacity-80 mt-2 block">
-                (Incluye ${monthlyInsurance} de gastos extra)
+            {(monthlyInsurance > 0 || taxRate > 0) && (
+              <span className="text-[11px] font-medium opacity-80 mt-2 block">
+                (Incluye impuestos y gastos extra)
               </span>
             )}
           </div>
@@ -237,17 +261,21 @@ export default function LoanCalculator() {
               ))}
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col justify-center">
-                <span className="text-xs font-bold text-slate-500 uppercase mb-1">Capital Prestado</span>
+                <span className="text-[10px] font-bold text-slate-500 uppercase mb-1">Capital Prestado</span>
                 <span className="text-lg font-black text-slate-800">${loanAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
               </div>
               <div className="p-4 bg-rose-50 rounded-2xl border border-rose-100 flex flex-col justify-center">
-                <span className="text-xs font-bold text-rose-700 uppercase mb-1">Costo por Intereses</span>
+                <span className="text-[10px] font-bold text-rose-700 uppercase mb-1">Costo Intereses</span>
                 <span className="text-lg font-black text-rose-600">${totals.totalInterest.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
               </div>
+              <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100 flex flex-col justify-center">
+                <span className="text-[10px] font-bold text-amber-700 uppercase mb-1">Impuestos ({taxRate}%)</span>
+                <span className="text-lg font-black text-amber-600">${totals.totalTax.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
+              </div>
               <div className="p-4 bg-indigo-50 rounded-2xl border border-indigo-100 flex flex-col justify-center">
-                <span className="text-xs font-bold text-indigo-700 uppercase mb-1">Gastos Extra / Seguros</span>
+                <span className="text-[10px] font-bold text-indigo-700 uppercase mb-1">Gastos Extra</span>
                 <span className="text-lg font-black text-indigo-600">${totals.totalInsurance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</span>
               </div>
             </div>
@@ -265,7 +293,10 @@ export default function LoanCalculator() {
                     <th className="p-4 text-[10px] font-bold text-slate-500 uppercase whitespace-nowrap">Mes</th>
                     <th className="p-4 text-[10px] font-bold text-slate-500 uppercase whitespace-nowrap">Cuota Total</th>
                     <th className="p-4 text-[10px] font-bold text-slate-500 uppercase whitespace-nowrap hidden sm:table-cell">Abono a Capital</th>
-                    <th className="p-4 text-[10px] font-bold text-slate-500 uppercase whitespace-nowrap hidden sm:table-cell">Pago de Interés</th>
+                    <th className="p-4 text-[10px] font-bold text-slate-500 uppercase whitespace-nowrap hidden sm:table-cell">Pago Interés</th>
+                    {taxRate > 0 && (
+                      <th className="p-4 text-[10px] font-bold text-slate-500 uppercase whitespace-nowrap hidden md:table-cell">Impuestos</th>
+                    )}
                     {monthlyInsurance > 0 && (
                       <th className="p-4 text-[10px] font-bold text-slate-500 uppercase whitespace-nowrap hidden md:table-cell">Gastos Extra</th>
                     )}
@@ -285,6 +316,11 @@ export default function LoanCalculator() {
                       <td className="p-4 text-rose-500 hidden sm:table-cell">
                         ${row.interest.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
+                      {taxRate > 0 && (
+                        <td className="p-4 text-amber-500 hidden md:table-cell">
+                          ${row.tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </td>
+                      )}
                       {monthlyInsurance > 0 && (
                         <td className="p-4 text-indigo-500 hidden md:table-cell">
                           ${row.insurance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
