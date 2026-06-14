@@ -121,6 +121,7 @@ export default function Base64ConverterForm() {
 
         <div className="mt-12 text-center text-slate-400 text-sm">
           <p>Herramienta procesada localmente en tu navegador para mayor privacidad.</p>
+          <p>Base64 es codificación, no cifrado. No protege datos sensibles como contraseñas o tokens.</p>
         </div>
       </div>
     </main>

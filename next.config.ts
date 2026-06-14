@@ -10,6 +10,11 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
+  experimental: {
+    sri: {
+      algorithm: 'sha256'
+    }
+  }
 }
 
 module.exports = nextConfig
