@@ -15,7 +15,7 @@ const productivityPosts = [
   },
   {
     title: "El superpoder que tienes en tu navegador",
-    description: "Una reflexión profunda sobre prioridades y cómo gestionar el tiempo que realmente importa.",
+    description: "Descubre cómo utilizar al máximo las capacidades de tu navegador para aumentar tu productividad.",
     href: "https://blog.carlosalbertoxw.com/2026/06/el-superpoder-que-tienes-en-tu-navegador.html",
     date: "Junio 2026"
   },
