@@ -14,6 +14,12 @@ const productivityPosts = [
     date: "Marzo 2023"
   },
   {
+    title: "El superpoder que tienes en tu navegador",
+    description: "Una reflexión profunda sobre prioridades y cómo gestionar el tiempo que realmente importa.",
+    href: "https://blog.carlosalbertoxw.com/2026/06/el-superpoder-que-tienes-en-tu-navegador.html",
+    date: "Junio 2026"
+  },
+  {
     title: "¿Cómo mejorar la productividad?",
     description: "Técnicas accionables y herramientas para optimizar tu flujo de trabajo diario y evitar la procrastinación.",
     href: "https://blog.carlosalbertoxw.com/2022/12/como-mejorar-la-productividad.html",

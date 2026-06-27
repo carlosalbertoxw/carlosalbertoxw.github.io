@@ -29,27 +29,28 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             <div className="bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
-              <h3 className="text-xl font-bold text-slate-900 mb-3">HTTPS Verifier</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">YouTube Playlist Analyzer</h3>
               <div className="flex gap-4 mb-4 text-sm font-medium">
                 <Link 
                   target="_blank" 
-                  href="https://chromewebstore.google.com/detail/ogfgecooebcghjojlklphjjajaegcpen"
+                  href="https://herramientaswebsencillas.github.io/youtube-playlist-analyzer/"
                   className="text-blue-600 hover:text-blue-700 underline decoration-2 underline-offset-4"
                 >
-                  Chrome Store
+                  Sitio Web
                 </Link>
                 <span className="text-slate-300">|</span>
                 <Link 
                   target="_blank" 
-                  href="https://github.com/carlosalbertoxw/HTTPSVerifier"
+                  href="https://github.com/herramientaswebsencillas/youtube-playlist-analyzer"
                   className="text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   GitHub
                 </Link>
               </div>
               <p className="text-slate-600 leading-relaxed">
-                Extensión web para Google Chrome que comprueba y garantiza que las páginas web y sus recursos asociados utilicen conexiones HTTPS seguras.
+                Herramienta web gratuita que revisa playlists públicas de YouTube y YouTube Music para encontrar canciones duplicadas y videos que ya no se pueden reproducir.
               </p>
             </div>
 
@@ -76,6 +77,31 @@ export default function Home() {
                 Colección de utilidades web desarrolladas como un sitio web estático usando Next.js y GitHub Pages.
               </p>
             </div>
+
+            <div className="bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+              <h3 className="text-xl font-bold text-slate-900 mb-3">HTTPS Verifier</h3>
+              <div className="flex gap-4 mb-4 text-sm font-medium">
+                <Link 
+                  target="_blank" 
+                  href="https://chromewebstore.google.com/detail/ogfgecooebcghjojlklphjjajaegcpen"
+                  className="text-blue-600 hover:text-blue-700 underline decoration-2 underline-offset-4"
+                >
+                  Chrome Store
+                </Link>
+                <span className="text-slate-300">|</span>
+                <Link 
+                  target="_blank" 
+                  href="https://github.com/carlosalbertoxw/HTTPSVerifier"
+                  className="text-slate-600 hover:text-slate-900 transition-colors"
+                >
+                  GitHub
+                </Link>
+              </div>
+              <p className="text-slate-600 leading-relaxed">
+                Extensión web para Google Chrome que comprueba y garantiza que las páginas web y sus recursos asociados utilicen conexiones HTTPS seguras.
+              </p>
+            </div>
+
             {/* Espacio para futuras aplicaciones */}
           </div>
         </section>

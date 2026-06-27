@@ -8,6 +8,8 @@ export const metadata: Metadata = {
 
 const commonAdvice = [
   { name: "Tipos de Inversiones", href: "https://blog.carlosalbertoxw.com/2026/01/tipos-de-inversiones.html" },
+  { name: "Tipos de préstamos o créditos", href: "https://blog.carlosalbertoxw.com/2026/06/tipos-de-prestamos-o-creditos.html" },
+  { name: "Uso inteligente de tarjetas de crédito", href: "https://blog.carlosalbertoxw.com/2026/06/el-uso-inteligente-de-las-tarjetas-de.html" },
   { name: "Un Consejo Financiero", href: "https://blog.carlosalbertoxw.com/2023/03/un-consejo-financiero.html" },
   { name: "Cómo Lograr la Libertad Financiera", href: "https://blog.carlosalbertoxw.com/2016/11/como-lograr-la-libertad-financiera.html" },
   { name: "Un Consejo Legal", href: "https://blog.carlosalbertoxw.com/2026/01/un-consejo-legal.html" },
