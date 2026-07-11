@@ -28,14 +28,7 @@ export const metadata: Metadata = {
     locale: "es_MX",
     url: "https://carlosalbertoxw.com",
     siteName: "Carlos Alberto",
-    images: [
-      {
-        url: "/favicon.ico",
-        width: 1200,
-        height: 630,
-        alt: "Carlos Alberto",
-      },
-    ],
+    // La imagen la genera src/app/opengraph-image.tsx en el build
   },
 };
 

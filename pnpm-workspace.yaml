@@ -1,0 +1,11 @@
+# Configuración de pnpm (desde pnpm 10+ estos ajustes viven aquí, no en package.json)
+
+# Dependencias con scripts de instalación aprobados explícitamente
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+
+# Fuerza una versión parchada de postcss: Next.js fija internamente una versión
+# vulnerable a XSS (GHSA-qx2v-qp2m-jg93)
+overrides:
+  postcss: ^8.5.16
