@@ -74,7 +74,7 @@ export default function Home() {
                 </Link>
               </div>
               <p className="text-slate-600 leading-relaxed">
-                Colección de utilidades web desarrolladas como un sitio web estático usando Next.js y GitHub Pages.
+                Colección de utilidades web.
               </p>
             </div>
 
