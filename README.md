@@ -9,7 +9,7 @@ Mi sitio web personal — [carlosalbertoxw.com](https://carlosalbertoxw.com). Un
 | [Next.js 16](https://nextjs.org/) (App Router) | Framework, generación estática del sitio |
 | [React 19](https://react.dev/) | Componentes de interfaz |
 | [Tailwind CSS 4](https://tailwindcss.com/) | Estilos (utilidades, sin CSS propio casi) |
-| [TypeScript](https://www.typescriptlang.org/) | Tipado de todo el código |
+| [TypeScript 6](https://www.typescriptlang.org/) | Tipado de todo el código |
 | [pnpm](https://pnpm.io/) | Gestor de paquetes |
 | [GitHub Pages](https://docs.github.com/en/pages) + Actions | Hosting y despliegue automático |
 
@@ -34,6 +34,7 @@ src/
 │   ├── entrepreneurship-finance/page.tsx
 │   ├── productivity/page.tsx
 │   ├── git/page.tsx
+│   ├── docker/page.tsx
 │   ├── english/page.tsx
 │   ├── blockchain-cryptocurrencies/page.tsx
 │   └── links/page.tsx
@@ -56,7 +57,19 @@ Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.cs
 
 ### Despliegue
 
-Cada push a `main` dispara el workflow [nextjs.yml](.github/workflows/nextjs.yml): instala dependencias con pnpm (con caché de la store y de `.next/cache`), ejecuta `pnpm build` y publica `out/` en GitHub Pages con el dominio propio `carlosalbertoxw.com`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
+Cada push a `main` dispara el workflow [nextjs.yml](.github/workflows/nextjs.yml): instala dependencias con pnpm (con caché de la store y de `.next/cache`), ejecuta `pnpm build` y publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
+
+### Dependencias forzadas por seguridad
+
+[pnpm-workspace.yaml](pnpm-workspace.yaml) contiene `overrides` que suben versiones transitivas vulnerables que Next.js o ESLint fijan internamente:
+
+| Paquete | Forzado a | Motivo |
+|---|---|---|
+| `postcss` | `^8.5.16` | XSS ([GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93)) |
+| `brace-expansion@1` | `^1.1.17` | DoS por expansión sin límite ([GHSA-mh99-v99m-4gvg](https://github.com/advisories/GHSA-mh99-v99m-4gvg)) |
+| `sharp` | `^0.35.3` | libvips vulnerable ([GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)) |
+
+`pnpm audit` sigue reportando `brace-expansion` como vulnerable: el aviso declara el rango `<=5.0.7`, que por semver incluye la `1.1.17` aunque esa versión ya lleve el parche retroportado. Es un falso positivo — el árbol solo tiene `1.1.17` y `5.0.8`, ambas parcheadas.
 
 ## Desarrollo local
 
