@@ -16,3 +16,6 @@ overrides:
   # del DoS por expansión sin límite (GHSA-mh99-v99m-4gvg / CVE-2026-14257) se
   # publicó en 5.0.8 y se retroportó a 1.1.17; el aviso aún no lista el backport.
   brace-expansion@1: ^1.1.17
+  # Next.js fija sharp 0.34.x, que arrastra un libvips vulnerable
+  # (GHSA-f88m-g3jw-g9cj: CVE-2026-33327/33328/35590/35591). Parcheado en 0.35.0.
+  sharp: ^0.35.3
