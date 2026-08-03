@@ -31,6 +31,22 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <div className="bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Cotejo</h3>
+              <div className="flex gap-4 mb-4 text-sm font-medium">
+                <Link
+                  target="_blank" 
+                  href="https://github.com/carlosalbertoxw/cotejo-file-comparison"
+                  className="text-blue-600 hover:text-blue-700 underline decoration-2 underline-offset-4"
+                >
+                  GitHub
+                </Link>
+              </div>
+              <p className="text-slate-600 leading-relaxed">
+                Cotejo es una aplicación de escritorio para comparar archivos de texto y carpetas completas. Muestra los dos lados enfrentados línea a línea, deja editarlos, copiar bloques de uno a otro, y operar sobre los archivos desde la vista de carpetas.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
               <h3 className="text-xl font-bold text-slate-900 mb-3">YouTube Playlist Analyzer</h3>
               <div className="flex gap-4 mb-4 text-sm font-medium">
                 <Link 
@@ -44,7 +60,7 @@ export default function Home() {
                 <Link 
                   target="_blank" 
                   href="https://github.com/herramientaswebsencillas/youtube-playlist-analyzer"
-                  className="text-slate-600 hover:text-slate-900 transition-colors"
+                  className="text-blue-600 hover:text-blue-700 underline decoration-2 underline-offset-4"
                 >
                   GitHub
                 </Link>
@@ -68,7 +84,7 @@ export default function Home() {
                 <Link 
                   target="_blank" 
                   href="https://github.com/herramientaswebsencillas/herramientaswebsencillas.github.io"
-                  className="text-slate-600 hover:text-slate-900 transition-colors"
+                  className="text-blue-600 hover:text-blue-700 underline decoration-2 underline-offset-4"
                 >
                   GitHub
                 </Link>
@@ -92,7 +108,7 @@ export default function Home() {
                 <Link 
                   target="_blank" 
                   href="https://github.com/carlosalbertoxw/HTTPSVerifier"
-                  className="text-slate-600 hover:text-slate-900 transition-colors"
+                  className="text-blue-600 hover:text-blue-700 underline decoration-2 underline-offset-4"
                 >
                   GitHub
                 </Link>
