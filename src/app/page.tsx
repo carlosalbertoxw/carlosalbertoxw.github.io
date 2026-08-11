@@ -35,6 +35,14 @@ export default function Home() {
               <div className="flex gap-4 mb-4 text-sm font-medium">
                 <Link
                   target="_blank" 
+                  href="https://github.com/carlosalbertoxw/cotejo-file-comparison/releases"
+                  className="text-blue-600 hover:text-blue-700 underline decoration-2 underline-offset-4"
+                >
+                  Releases
+                </Link>
+                <span className="text-slate-300">|</span>
+                <Link
+                  target="_blank" 
                   href="https://github.com/carlosalbertoxw/cotejo-file-comparison"
                   className="text-blue-600 hover:text-blue-700 underline decoration-2 underline-offset-4"
                 >
