@@ -1,6 +1,6 @@
 # carlosalbertoxw.github.io
 
-Mi sitio web personal — [carlosalbertoxw.com](https://carlosalbertoxw.com). Un conjunto de recursos digitales para exponer y recordar lo que he aprendido: proyectos propios, notas sobre desarrollo de software, emprendimiento, productividad y más.
+Mi sitio web personal — [carlosalbertoxw.com](https://carlosalbertoxw.com). Un conjunto de recursos digitales para exponer y recordar lo que he aprendido: proyectos propios, notas sobre desarrollo de software, emprendimiento y más.
 
 ## Stack
 
@@ -32,10 +32,8 @@ src/
 │   ├── opengraph-image.tsx             # Imagen Open Graph generada en el build
 │   ├── software-development/page.tsx   # Secciones temáticas…
 │   ├── entrepreneurship-finance/page.tsx
-│   ├── productivity/page.tsx
 │   ├── git/page.tsx
 │   ├── docker/page.tsx
-│   ├── english/page.tsx
 │   ├── blockchain-cryptocurrencies/page.tsx
 │   └── links/page.tsx
 └── components/
@@ -46,10 +44,16 @@ src/
 
 Casi todo son React Server Components (no llevan JavaScript al navegador). El único componente con `'use client'` es [Navbar.tsx](src/components/Navbar.tsx), porque necesita estado para el menú desplegable de "Recursos" y el menú móvil (que además se cierran solos al hacer scroll).
 
+### Páginas de listado
+
+[software-development](src/app/software-development/page.tsx) y [entrepreneurship-finance](src/app/entrepreneurship-finance/page.tsx) comparten la misma estructura: el contenido vive en un arreglo `groups` tipado al inicio del archivo y el JSX se limita a recorrerlo. Cada grupo se pinta como una tarjeta numerada con sus puntos, y cada punto admite un `href` opcional que le añade un enlace «Leer publicación» hacia la entrada correspondiente del blog. Encima del listado, una tarjeta destacada señala la publicación que enmarca todo lo demás.
+
+Las tarjetas se distribuyen con `columns-1 md:columns-2` en vez de `grid`, para que cada una ocupe solo el alto de su contenido y no queden huecos. Como las columnas CSS se llenan de arriba abajo antes de pasar a la siguiente, en escritorio el orden de lectura no es evidente: por eso cada tarjeta muestra su número (`01`, `02`, …).
+
 ### Lenguaje visual
 
-- **Paleta**: fondos oscuros `slate-900` (`#0f172a`) para navbar y heros, contenido sobre fondo claro `slate-50`, y acentos en azul y esmeralda (el título de la portada usa un degradado azul → esmeralda). Cada sección temática puede variar el color de su hero (p. ej. Productividad usa esmeralda).
-- **Tarjetas**: el contenido se presenta en tarjetas blancas con bordes redondeados grandes (`rounded-2xl`/`rounded-3xl`), sombra suave que crece al hacer hover, en rejillas responsivas de 1–2 columnas.
+- **Paleta**: fondos oscuros `slate-900` (`#0f172a`) para navbar y hero de portada, contenido sobre fondo claro `slate-50`, y acentos en azul y esmeralda (el título de la portada usa un degradado azul → esmeralda). Cada sección temática mantiene un solo color de acento: azul en Desarrollo de Software, esmeralda en Emprendimiento y Finanzas.
+- **Tarjetas**: un único estilo en todo el sitio — blancas, `rounded-2xl`, `border-slate-100` y `shadow-sm` que crece al hacer hover. No hay variantes oscuras ni de color de fondo.
 - **Tipografía**: [Geist y Geist Mono](https://vercel.com/font) cargadas con `next/font` (se auto-hospedan en el build, sin peticiones a Google).
 - **Responsive**: mobile-first con los breakpoints de Tailwind; el Navbar colapsa a menú hamburguesa bajo `md`.
 
