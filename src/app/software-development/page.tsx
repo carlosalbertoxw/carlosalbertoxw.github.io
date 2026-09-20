@@ -122,7 +122,7 @@ const groups: Group[] = [
       },
       {
         term: "Registra logs estructurados",
-        rest: ", con nivel e identificador de correlación, y nunca con datos sensibles dentro.",
+        rest: ", con nivel e identificador de correlación que permita seguir una petición de principio a fin.",
       },
       {
         term: "Mide y alerta sobre errores y latencia",
@@ -138,7 +138,7 @@ const groups: Group[] = [
     icon: "🔐",
     title: "Secretos y configuración",
     items: [
-      { term: "Protege las claves API y secretos", rest: ": nunca los expongas en el frontend, repositorios o logs." },
+      { term: "Protege las claves API y secretos", rest: ": no viajan al cliente ni quedan escritos en el repositorio." },
       { term: "Elimina secretos del historial de Git", rest: " y rota inmediatamente las credenciales comprometidas." },
       { term: "Usa variables de entorno o un gestor de secretos", rest: " para credenciales y configuraciones sensibles." },
       { term: "Separa las claves públicas de los secretos del servidor", rest: " y define claramente qué credenciales pueden exponerse al cliente." },
@@ -148,7 +148,7 @@ const groups: Group[] = [
     icon: "🔑",
     title: "Autenticación y sesiones",
     items: [
-      { term: "Usa autenticación robusta del lado servidor", rest: "; nunca confíes únicamente en controles del cliente." },
+      { term: "Usa autenticación robusta del lado servidor", rest: ": la sesión se emite, se valida y se revoca en el servidor." },
       { term: "Hashea las contraseñas con algoritmos diseñados para contraseñas", rest: ", como Argon2id, bcrypt o scrypt." },
       { term: "Limita los intentos de inicio de sesión", rest: " y aplica protección contra ataques de fuerza bruta." },
       {
@@ -172,18 +172,18 @@ const groups: Group[] = [
         term: "Activa Row Level Security (RLS)",
         rest: " cuando la plataforma lo soporte: es una segunda barrera en la base de datos, no un sustituto de la autorización en el servidor.",
       },
-      { term: "Aplica autorización en el servidor", rest: " para todas las operaciones sensibles." },
+      { term: "Aplica autorización en el servidor", rest: ": toda operación sensible comprueba, antes de ejecutarse, que quien la pide puede pedirla." },
       { term: "Restringe el acceso a registros", rest: " según usuario, rol, organización o tenant." },
-      { term: "Impide la manipulación de campos protegidos", rest: " mediante validación y autorización del lado servidor." },
+      { term: "Define qué campos puede modificar el cliente", rest: ": nunca vuelques el cuerpo de la petición sobre la entidad; el rol, el precio o el propietario no se cambian desde fuera." },
       { term: "Aplica el principio de mínimo privilegio", rest: " a usuarios, servicios y conexiones de base de datos." },
-      { term: "Monitoriza y registra consultas y operaciones sensibles", rest: " de la base de datos, y conserva ese registro el tiempo suficiente para poder investigar un incidente." },
+      { term: "Monitoriza y registra las operaciones sensibles", rest: " de la base de datos: accesos masivos, cambios de permisos y consultas fuera de lo habitual." },
     ],
   },
   {
     icon: "🛡️",
     title: "Validación y protección de datos",
     items: [
-      { term: "Valida y normaliza todas las entradas", rest: " en el servidor." },
+      { term: "Valida y normaliza todas las entradas", rest: " en el servidor: tipo, rango y formato, aunque el cliente ya las haya validado." },
       { term: "Protege contra XSS", rest: " mediante escape contextual y sanitización cuando corresponda." },
       { term: "Protege contra SQL Injection", rest: " utilizando consultas parametrizadas/ORM correctamente configurados." },
       {
@@ -191,10 +191,10 @@ const groups: Group[] = [
         rest: ": valida y restringe las direcciones que tu servidor consulta a partir de datos proporcionados por el usuario.",
       },
       {
-        term: "Cifra los datos sensibles en tránsito y en reposo",
-        rest: ": TLS siempre, y cifrado en reposo para datos personales, financieros o de salud.",
+        term: "Cifra en reposo los datos sensibles",
+        rest: ": datos personales, financieros o de salud, tanto en la base de datos como en los respaldos.",
       },
-      { term: "No almacenes información sensible innecesaria", rest: " y establece políticas de retención." },
+      { term: "No almacenes información sensible innecesaria", rest: " y define cuánto se conserva cada tipo de dato, incluidos los registros de auditoría: lo que no guardas no se puede filtrar, pero sin bitácora no se puede investigar." },
     ],
   },
   {
@@ -203,10 +203,9 @@ const groups: Group[] = [
     items: [
       { term: "Restringe las subidas de archivos", rest: " por tamaño, extensión, tipo MIME y contenido." },
       { term: "Almacena los archivos subidos fuera del directorio ejecutable", rest: " y evita nombres controlados por el usuario." },
-      { term: "Limita las respuestas de las APIs", rest: " para no exponer campos o información innecesaria." },
-      { term: "Implementa rate limiting", rest: " en endpoints sensibles y de alto consumo." },
-      { term: "Valida permisos en cada endpoint", rest: ", no solamente en la interfaz de usuario." },
-      { term: "Protege los endpoints contra abuso automatizado y bots", rest: " cuando sea necesario." },
+      { term: "Limita las respuestas de las APIs", rest: " a los campos que el cliente necesita: no serialices la entidad completa por comodidad." },
+      { term: "Implementa rate limiting", rest: " en endpoints sensibles y de alto consumo, junto con protección contra abuso automatizado donde el tráfico lo justifique." },
+      { term: "No uses la interfaz como control de acceso", rest: ": ocultar un botón no impide la petición; el permiso se comprueba donde se ejecuta la operación." },
     ],
   },
   {
@@ -225,7 +224,7 @@ const groups: Group[] = [
       },
       { term: "Configura correctamente CORS", rest: " y evita permitir orígenes arbitrarios." },
       { term: "Protege las operaciones contra CSRF", rest: " cuando la arquitectura de autenticación lo requiera." },
-      { term: "Evita exponer información sensible en mensajes de error", rest: ", respuestas o logs." },
+      { term: "Evita exponer información sensible en mensajes de error", rest: ", respuestas o logs: el detalle interno de un fallo le sirve a quien ataca, no a quien lo sufre." },
     ],
   },
   {
@@ -237,11 +236,41 @@ const groups: Group[] = [
         term: "Fija las versiones con un archivo de bloqueo",
         rest: " y verifica la integridad de los paquetes que instalas.",
       },
-      { term: "Escanea el código y los contenedores", rest: " en busca de vulnerabilidades." },
-      { term: "Monitoriza autenticaciones, errores y operaciones sospechosas", rest: "." },
+      { term: "Escanea el código y las imágenes de contenedor en el pipeline", rest: ": análisis estático de seguridad en cada cambio, no una revisión al año." },
+      { term: "Monitoriza autenticaciones, cambios de privilegios y operaciones sospechosas", rest: ": es lo que después permite reconstruir qué pasó y cuándo." },
       { term: "Configura alertas para eventos de seguridad relevantes", rest: ", con un responsable claro para cada una: una alerta que nadie revisa es ruido." },
-      { term: "Realiza pruebas de seguridad periódicas", rest: ", incluyendo SAST, DAST y pruebas de penetración." },
-      { term: "Mantén un plan de respuesta ante incidentes", rest: " y procedimientos para rotar credenciales comprometidas." },
+      { term: "Realiza pruebas de seguridad periódicas", rest: ": DAST sobre el sistema en ejecución y pruebas de penetración a cargo de alguien ajeno al equipo." },
+      { term: "Mantén un plan de respuesta ante incidentes", rest: ": quién decide, quién comunica y qué se hace en la primera hora. Escrito antes, no durante." },
+    ],
+  },
+  {
+    icon: "⚖️",
+    title: "Cumplimiento y aspectos legales",
+    items: [
+      {
+        term: "Revisa las licencias de las dependencias",
+        rest: " y su compatibilidad con el modelo de distribución del proyecto: una licencia copyleft en una librería puede obligarte a liberar tu código o a reemplazarla cuando ya es tarde.",
+      },
+      {
+        term: "Cumple la normativa de protección de datos personales",
+        rest: " que aplique a tus usuarios: identifica qué datos recoges, con qué finalidad y bajo qué base legal, y ten un mecanismo real para atender solicitudes de acceso, rectificación y eliminación.",
+      },
+      {
+        term: "Publica el aviso de privacidad y los términos de uso",
+        rest: " y mantenlos alineados con lo que el sistema hace de verdad, no con lo que hacía el día que se redactaron.",
+      },
+      {
+        term: "Define el procedimiento de notificación de brechas",
+        rest: ": a quién se avisa, en qué plazo y con qué información. Se decide antes del incidente, no durante.",
+      },
+      {
+        term: "Revisa a tus proveedores y subprocesadores",
+        rest: ": qué datos tratan, dónde se almacenan y qué compromisos contractuales existen. Externalizar el servicio no externaliza la responsabilidad.",
+      },
+      {
+        term: "Deja clara la titularidad del código y de las contribuciones",
+        rest: ", incluyendo el código de terceros y el generado con herramientas de IA que incorpores al proyecto.",
+      },
     ],
   },
 ];
