@@ -62,11 +62,13 @@ Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.cs
 
 ### Despliegue
 
-El workflow [nextjs.yml](.github/workflows/nextjs.yml) se ejecuta en cada push y en cada pull request hacia `main`. Instala dependencias con pnpm (`--frozen-lockfile`, con caché de la store y de `.next/cache`), ejecuta `pnpm lint`, `pnpm audit --audit-level high` y `pnpm build`. Si alguno falla, no se despliega. En los pull requests se queda ahí; en los push a `main` además publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
+El workflow [nextjs.yml](.github/workflows/nextjs.yml) se ejecuta en cada push y en cada pull request hacia `main`. Instala dependencias con pnpm (`--frozen-lockfile`, con caché de la store y de `.next/cache`), ejecuta `pnpm lint`, `pnpm format:check`, `pnpm audit --audit-level high` y `pnpm build`. Si alguno falla, no se despliega. En los pull requests se queda ahí; en los push a `main` además publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
 
 El dominio pasa por Cloudflare antes de llegar a GitHub Pages. GitHub Pages no permite cabeceras propias, así que las de seguridad (`Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) se añaden en Cloudflare, igual que la versión mínima de TLS (1.2; las versiones 1.0 y 1.1 se rechazan). Nada de eso vive en este repositorio: si cambian, se cambian en el panel de Cloudflare.
 
-[dependabot.yml](.github/dependabot.yml) abre cada mes un PR agrupado con las actualizaciones menores y de parche de las dependencias y de las Actions; las de seguridad las abre Dependabot en cuanto sale el aviso.
+Las Actions de los workflows se fijan por SHA de commit, con la versión en un comentario (`actions/checkout@3d3c… # v7.0.1`), para que una etiqueta reescrita no cambie el código que se ejecuta.
+
+[dependabot.yml](.github/dependabot.yml) abre cada mes hasta tres PR agrupados: las actualizaciones menores y de parche de las dependencias; las Actions de Pages (`configure-pages`, `upload-pages-artifact` y `deploy-pages`); y el resto de las Actions, actualizando el SHA y el comentario. Las de Pages van aparte porque no se ejecutan en los pull requests: solo se prueban al desplegar, así que conviene fusionarlas solas y revisar ese despliegue. Las actualizaciones de seguridad las abre Dependabot en cuanto sale el aviso.
 
 ### Dependencias forzadas por seguridad
 
@@ -88,9 +90,10 @@ El dominio pasa por Cloudflare antes de llegar a GitHub Pages. GitHub Pages no p
 - **Cabeceras de seguridad y TLS:** se editan en el panel de Cloudflare del dominio. Tras cambiarlas, comprueba el resultado con `curl -I https://carlosalbertoxw.com/`.
 - **Dominio:** Pages (ajustes del repositorio) y el DNS en Cloudflare deben apuntar al mismo dominio. El registro del dominio se renueva en su registrador; conviene tener activada la renovación automática.
 - **Enlaces rotos:** el workflow [links.yml](.github/workflows/links.yml) genera el sitio cada lunes y revisa con [lychee](https://github.com/lycheeverse/lychee) todos los enlaces del HTML exportado, incluidas las rutas internas y las anclas (`#…`). Si alguno falla, abre un issue con la etiqueta `enlaces`, o actualiza el que ya esté abierto. LinkedIn, Instagram, X y TikTok se excluyen porque bloquean a los bots. Se puede lanzar a mano desde la pestaña Actions.
-- **Alertas de dependencias:** llegan como alertas y PR de Dependabot. Un PR de seguridad ejecuta el mismo workflow; si pasa, se fusiona y el sitio se redespliega solo.
+- **Alertas de dependencias:** llegan como alertas y PR de Dependabot. Cada PR ejecuta el mismo workflow, y no se puede fusionar hasta que el check `build` pase; al fusionarlo, el sitio se redespliega solo. Tras fusionar el PR de las Actions de Pages, revisa que ese despliegue termine bien.
 - **Seguridad del repositorio:** se configura en los ajustes de GitHub, no en archivos. Hoy están activos:
-  - el ruleset *Proteger main*, que impide borrar la rama y reescribir su historial;
+  - el ruleset *Proteger main*, que impide borrar la rama y reescribir su historial, sin excepciones;
+  - el ruleset *Checks en PR*, que exige el check `build` para fusionar un pull request. El rol de administrador puede saltárselo, así que los push directos a `main` siguen funcionando (Git lo avisa como *bypassed rule violations*);
   - el escaneo de secretos con protección de push, que rechaza un push que contenga una credencial reconocible;
   - CodeQL en modo *Default* para JavaScript/TypeScript y Actions, con los resultados en la pestaña Security.
 
@@ -102,11 +105,12 @@ Requisitos: Node.js ≥ 20.9 y [pnpm](https://pnpm.io/installation) ≥ 11 (la v
 pnpm install     # instalar dependencias
 pnpm dev         # servidor de desarrollo en http://localhost:3000
 pnpm lint        # revisar el código con ESLint
+pnpm format      # formatear el código con Prettier
 pnpm audit       # buscar vulnerabilidades conocidas en las dependencias
 pnpm build       # generar el sitio estático en out/
 ```
 
-Antes de subir un cambio conviene ejecutar `pnpm lint`, `pnpm audit --audit-level high` y `pnpm build`: son los mismos pasos que corre el workflow, y si alguno falla el sitio no se despliega.
+Antes de subir un cambio conviene ejecutar `pnpm lint`, `pnpm format:check`, `pnpm audit --audit-level high` y `pnpm build`: son los mismos pasos que corre el workflow, y si alguno falla el sitio no se despliega. La configuración de Prettier está en [.prettierrc.json](.prettierrc.json) (líneas de hasta 120 caracteres); el Markdown, el lockfile y los textos de licencia se excluyen en [.prettierignore](.prettierignore).
 
 ## Licencia
 

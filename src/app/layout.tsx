@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s | Carlos Alberto",
   },
   description: "Portafolio personal y profesional de Carlos Alberto",
-  metadataBase: new URL('https://carlosalbertoxw.com'),
+  metadataBase: new URL("https://carlosalbertoxw.com"),
   icons: {
     icon: "/favicon.ico",
   },

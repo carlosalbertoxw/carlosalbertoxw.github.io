@@ -12,11 +12,23 @@ updates:
       dependencias:
         update-types: ["minor", "patch"]
 
-  # Actions del workflow de despliegue
+  # Actions de los workflows, fijadas por SHA; Dependabot actualiza el SHA y el
+  # comentario con la versión
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
     groups:
+      # Las de Pages van en su propio PR: no se ejecutan en los pull requests, así
+      # que solo se prueban al desplegar y conviene poder revertirlas por separado
+      pages:
+        patterns:
+          - "actions/configure-pages"
+          - "actions/upload-pages-artifact"
+          - "actions/deploy-pages"
       actions:
         patterns: ["*"]
+        exclude-patterns:
+          - "actions/configure-pages"
+          - "actions/upload-pages-artifact"
+          - "actions/deploy-pages"

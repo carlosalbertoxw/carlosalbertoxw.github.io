@@ -1,0 +1,12 @@
+# Generados
+.claude/
+.next/
+out/
+pnpm-lock.yaml
+
+# Textos de licencia: se conservan tal como se publicaron
+LICENSE
+LICENSE-CONTENT
+
+# Markdown: las tablas del README se alinean a mano
+*.md

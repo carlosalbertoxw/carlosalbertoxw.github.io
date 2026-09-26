@@ -100,8 +100,8 @@ const groups: Group[] = [
         rest: (
           <>
             {" en "}
-            <Code>CONTRIBUTING.md</Code>: pone por escrito la estrategia de ramas y revisión, las convenciones de commits y
-            qué debe cumplir un cambio para aprobarse, para que no dependa de preguntarle a alguien.
+            <Code>CONTRIBUTING.md</Code>: pone por escrito la estrategia de ramas y revisión, las convenciones de
+            commits y qué debe cumplir un cambio para aprobarse, para que no dependa de preguntarle a alguien.
           </>
         ),
       },
@@ -220,16 +220,28 @@ const groups: Group[] = [
         rest: ": no quedan escritos en el repositorio ni viajan al cliente. Define de forma explícita qué claves son públicas y cuáles solo existen en el servidor.",
       },
       { term: "Elimina secretos del historial de Git", rest: " y rota inmediatamente las credenciales comprometidas." },
-      { term: "Usa variables de entorno o un gestor de secretos", rest: " para credenciales y configuraciones sensibles." },
+      {
+        term: "Usa variables de entorno o un gestor de secretos",
+        rest: " para credenciales y configuraciones sensibles.",
+      },
     ],
   },
   {
     icon: "🔑",
     title: "Autenticación y sesiones",
     items: [
-      { term: "Usa autenticación robusta del lado servidor", rest: ": la sesión se emite, se valida y se revoca en el servidor." },
-      { term: "Hashea las contraseñas con algoritmos diseñados para contraseñas", rest: ", como Argon2id, bcrypt o scrypt." },
-      { term: "Limita los intentos de inicio de sesión", rest: " por cuenta y por origen, con bloqueo progresivo ante ataques de fuerza bruta." },
+      {
+        term: "Usa autenticación robusta del lado servidor",
+        rest: ": la sesión se emite, se valida y se revoca en el servidor.",
+      },
+      {
+        term: "Hashea las contraseñas con algoritmos diseñados para contraseñas",
+        rest: ", como Argon2id, bcrypt o scrypt.",
+      },
+      {
+        term: "Limita los intentos de inicio de sesión",
+        rest: " por cuenta y por origen, con bloqueo progresivo ante ataques de fuerza bruta.",
+      },
       {
         term: "Protege las cookies de sesión",
         rest: (
@@ -239,7 +251,10 @@ const groups: Group[] = [
           </>
         ),
       },
-      { term: "Expira y rota las sesiones", rest: " después de eventos sensibles, como cambio de contraseña o elevación de privilegios." },
+      {
+        term: "Expira y rota las sesiones",
+        rest: " después de eventos sensibles, como cambio de contraseña o elevación de privilegios.",
+      },
       { term: "Implementa MFA", rest: " para cuentas administrativas y operaciones de alto riesgo." },
     ],
   },
@@ -251,19 +266,34 @@ const groups: Group[] = [
         term: "Activa Row Level Security (RLS)",
         rest: " cuando la plataforma lo soporte: es una segunda barrera en la base de datos, no un sustituto de la autorización en el servidor.",
       },
-      { term: "Aplica autorización en el servidor", rest: ": toda operación sensible comprueba, antes de ejecutarse, que quien la pide puede pedirla. Ocultar un botón en la interfaz no impide la petición." },
+      {
+        term: "Aplica autorización en el servidor",
+        rest: ": toda operación sensible comprueba, antes de ejecutarse, que quien la pide puede pedirla. Ocultar un botón en la interfaz no impide la petición.",
+      },
       { term: "Restringe el acceso a registros", rest: " según usuario, rol, organización o tenant." },
-      { term: "Define qué campos puede modificar el cliente", rest: ": nunca vuelques el cuerpo de la petición sobre la entidad; el rol, el precio o el propietario no se cambian desde fuera." },
-      { term: "Aplica el principio de mínimo privilegio", rest: " a usuarios, servicios y conexiones de base de datos." },
+      {
+        term: "Define qué campos puede modificar el cliente",
+        rest: ": nunca vuelques el cuerpo de la petición sobre la entidad; el rol, el precio o el propietario no se cambian desde fuera.",
+      },
+      {
+        term: "Aplica el principio de mínimo privilegio",
+        rest: " a usuarios, servicios y conexiones de base de datos.",
+      },
     ],
   },
   {
     icon: "🛡️",
     title: "Validación y protección de datos",
     items: [
-      { term: "Valida y normaliza todas las entradas", rest: " en el servidor: tipo, rango y formato, aunque el cliente ya las haya validado." },
+      {
+        term: "Valida y normaliza todas las entradas",
+        rest: " en el servidor: tipo, rango y formato, aunque el cliente ya las haya validado.",
+      },
       { term: "Protege contra XSS", rest: " mediante escape contextual y sanitización cuando corresponda." },
-      { term: "Protege contra SQL Injection", rest: " utilizando consultas parametrizadas/ORM correctamente configurados." },
+      {
+        term: "Protege contra SQL Injection",
+        rest: " utilizando consultas parametrizadas/ORM correctamente configurados.",
+      },
       {
         term: "Protege contra SSRF",
         rest: ": valida y restringe las direcciones que tu servidor consulta a partir de datos proporcionados por el usuario.",
@@ -272,7 +302,10 @@ const groups: Group[] = [
         term: "Cifra en reposo los datos sensibles",
         rest: ": datos personales, financieros o de salud, tanto en la base de datos como en los respaldos.",
       },
-      { term: "No almacenes información sensible innecesaria", rest: " y define cuánto se conserva cada tipo de dato, incluidos los registros de auditoría: lo que no guardas no se puede filtrar, pero sin bitácora no se puede investigar." },
+      {
+        term: "No almacenes información sensible innecesaria",
+        rest: " y define cuánto se conserva cada tipo de dato, incluidos los registros de auditoría: lo que no guardas no se puede filtrar, pero sin bitácora no se puede investigar.",
+      },
     ],
   },
   {
@@ -280,9 +313,18 @@ const groups: Group[] = [
     title: "Archivos y APIs",
     items: [
       { term: "Restringe las subidas de archivos", rest: " por tamaño, extensión, tipo MIME y contenido." },
-      { term: "Almacena los archivos subidos fuera del directorio ejecutable", rest: " y evita nombres controlados por el usuario." },
-      { term: "Limita las respuestas de las APIs", rest: " a los campos que el cliente necesita: no serialices la entidad completa por comodidad." },
-      { term: "Implementa rate limiting", rest: " en endpoints de alto consumo o fáciles de abusar de forma automatizada, como registros, búsquedas o envío de correos." },
+      {
+        term: "Almacena los archivos subidos fuera del directorio ejecutable",
+        rest: " y evita nombres controlados por el usuario.",
+      },
+      {
+        term: "Limita las respuestas de las APIs",
+        rest: " a los campos que el cliente necesita: no serialices la entidad completa por comodidad.",
+      },
+      {
+        term: "Implementa rate limiting",
+        rest: " en endpoints de alto consumo o fáciles de abusar de forma automatizada, como registros, búsquedas o envío de correos.",
+      },
     ],
   },
   {
@@ -301,14 +343,20 @@ const groups: Group[] = [
       },
       { term: "Configura correctamente CORS", rest: " y evita permitir orígenes arbitrarios." },
       { term: "Protege las operaciones contra CSRF", rest: " cuando la arquitectura de autenticación lo requiera." },
-      { term: "Evita exponer información sensible en mensajes de error", rest: ", respuestas o logs: el detalle interno de un fallo le sirve a quien ataca, no a quien lo sufre." },
+      {
+        term: "Evita exponer información sensible en mensajes de error",
+        rest: ", respuestas o logs: el detalle interno de un fallo le sirve a quien ataca, no a quien lo sufre.",
+      },
     ],
   },
   {
     icon: "🔍",
     title: "Dependencias y vigilancia",
     items: [
-      { term: "Escanea las dependencias", rest: " en busca de vulnerabilidades conocidas y corrige de inmediato las que te afectan." },
+      {
+        term: "Escanea las dependencias",
+        rest: " en busca de vulnerabilidades conocidas y corrige de inmediato las que te afectan.",
+      },
       {
         term: "Fija las versiones con un archivo de bloqueo",
         rest: " y verifica la integridad de los paquetes que instalas.",
@@ -317,11 +365,26 @@ const groups: Group[] = [
         term: "Mantén un inventario de dependencias y automatiza sus actualizaciones",
         rest: ": un SBOM registra qué versiones exactas llegan a producción, y herramientas como Dependabot o Renovate mantienen las actualizaciones pequeñas y frecuentes en lugar de saltos de varias versiones.",
       },
-      { term: "Escanea el código y las imágenes de contenedor en el pipeline", rest: ": análisis estático de seguridad en cada cambio, no una revisión al año." },
-      { term: "Monitoriza autenticaciones, cambios de privilegios y operaciones sospechosas", rest: ", incluidos los accesos masivos y las consultas fuera de lo habitual en la base de datos: es lo que después permite reconstruir qué pasó y cuándo." },
-      { term: "Configura alertas para eventos de seguridad relevantes", rest: ", con un responsable claro para cada una: una alerta que nadie revisa es ruido." },
-      { term: "Realiza pruebas de seguridad periódicas", rest: ": DAST sobre el sistema en ejecución y pruebas de penetración a cargo de alguien ajeno al equipo." },
-      { term: "Mantén un plan de respuesta ante incidentes", rest: ": quién decide, quién comunica, qué se hace en la primera hora y cómo se notifica una brecha a autoridades y afectados en los plazos que marque la ley. Escrito antes, no durante." },
+      {
+        term: "Escanea el código y las imágenes de contenedor en el pipeline",
+        rest: ": análisis estático de seguridad en cada cambio, no una revisión al año.",
+      },
+      {
+        term: "Monitoriza autenticaciones, cambios de privilegios y operaciones sospechosas",
+        rest: ", incluidos los accesos masivos y las consultas fuera de lo habitual en la base de datos: es lo que después permite reconstruir qué pasó y cuándo.",
+      },
+      {
+        term: "Configura alertas para eventos de seguridad relevantes",
+        rest: ", con un responsable claro para cada una: una alerta que nadie revisa es ruido.",
+      },
+      {
+        term: "Realiza pruebas de seguridad periódicas",
+        rest: ": DAST sobre el sistema en ejecución y pruebas de penetración a cargo de alguien ajeno al equipo.",
+      },
+      {
+        term: "Mantén un plan de respuesta ante incidentes",
+        rest: ": quién decide, quién comunica, qué se hace en la primera hora y cómo se notifica una brecha a autoridades y afectados en los plazos que marque la ley. Escrito antes, no durante.",
+      },
     ],
   },
   {
@@ -354,7 +417,12 @@ const groups: Group[] = [
 
 const ExternalIcon = ({ className }: { className: string }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+    />
   </svg>
 );
 
@@ -384,17 +452,19 @@ export default function SoftwareDevelopment() {
       </header>
 
       <div className="max-w-5xl mx-auto px-4 py-16 space-y-16">
-
         <section>
           <div className="flex items-center mb-4 border-b border-slate-200 pb-4">
             <div className="bg-blue-600/10 p-2.5 rounded-xl mr-4">
               <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M12 3l7 4v5c0 4.418-2.865 8.166-7 9-4.135-.834-7-4.582-7-9V7l7-4z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 12l2 2 4-4M12 3l7 4v5c0 4.418-2.865 8.166-7 9-4.135-.834-7-4.582-7-9V7l7-4z"
+                />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-slate-800">
-              Qué implementar en un proyecto de software
-            </h2>
+            <h2 className="text-2xl font-bold text-slate-800">Qué implementar en un proyecto de software</h2>
           </div>
           <p className="mb-8 text-sm text-slate-500">
             Listado ordenado desde el arranque del proyecto hasta su operación y seguridad.
@@ -406,9 +476,7 @@ export default function SoftwareDevelopment() {
             target="_blank"
             className="group block bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-md transition-shadow mb-6"
           >
-            <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
-              Publicación principal
-            </span>
+            <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">Publicación principal</span>
             <span className="mt-2 flex items-start justify-between gap-4">
               <span className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
                 {featuredPost.name}

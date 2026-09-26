@@ -94,8 +94,7 @@ const dockerSections: DockerSection[] = [
       },
       {
         title: "Seguridad",
-        detail:
-          "rootless mode, usuarios no-root, capabilities, seccomp, AppArmor/SELinux, --read-only",
+        detail: "rootless mode, usuarios no-root, capabilities, seccomp, AppArmor/SELinux, --read-only",
       },
       { title: "Escaneo de vulnerabilidades", detail: "Trivy, Docker Scout, SBOM" },
       {
@@ -127,7 +126,7 @@ const dockerSections: DockerSection[] = [
 const totalTopics = dockerSections.reduce((acc, section) => acc + section.topics.length, 0);
 const totalLinks = dockerSections.reduce(
   (acc, section) => acc + section.topics.filter((topic) => topic.href).length,
-  0
+  0,
 );
 
 function TopicContent({ topic, linked }: { topic: DockerTopic; linked?: boolean }) {
@@ -140,9 +139,7 @@ function TopicContent({ topic, linked }: { topic: DockerTopic; linked?: boolean 
       >
         {topic.title}
       </span>
-      {topic.detail && (
-        <span className="block text-xs text-slate-500 mt-0.5 leading-relaxed">{topic.detail}</span>
-      )}
+      {topic.detail && <span className="block text-xs text-slate-500 mt-0.5 leading-relaxed">{topic.detail}</span>}
     </>
   );
 }
@@ -155,14 +152,14 @@ export default function Docker() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center space-x-4 mb-4 text-blue-400">
             <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288z"/>
+              <path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.185.185 0 00-.185.185v1.888c0 .102.083.185.185.185m-2.954-5.43h2.118a.186.186 0 00.186-.186V3.574a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m0 2.716h2.118a.187.187 0 00.186-.186V6.29a.186.186 0 00-.186-.185h-2.118a.185.185 0 00-.185.185v1.887c0 .102.082.185.185.186m-2.93 0h2.12a.186.186 0 00.184-.186V6.29a.185.185 0 00-.185-.185H8.1a.185.185 0 00-.185.185v1.887c0 .102.083.185.185.186m-2.964 0h2.119a.186.186 0 00.185-.186V6.29a.185.185 0 00-.185-.185H5.136a.186.186 0 00-.186.185v1.887c0 .102.084.185.186.186m5.893 2.715h2.118a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.118a.185.185 0 00-.185.185v1.888c0 .102.082.185.185.185m-2.93 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.083.185.185.185m-2.964 0h2.119a.185.185 0 00.185-.185V9.006a.185.185 0 00-.184-.186h-2.12a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185m-2.92 0h2.12a.185.185 0 00.184-.185V9.006a.185.185 0 00-.184-.186h-2.12a.185.185 0 00-.184.185v1.888c0 .102.082.185.185.185M23.763 9.89c-.065-.051-.672-.51-1.954-.51-.338.001-.676.03-1.01.087-.248-1.7-1.653-2.53-1.716-2.566l-.344-.199-.226.327c-.284.438-.49.922-.612 1.43-.23.97-.09 1.882.403 2.661-.595.332-1.55.413-1.744.42H.751a.751.751 0 00-.75.748 11.376 11.376 0 00.692 4.062c.545 1.428 1.355 2.48 2.41 3.124 1.18.723 3.1 1.137 5.275 1.137.983.003 1.963-.086 2.93-.266a12.248 12.248 0 003.823-1.389c.98-.567 1.86-1.288 2.61-2.136 1.252-1.418 1.998-2.997 2.553-4.4h.221c1.372 0 2.215-.549 2.68-1.009.309-.293.55-.65.707-1.046l.098-.288z" />
             </svg>
             <h1 className="text-4xl font-bold tracking-tight">Docker Cheat Sheet</h1>
           </div>
           <p className="text-xl text-slate-400 max-w-2xl text-justify leading-relaxed">
-            Una ruta de conceptos de Docker organizada por nivel, de los básicos a los temas
-            avanzados de construcción, seguridad y orquestación. Los temas que ya tienen artículo
-            publicado son enlaces; el resto forma parte del índice pendiente por documentar.
+            Una ruta de conceptos de Docker organizada por nivel, de los básicos a los temas avanzados de construcción,
+            seguridad y orquestación. Los temas que ya tienen artículo publicado son enlaces; el resto forma parte del
+            índice pendiente por documentar.
           </p>
 
           {/* Índice de secciones */}
@@ -243,9 +240,7 @@ export default function Docker() {
 
         {/* Footer de la página */}
         <div className="mt-16 p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 text-center">
-          <p className="text-slate-600 mb-4">
-            Si crees que puedo ayudarte en algo, no dudes en contactarme.
-          </p>
+          <p className="text-slate-600 mb-4">Si crees que puedo ayudarte en algo, no dudes en contactarme.</p>
           <Link
             href="/links"
             className="text-blue-600 font-bold hover:text-blue-700 underline decoration-2 underline-offset-4"

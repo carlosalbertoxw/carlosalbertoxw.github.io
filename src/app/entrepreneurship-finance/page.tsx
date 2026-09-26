@@ -4,8 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Emprendimiento y Finanzas",
-  description:
-    "Puntos de salud y crecimiento financiero, y guías para quienes inician un negocio.",
+  description: "Puntos de salud y crecimiento financiero, y guías para quienes inician un negocio.",
 };
 
 const featuredPost = {
@@ -140,7 +139,12 @@ const groups: Group[] = [
 
 const ExternalIcon = ({ className }: { className: string }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+    />
   </svg>
 );
 
@@ -167,7 +171,6 @@ export default function EntrepreneurshipFinance() {
       </header>
 
       <div className="max-w-5xl mx-auto px-4 py-16 space-y-16">
-
         {/* SECCIÓN: SALUD Y CRECIMIENTO FINANCIERO */}
         <section>
           <div className="flex items-center mb-4 border-b border-slate-200 pb-4">

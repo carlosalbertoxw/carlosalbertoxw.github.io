@@ -296,7 +296,7 @@ const cryptoSections: CryptoSection[] = [
 const totalTopics = cryptoSections.reduce((acc, section) => acc + section.topics.length, 0);
 const totalLinks = cryptoSections.reduce(
   (acc, section) => acc + section.topics.filter((topic) => topic.href).length,
-  0
+  0,
 );
 
 function TopicContent({ topic, linked }: { topic: CryptoTopic; linked?: boolean }) {
@@ -309,9 +309,7 @@ function TopicContent({ topic, linked }: { topic: CryptoTopic; linked?: boolean 
       >
         {topic.title}
       </span>
-      {topic.detail && (
-        <span className="block text-xs text-slate-500 mt-0.5 leading-relaxed">{topic.detail}</span>
-      )}
+      {topic.detail && <span className="block text-xs text-slate-500 mt-0.5 leading-relaxed">{topic.detail}</span>}
     </>
   );
 }
@@ -330,10 +328,9 @@ export default function BlockchainPage() {
             <h1 className="text-4xl font-bold tracking-tight">Blockchain y Criptomonedas</h1>
           </div>
           <p className="text-xl text-slate-400 max-w-2xl text-justify leading-relaxed">
-            Un temario del ecosistema cripto y las redes blockchain, de los fundamentos técnicos a
-            las plataformas, la seguridad, el funcionamiento de la red y las finanzas
-            descentralizadas. Los temas que ya tienen artículo publicado son enlaces; el resto forma
-            parte del índice pendiente por documentar.
+            Un temario del ecosistema cripto y las redes blockchain, de los fundamentos técnicos a las plataformas, la
+            seguridad, el funcionamiento de la red y las finanzas descentralizadas. Los temas que ya tienen artículo
+            publicado son enlaces; el resto forma parte del índice pendiente por documentar.
           </p>
 
           {/* Índice de secciones */}
@@ -414,9 +411,7 @@ export default function BlockchainPage() {
 
         {/* Footer de la página */}
         <div className="mt-16 p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 text-center">
-          <p className="text-slate-600 mb-4">
-            Si crees que puedo ayudarte en algo, no dudes en contactarme.
-          </p>
+          <p className="text-slate-600 mb-4">Si crees que puedo ayudarte en algo, no dudes en contactarme.</p>
           <Link
             href="/links"
             className="text-indigo-600 font-bold hover:text-indigo-700 underline decoration-2 underline-offset-4"

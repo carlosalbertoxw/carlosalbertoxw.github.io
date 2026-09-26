@@ -203,7 +203,7 @@ const gitSections: GitSection[] = [
         mono: true,
         href: "https://blog.carlosalbertoxw.com/2023/07/git-show.html",
       },
-      { title: "git reflog", detail: "la red de seguridad para recuperar commits \"perdidos\"", mono: true },
+      { title: "git reflog", detail: 'la red de seguridad para recuperar commits "perdidos"', mono: true },
       { title: "git bisect", detail: "búsqueda binaria del commit que introdujo un bug", mono: true },
       { title: "git blame y git log -S", detail: "pickaxe, para buscar cambios de código", mono: true },
       { title: "Rangos de commits", detail: "A..B, A...B, HEAD~3, HEAD^2" },
@@ -240,10 +240,7 @@ const gitSections: GitSection[] = [
 ];
 
 const totalTopics = gitSections.reduce((acc, section) => acc + section.topics.length, 0);
-const totalLinks = gitSections.reduce(
-  (acc, section) => acc + section.topics.filter((topic) => topic.href).length,
-  0
-);
+const totalLinks = gitSections.reduce((acc, section) => acc + section.topics.filter((topic) => topic.href).length, 0);
 
 function TopicContent({ topic, linked }: { topic: GitTopic; linked?: boolean }) {
   return (
@@ -255,9 +252,7 @@ function TopicContent({ topic, linked }: { topic: GitTopic; linked?: boolean }) 
       >
         {topic.title}
       </span>
-      {topic.detail && (
-        <span className="block text-xs text-slate-500 mt-0.5 leading-relaxed">{topic.detail}</span>
-      )}
+      {topic.detail && <span className="block text-xs text-slate-500 mt-0.5 leading-relaxed">{topic.detail}</span>}
     </>
   );
 }
@@ -270,15 +265,14 @@ export default function Git() {
         <div className="max-w-5xl mx-auto px-6">
           <div className="flex items-center space-x-4 mb-4 text-orange-400">
             <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M23.277 12c0 .267-.105.522-.293.71l-9.72 9.72c-.188.188-.443.293-.71.293s-.522-.105-.71-.293l-1.92-1.92c-.392-.392-.392-1.028 0-1.42l1.21-1.21c-.13-.34-.2-.71-.2-1.1 0-1.66 1.34-3 3-3 .39 0 .76.07 1.1.2l1.21-1.21c.392-.392 1.028-.392 1.42 0l1.92 1.92c.188.188.293.443.293.71zm-13.84 3.12c-.13-.34-.2-.71-.2-1.1 0-1.66 1.34-3 3-3 .39 0 .76.07 1.1.2l1.21-1.21c.392-.392 1.028-.392 1.42 0l1.92 1.92c.188.188.293.443.293.71s-.105.522-.293.71l-9.72 9.72c-.188.188-.443.293-.71.293s-.522-.105-.71-.293l-1.92-1.92c-.392-.392-.392-1.028 0-1.42l1.21-1.21zM4.723 12c0-.267.105-.522.293-.71l9.72-9.72c.188-.188.443-.293.71-.293s.522.105.71.293l1.92 1.92c.392.392.392 1.028 0 1.42l-1.21 1.21c.13.34.2.71.2 1.1 0 1.66-1.34 3-3 3-.39 0-.76-.07-1.1-.2l-1.21 1.21c-.392.392-1.028.392-1.42 0L10.713 11.29c-.188-.188-.293-.443-.293-.71s.105-.522.293-.71l9.72-9.72c.188-.188.443-.293.71-.293s.522.105.71.293l1.92 1.92c.392.392.392 1.028 0 1.42l-1.21 1.21z"/>
+              <path d="M23.277 12c0 .267-.105.522-.293.71l-9.72 9.72c-.188.188-.443.293-.71.293s-.522-.105-.71-.293l-1.92-1.92c-.392-.392-.392-1.028 0-1.42l1.21-1.21c-.13-.34-.2-.71-.2-1.1 0-1.66 1.34-3 3-3 .39 0 .76.07 1.1.2l1.21-1.21c.392-.392 1.028-.392 1.42 0l1.92 1.92c.188.188.293.443.293.71zm-13.84 3.12c-.13-.34-.2-.71-.2-1.1 0-1.66 1.34-3 3-3 .39 0 .76.07 1.1.2l1.21-1.21c.392-.392 1.028-.392 1.42 0l1.92 1.92c.188.188.293.443.293.71s-.105.522-.293.71l-9.72 9.72c-.188.188-.443.293-.71.293s-.522-.105-.71-.293l-1.92-1.92c-.392-.392-.392-1.028 0-1.42l1.21-1.21zM4.723 12c0-.267.105-.522.293-.71l9.72-9.72c.188-.188.443-.293.71-.293s.522.105.71.293l1.92 1.92c.392.392.392 1.028 0 1.42l-1.21 1.21c.13.34.2.71.2 1.1 0 1.66-1.34 3-3 3-.39 0-.76-.07-1.1-.2l-1.21 1.21c-.392.392-1.028.392-1.42 0L10.713 11.29c-.188-.188-.293-.443-.293-.71s.105-.522.293-.71l9.72-9.72c.188-.188.443-.293.71-.293s.522.105.71.293l1.92 1.92c.392.392.392 1.028 0 1.42l-1.21 1.21z" />
             </svg>
             <h1 className="text-4xl font-bold tracking-tight">Git Cheat Sheet</h1>
           </div>
           <p className="text-xl text-slate-400 max-w-2xl text-justify leading-relaxed">
-            Conceptos de Git, de básico a avanzado. Un temario estructurado que sirve como
-            referencia rápida y como validación de conocimientos en el control de versiones.
-            Los temas que ya tienen artículo publicado son enlaces; el resto forma parte del
-            índice pendiente por documentar.
+            Conceptos de Git, de básico a avanzado. Un temario estructurado que sirve como referencia rápida y como
+            validación de conocimientos en el control de versiones. Los temas que ya tienen artículo publicado son
+            enlaces; el resto forma parte del índice pendiente por documentar.
           </p>
 
           {/* Índice de secciones */}
@@ -359,9 +353,7 @@ export default function Git() {
 
         {/* Footer de la página */}
         <div className="mt-16 p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 text-center">
-          <p className="text-slate-600 mb-4">
-            Si crees que puedo ayudarte en algo, no dudes en contactarme.
-          </p>
+          <p className="text-slate-600 mb-4">Si crees que puedo ayudarte en algo, no dudes en contactarme.</p>
           <Link
             href="/links"
             className="text-orange-600 font-bold hover:text-orange-700 underline decoration-2 underline-offset-4"
