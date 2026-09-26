@@ -1,0 +1,22 @@
+# Actualizaciones de versión automatizadas. Las de seguridad ya las abre Dependabot
+# por su cuenta en cuanto sale un aviso; esto cubre la actualización de rutina.
+version: 2
+updates:
+  # Dependencias de pnpm (Dependabot lee pnpm-lock.yaml con el ecosistema npm)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    # Menores y parches en un solo PR; las versiones mayores llegan por separado
+    groups:
+      dependencias:
+        update-types: ["minor", "patch"]
+
+  # Actions del workflow de despliegue
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

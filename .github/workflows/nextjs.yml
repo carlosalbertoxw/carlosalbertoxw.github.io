@@ -9,22 +9,19 @@ on:
   push:
     branches: ["main"]
 
+  # Valida los pull requests (incluidos los de Dependabot) sin desplegar
+  pull_request:
+    branches: ["main"]
+
   # Permite ejecutar el workflow manualmente desde la pestaña Actions
   workflow_dispatch:
 
-# Permisos del GITHUB_TOKEN para permitir el despliegue a GitHub Pages
+# Permisos mínimos por defecto; el job de despliegue pide los suyos
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-# Solo un despliegue concurrente; no se cancelan los que están en progreso
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
-  # Job de construcción
+  # Job de validación y construcción
   build:
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +39,7 @@ jobs:
           cache: pnpm
 
       - name: Setup Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Restore Next.js cache
@@ -57,16 +55,33 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Lint
+        run: pnpm lint
+
+      # Falla si alguna dependencia tiene un aviso de severidad alta o crítica
+      - name: Audit dependencies
+        run: pnpm audit --audit-level high
+
       - name: Build with Next.js
         run: pnpm build
 
       - name: Upload artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
 
-  # Job de despliegue
+  # Job de despliegue: solo en push a main, nunca en pull requests
   deploy:
+    if: github.event_name != 'pull_request'
+    # Permisos del GITHUB_TOKEN para desplegar a GitHub Pages
+    permissions:
+      pages: write
+      id-token: write
+    # Solo un despliegue concurrente; no se cancelan los que están en progreso
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

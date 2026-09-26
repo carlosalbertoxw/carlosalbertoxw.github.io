@@ -12,6 +12,7 @@ Mi sitio web personal — [carlosalbertoxw.com](https://carlosalbertoxw.com). Un
 | [TypeScript 6](https://www.typescriptlang.org/) | Tipado de todo el código |
 | [pnpm](https://pnpm.io/) | Gestor de paquetes |
 | [GitHub Pages](https://docs.github.com/en/pages) + Actions | Hosting y despliegue automático |
+| [Cloudflare](https://www.cloudflare.com/) | Proxy delante de Pages: DNS, TLS y cabeceras de seguridad |
 
 ## Cómo está diseñado
 
@@ -61,19 +62,37 @@ Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.cs
 
 ### Despliegue
 
-Cada push a `main` dispara el workflow [nextjs.yml](.github/workflows/nextjs.yml): instala dependencias con pnpm (con caché de la store y de `.next/cache`), ejecuta `pnpm build` y publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
+El workflow [nextjs.yml](.github/workflows/nextjs.yml) se ejecuta en cada push y en cada pull request hacia `main`. Instala dependencias con pnpm (`--frozen-lockfile`, con caché de la store y de `.next/cache`), ejecuta `pnpm lint`, `pnpm audit --audit-level high` y `pnpm build`. Si alguno falla, no se despliega. En los pull requests se queda ahí; en los push a `main` además publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
+
+El dominio pasa por Cloudflare antes de llegar a GitHub Pages. GitHub Pages no permite cabeceras propias, así que las de seguridad (`Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) se añaden en Cloudflare, igual que la versión mínima de TLS (1.2; las versiones 1.0 y 1.1 se rechazan). Nada de eso vive en este repositorio: si cambian, se cambian en el panel de Cloudflare.
+
+[dependabot.yml](.github/dependabot.yml) abre cada mes un PR agrupado con las actualizaciones menores y de parche de las dependencias y de las Actions; las de seguridad las abre Dependabot en cuanto sale el aviso.
 
 ### Dependencias forzadas por seguridad
 
-[pnpm-workspace.yaml](pnpm-workspace.yaml) contiene `overrides` que suben versiones transitivas vulnerables que Next.js o ESLint fijan internamente:
+[pnpm-workspace.yaml](pnpm-workspace.yaml) contiene `overrides` que suben versiones transitivas vulnerables que Next.js o ESLint fijan internamente. El motivo detallado de cada uno está comentado en ese archivo; si se agrega o se cambia uno, esta tabla se actualiza en el mismo commit.
 
-| Paquete | Forzado a | Motivo |
-|---|---|---|
-| `postcss` | `^8.5.16` | XSS ([GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93)) |
-| `brace-expansion@1` | `^1.1.17` | DoS por expansión sin límite ([GHSA-mh99-v99m-4gvg](https://github.com/advisories/GHSA-mh99-v99m-4gvg)) |
-| `sharp` | `^0.35.3` | libvips vulnerable ([GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)) |
+| Paquete | Forzado a | Llega vía | Motivo |
+|---|---|---|---|
+| `postcss` | `^8.5.16` | Next.js | XSS ([GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93)) |
+| `brace-expansion@1` | `^1.1.18` | ESLint › minimatch@3 | DoS por arrays intermedios sin límite ([GHSA-rgw5-rvv9-x895](https://github.com/advisories/GHSA-rgw5-rvv9-x895)) |
+| `brace-expansion@5` | `^5.0.9` | ESLint › minimatch@10 | El mismo DoS ([GHSA-rgw5-rvv9-x895](https://github.com/advisories/GHSA-rgw5-rvv9-x895)) |
+| `browserslist` | `^4.28.7` | styled-jsx › @babel/core | Escritura en el prototipo ([GHSA-73wf-gq98-2v4g](https://github.com/advisories/GHSA-73wf-gq98-2v4g)) y caché sin límite ([GHSA-c83g-rgw3-j3cx](https://github.com/advisories/GHSA-c83g-rgw3-j3cx)) |
+| `nanoid@3` | `^3.3.18` | postcss | Bucle infinito con `size` cero ([GHSA-2v37-7h3g-55p8](https://github.com/advisories/GHSA-2v37-7h3g-55p8)) |
+| `sharp` | `^0.35.4` | Next.js | libvips ([GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)) y libheif ([GHSA-rgj7-g3m4-5g8c](https://github.com/advisories/GHSA-rgj7-g3m4-5g8c)) vulnerables |
+| `baseline-browser-mapping` | `^2.11.0` | Next.js | Terminación del proceso ante entrada inválida ([GHSA-w5vr-8v7q-w6rv](https://github.com/advisories/GHSA-w5vr-8v7q-w6rv)) |
 
-`pnpm audit` sigue reportando `brace-expansion` como vulnerable: el aviso declara el rango `<=5.0.7`, que por semver incluye la `1.1.17` aunque esa versión ya lleve el parche retroportado. Es un falso positivo — el árbol solo tiene `1.1.17` y `5.0.8`, ambas parcheadas.
+## Operación
+
+- **Revertir un despliegue:** `git revert <commit>` y push a `main`; el workflow vuelve a publicar la versión anterior en alrededor de un minuto. `git reset` seguido de `push --force` no funciona: la protección de `main` lo rechaza. Para salir del paso sin tocar el historial, se puede relanzar desde la pestaña Actions la ejecución de un commit anterior, pero el siguiente push a `main` la sustituye.
+- **Cabeceras de seguridad y TLS:** se editan en el panel de Cloudflare del dominio. Tras cambiarlas, comprueba el resultado con `curl -I https://carlosalbertoxw.com/`.
+- **Dominio:** Pages (ajustes del repositorio) y el DNS en Cloudflare deben apuntar al mismo dominio. El registro del dominio se renueva en su registrador; conviene tener activada la renovación automática.
+- **Enlaces rotos:** el workflow [links.yml](.github/workflows/links.yml) genera el sitio cada lunes y revisa con [lychee](https://github.com/lycheeverse/lychee) todos los enlaces del HTML exportado, incluidas las rutas internas y las anclas (`#…`). Si alguno falla, abre un issue con la etiqueta `enlaces`, o actualiza el que ya esté abierto. LinkedIn, Instagram, X y TikTok se excluyen porque bloquean a los bots. Se puede lanzar a mano desde la pestaña Actions.
+- **Alertas de dependencias:** llegan como alertas y PR de Dependabot. Un PR de seguridad ejecuta el mismo workflow; si pasa, se fusiona y el sitio se redespliega solo.
+- **Seguridad del repositorio:** se configura en los ajustes de GitHub, no en archivos. Hoy están activos:
+  - el ruleset *Proteger main*, que impide borrar la rama y reescribir su historial;
+  - el escaneo de secretos con protección de push, que rechaza un push que contenga una credencial reconocible;
+  - CodeQL en modo *Default* para JavaScript/TypeScript y Actions, con los resultados en la pestaña Security.
 
 ## Desarrollo local
 
@@ -83,5 +102,19 @@ Requisitos: Node.js ≥ 20.9 y [pnpm](https://pnpm.io/installation) ≥ 11 (la v
 pnpm install     # instalar dependencias
 pnpm dev         # servidor de desarrollo en http://localhost:3000
 pnpm lint        # revisar el código con ESLint
+pnpm audit       # buscar vulnerabilidades conocidas en las dependencias
 pnpm build       # generar el sitio estático en out/
 ```
+
+Antes de subir un cambio conviene ejecutar `pnpm lint`, `pnpm audit --audit-level high` y `pnpm build`: son los mismos pasos que corre el workflow, y si alguno falla el sitio no se despliega.
+
+## Licencia
+
+El repositorio tiene dos licencias, según lo que se reutilice:
+
+- **Código** — componentes, estilos, configuración y workflows: [MIT](LICENSE). Puedes usarlo en tus proyectos conservando el aviso de copyright.
+- **Contenido** — los textos de las páginas, incluidos los listados, guías y temarios escritos dentro de los archivos de `src/app/`: [Creative Commons Atribución 4.0 Internacional (CC BY 4.0)](LICENSE-CONTENT). Puedes copiarlo, adaptarlo y usarlo con cualquier fin, siempre que cites la fuente: *Carlos Alberto, [carlosalbertoxw.com](https://carlosalbertoxw.com)*, con enlace a la página original.
+
+Quedan fuera de ambas licencias mi nombre, mi información biográfica y los nombres y logotipos de mis proyectos (Ollin, Cotejo y los demás enlazados en la portada): no pueden usarse para presentar otro sitio o producto como mío o como respaldado por mí. Las publicaciones del blog enlazadas se rigen por lo que indique el propio blog.
+
+Parte del código se escribe con ayuda de asistentes de IA; todos los cambios los dirijo y reviso yo antes de integrarlos.
