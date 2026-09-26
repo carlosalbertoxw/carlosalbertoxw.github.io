@@ -37,13 +37,90 @@ const groups: Group[] = [
         rest: ": nada llega a la rama principal sin pasar por una revisión.",
       },
       {
-        term: "Documenta la estructura y cómo levantar el proyecto",
-        rest: ": cómo está organizado el código, los requisitos, los pasos de instalación y las variables necesarias, en el README del repositorio.",
-      },
-      {
         term: "Contenedores con Docker",
         rest: " para que el entorno sea reproducible en cualquier máquina y equivalente al de producción.",
         href: "https://blog.carlosalbertoxw.com/2023/08/docker.html",
+      },
+    ],
+  },
+  {
+    icon: "🏗️",
+    title: "Diseño y arquitectura",
+    items: [
+      {
+        term: "Define los requisitos no funcionales antes de diseñar",
+        rest: ": escalabilidad, disponibilidad, rendimiento y seguridad, con cifras concretas. Sin ellos no hay forma de saber si un diseño es bueno.",
+      },
+      {
+        term: "Revisa el diseño antes de implementarlo",
+        rest: ": los cambios que afectan la estructura, el modelo de datos o las integraciones se discuten con el equipo antes de escribir código. Corregir un diagrama cuesta menos que reescribir un módulo.",
+      },
+      {
+        term: "Haz un modelado de amenazas",
+        rest: ": qué se protege, quién podría atacarlo y por dónde entraría. Se hace desde el diseño y se repite cuando cambia la arquitectura.",
+      },
+      {
+        term: "Evalúa cada dependencia antes de agregarla",
+        rest: ": si de verdad hace falta, si tiene mantenimiento activo, cuánto se usa y qué historial de vulnerabilidades tiene. Cada paquete es código ajeno que se ejecuta con tus permisos.",
+      },
+    ],
+  },
+  {
+    icon: "📝",
+    title: "Documentación",
+    items: [
+      {
+        term: "Explica qué hace el proyecto",
+        rest: ": qué problema resuelve, para quién y qué queda fuera de su alcance. Es lo primero del README y cabe en un par de párrafos.",
+      },
+      {
+        term: "Documenta cómo levantarlo desde cero",
+        rest: (
+          <>
+            {": requisitos con sus versiones, pasos de instalación, comandos para desarrollo, pruebas y build, y un "}
+            <Code>.env.example</Code> con cada variable necesaria y sin valores reales. Si alguien nuevo tiene que
+            preguntar, falta un paso.
+          </>
+        ),
+      },
+      {
+        term: "Describe la estructura y la arquitectura",
+        rest: ": cómo se organizan las carpetas, cuáles son los componentes principales, cómo se comunican entre sí y con servicios externos, y un diagrama de alto nivel.",
+      },
+      {
+        term: "Registra las decisiones de arquitectura",
+        rest: " (ADR): qué se decidió, qué alternativas se descartaron y por qué. El código muestra el cómo; el porqué se pierde si no se escribe.",
+      },
+      {
+        term: "Documenta la API como contrato",
+        rest: ", con una especificación como OpenAPI generada o validada desde el código para que no se desfase de lo que realmente responde.",
+      },
+      {
+        term: "Escribe una guía de contribución",
+        rest: (
+          <>
+            {" en "}
+            <Code>CONTRIBUTING.md</Code>: pone por escrito la estrategia de ramas y revisión, las convenciones de commits y
+            qué debe cumplir un cambio para aprobarse, para que no dependa de preguntarle a alguien.
+          </>
+        ),
+      },
+      {
+        term: "Ten runbooks para la operación",
+        rest: ": el paso a paso de cada procedimiento, como desplegar, hacer rollback, restaurar un respaldo o atender una alerta, escrito para quien lo ejecute con prisa y sin contexto. Tener la capacidad no sirve si solo una persona sabe usarla.",
+      },
+      {
+        term: "Mantén un registro de cambios",
+        rest: (
+          <>
+            {" en "}
+            <Code>CHANGELOG.md</Code> con versionado semántico: qué cambió en cada versión y qué rompe compatibilidad.
+          </>
+        ),
+      },
+      {
+        term: "Trata la documentación como código",
+        rest: ": vive en el repositorio, se revisa y se actualiza en el mismo cambio que la vuelve obsoleta. Los comentarios en el código explican el porqué, no el qué.",
       },
     ],
   },
@@ -138,10 +215,12 @@ const groups: Group[] = [
     icon: "🔐",
     title: "Secretos y configuración",
     items: [
-      { term: "Protege las claves API y secretos", rest: ": no viajan al cliente ni quedan escritos en el repositorio." },
+      {
+        term: "Protege las claves API y secretos",
+        rest: ": no quedan escritos en el repositorio ni viajan al cliente. Define de forma explícita qué claves son públicas y cuáles solo existen en el servidor.",
+      },
       { term: "Elimina secretos del historial de Git", rest: " y rota inmediatamente las credenciales comprometidas." },
       { term: "Usa variables de entorno o un gestor de secretos", rest: " para credenciales y configuraciones sensibles." },
-      { term: "Separa las claves públicas de los secretos del servidor", rest: " y define claramente qué credenciales pueden exponerse al cliente." },
     ],
   },
   {
@@ -150,7 +229,7 @@ const groups: Group[] = [
     items: [
       { term: "Usa autenticación robusta del lado servidor", rest: ": la sesión se emite, se valida y se revoca en el servidor." },
       { term: "Hashea las contraseñas con algoritmos diseñados para contraseñas", rest: ", como Argon2id, bcrypt o scrypt." },
-      { term: "Limita los intentos de inicio de sesión", rest: " y aplica protección contra ataques de fuerza bruta." },
+      { term: "Limita los intentos de inicio de sesión", rest: " por cuenta y por origen, con bloqueo progresivo ante ataques de fuerza bruta." },
       {
         term: "Protege las cookies de sesión",
         rest: (
@@ -172,11 +251,10 @@ const groups: Group[] = [
         term: "Activa Row Level Security (RLS)",
         rest: " cuando la plataforma lo soporte: es una segunda barrera en la base de datos, no un sustituto de la autorización en el servidor.",
       },
-      { term: "Aplica autorización en el servidor", rest: ": toda operación sensible comprueba, antes de ejecutarse, que quien la pide puede pedirla." },
+      { term: "Aplica autorización en el servidor", rest: ": toda operación sensible comprueba, antes de ejecutarse, que quien la pide puede pedirla. Ocultar un botón en la interfaz no impide la petición." },
       { term: "Restringe el acceso a registros", rest: " según usuario, rol, organización o tenant." },
       { term: "Define qué campos puede modificar el cliente", rest: ": nunca vuelques el cuerpo de la petición sobre la entidad; el rol, el precio o el propietario no se cambian desde fuera." },
       { term: "Aplica el principio de mínimo privilegio", rest: " a usuarios, servicios y conexiones de base de datos." },
-      { term: "Monitoriza y registra las operaciones sensibles", rest: " de la base de datos: accesos masivos, cambios de permisos y consultas fuera de lo habitual." },
     ],
   },
   {
@@ -204,8 +282,7 @@ const groups: Group[] = [
       { term: "Restringe las subidas de archivos", rest: " por tamaño, extensión, tipo MIME y contenido." },
       { term: "Almacena los archivos subidos fuera del directorio ejecutable", rest: " y evita nombres controlados por el usuario." },
       { term: "Limita las respuestas de las APIs", rest: " a los campos que el cliente necesita: no serialices la entidad completa por comodidad." },
-      { term: "Implementa rate limiting", rest: " en endpoints sensibles y de alto consumo, junto con protección contra abuso automatizado donde el tráfico lo justifique." },
-      { term: "No uses la interfaz como control de acceso", rest: ": ocultar un botón no impide la petición; el permiso se comprueba donde se ejecuta la operación." },
+      { term: "Implementa rate limiting", rest: " en endpoints de alto consumo o fáciles de abusar de forma automatizada, como registros, búsquedas o envío de correos." },
     ],
   },
   {
@@ -231,16 +308,20 @@ const groups: Group[] = [
     icon: "🔍",
     title: "Dependencias y vigilancia",
     items: [
-      { term: "Escanea las dependencias", rest: " y actualiza paquetes vulnerables." },
+      { term: "Escanea las dependencias", rest: " en busca de vulnerabilidades conocidas y corrige de inmediato las que te afectan." },
       {
         term: "Fija las versiones con un archivo de bloqueo",
         rest: " y verifica la integridad de los paquetes que instalas.",
       },
+      {
+        term: "Mantén un inventario de dependencias y automatiza sus actualizaciones",
+        rest: ": un SBOM registra qué versiones exactas llegan a producción, y herramientas como Dependabot o Renovate mantienen las actualizaciones pequeñas y frecuentes en lugar de saltos de varias versiones.",
+      },
       { term: "Escanea el código y las imágenes de contenedor en el pipeline", rest: ": análisis estático de seguridad en cada cambio, no una revisión al año." },
-      { term: "Monitoriza autenticaciones, cambios de privilegios y operaciones sospechosas", rest: ": es lo que después permite reconstruir qué pasó y cuándo." },
+      { term: "Monitoriza autenticaciones, cambios de privilegios y operaciones sospechosas", rest: ", incluidos los accesos masivos y las consultas fuera de lo habitual en la base de datos: es lo que después permite reconstruir qué pasó y cuándo." },
       { term: "Configura alertas para eventos de seguridad relevantes", rest: ", con un responsable claro para cada una: una alerta que nadie revisa es ruido." },
       { term: "Realiza pruebas de seguridad periódicas", rest: ": DAST sobre el sistema en ejecución y pruebas de penetración a cargo de alguien ajeno al equipo." },
-      { term: "Mantén un plan de respuesta ante incidentes", rest: ": quién decide, quién comunica y qué se hace en la primera hora. Escrito antes, no durante." },
+      { term: "Mantén un plan de respuesta ante incidentes", rest: ": quién decide, quién comunica, qué se hace en la primera hora y cómo se notifica una brecha a autoridades y afectados en los plazos que marque la ley. Escrito antes, no durante." },
     ],
   },
   {
@@ -258,10 +339,6 @@ const groups: Group[] = [
       {
         term: "Publica el aviso de privacidad y los términos de uso",
         rest: " y mantenlos alineados con lo que el sistema hace de verdad, no con lo que hacía el día que se redactaron.",
-      },
-      {
-        term: "Define el procedimiento de notificación de brechas",
-        rest: ": a quién se avisa, en qué plazo y con qué información. Se decide antes del incidente, no durante.",
       },
       {
         term: "Revisa a tus proveedores y subprocesadores",
