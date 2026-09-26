@@ -36,7 +36,7 @@ export default function Links() {
           <Link
             key={index}
             href={link.url}
-            rel="nofollow"
+            rel="me"
             target="_blank"
             className={`
               flex items-center justify-between p-4 w-full
