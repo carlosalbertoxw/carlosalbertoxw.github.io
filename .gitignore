@@ -42,3 +42,8 @@ next-env.d.ts
 
 # lychee (verificación de enlaces)
 .lycheecache
+
+# playwright (pruebas e2e)
+/test-results/
+/playwright-report/
+/blob-report/

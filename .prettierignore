@@ -2,6 +2,8 @@
 .claude/
 .next/
 out/
+test-results/
+playwright-report/
 pnpm-lock.yaml
 
 # Textos de licencia: se conservan tal como se publicaron

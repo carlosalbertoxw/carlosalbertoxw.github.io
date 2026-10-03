@@ -13,8 +13,12 @@ overrides:
   # 1.x por minimatch@3 y 5.x por minimatch@10. El DoS por arrays intermedios sin
   # límite (GHSA-rgw5-rvv9-x895) esquiva la mitigación de CVE-2026-14257, así que
   # 1.1.17 y 5.0.8 siguen expuestas; el parche real está en 1.1.18 y 5.0.9.
-  brace-expansion@1: ^1.1.18
-  brace-expansion@5: ^5.0.9
+  # Después se publicaron otros tres fallos de DoS: recursión sin límite en
+  # parseCommaParts (GHSA-6j4f-fj2g-mc7p) y en grupos anidados (GHSA-qhr7-859c-m2p7),
+  # y expansión en tiempo cuadrático (GHSA-q2hr-2g5m-vwhr). Todos están corregidos
+  # en 1.1.21 y 5.0.12.
+  brace-expansion@1: ^1.1.21
+  brace-expansion@5: ^5.0.12
   # browserslist llega vía styled-jsx > @babel/core. Hasta 4.28.6 arrastra dos
   # fallos: escritura en el prototipo al leer un browserslist-stats.json ajeno
   # (GHSA-73wf-gq98-2v4g) y una caché sin desalojo que crece sin límite
@@ -31,3 +35,13 @@ overrides:
   # Next.js fija baseline-browser-mapping 2.10.x, que termina el proceso ante una
   # entrada inválida (DoS, GHSA-w5vr-8v7q-w6rv). Corregido en 2.11.0.
   baseline-browser-mapping: ^2.11.0
+
+# Avisos que `pnpm audit` ignora a propósito. Cada uno lleva el motivo y la
+# condición para quitarlo; si no se cumple el motivo, el aviso se corrige.
+auditConfig:
+  ignoreGhsas:
+    # braces 3.0.3 (vía @next/eslint-plugin-next > fast-glob > micromatch): DoS por
+    # agotamiento de pila con patrones muy anidados. Todavía no hay versión
+    # parchada. Solo corre en ESLint, sobre los patrones de este repositorio, sin
+    # ninguna entrada externa. Quitarlo en cuanto se publique el parche.
+    - GHSA-vfj7-8cjw-p6xm
