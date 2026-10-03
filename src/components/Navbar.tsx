@@ -3,9 +3,26 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
+// Única fuente de las rutas del menú: la usan tanto la vista de escritorio como la móvil
+const mainLinks = [
+  { href: "/software-development", label: "Desarrollo de Software" },
+  { href: "/entrepreneurship-finance", label: "Emprendimiento y Finanzas" },
+];
+
+const resourceLinks = [
+  { href: "/git", label: "Git" },
+  { href: "/docker", label: "Docker" },
+  { href: "/blockchain-cryptocurrencies", label: "Blockchain" },
+];
+
+const contactLink = { href: "/links", label: "Enlaces" };
+
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // El Navbar vive en el layout y no se desmonta al navegar: el menú móvil se cierra al elegir un enlace
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   useEffect(() => {
     const closeMenus = () => {
@@ -27,22 +44,21 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden md:flex items-center space-x-1">
-            <Link
-              href="/software-development"
-              className="hover:text-white hover:bg-slate-800 px-4 py-2 rounded-lg text-sm font-medium transition-all"
-            >
-              Desarrollo de Software
-            </Link>
-            <Link
-              href="/entrepreneurship-finance"
-              className="hover:text-white hover:bg-slate-800 px-4 py-2 rounded-lg text-sm font-medium transition-all"
-            >
-              Emprendimiento y Finanzas
-            </Link>
+            {mainLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="hover:text-white hover:bg-slate-800 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              >
+                {link.label}
+              </Link>
+            ))}
             <div className="relative">
               <button
                 onMouseEnter={() => setIsDropdownOpen(true)}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                aria-expanded={isDropdownOpen}
+                aria-haspopup="true"
                 className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all outline-none ${
                   isDropdownOpen ? "bg-slate-800 text-white" : "hover:text-white hover:bg-slate-800"
                 }`}
@@ -53,6 +69,7 @@ const Navbar = () => {
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
@@ -63,45 +80,37 @@ const Navbar = () => {
                   onMouseLeave={() => setIsDropdownOpen(false)}
                   className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200"
                 >
-                  <Link
-                    href="/git"
-                    className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Git
-                  </Link>
-                  <Link
-                    href="/docker"
-                    className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Docker
-                  </Link>
-                  <Link
-                    href="/blockchain-cryptocurrencies"
-                    className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Blockchain
-                  </Link>
+                  {resourceLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block px-4 py-2.5 text-sm hover:bg-blue-600 hover:text-white transition-colors"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
 
             <Link
-              href="/links"
+              href={contactLink.href}
               className="hover:text-white hover:bg-slate-800 px-4 py-2 rounded-lg text-sm font-medium transition-all"
             >
-              Enlaces
+              {contactLink.label}
             </Link>
           </div>
 
           <div className="md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
               className="p-2 rounded-lg hover:bg-slate-800 text-slate-300 hover:text-white transition-colors"
             >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 {isMobileMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 ) : (
@@ -113,32 +122,44 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Panel superpuesto bajo la barra (absolute) en lugar de dentro del flujo: si empujara el contenido,
+          a mitad de página el navegador compensaría el salto con un evento scroll que cerraría el menú */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-96 border-t border-slate-800" : "max-h-0"}`}
+        id="mobile-menu"
+        className={`md:hidden absolute inset-x-0 top-full overflow-hidden shadow-lg transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-96 border-t border-slate-800" : "max-h-0"}`}
       >
         <div className="px-4 pt-2 pb-6 space-y-2 bg-[#0f172a]">
-          <Link href="/software-development" className="block px-3 py-2 rounded-md hover:bg-slate-800">
-            Desarrollo de Software
-          </Link>
-          <Link href="/entrepreneurship-finance" className="block px-3 py-2 rounded-md hover:bg-slate-800">
-            Emprendimiento y Finanzas
-          </Link>
+          {mainLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="block px-3 py-2 rounded-md hover:bg-slate-800"
+              onClick={closeMobileMenu}
+            >
+              {link.label}
+            </Link>
+          ))}
           <div className="pt-2">
             <p className="px-3 text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Recursos</p>
             <div className="grid grid-cols-2 gap-1">
-              <Link href="/git" className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md">
-                Git
-              </Link>
-              <Link href="/docker" className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md">
-                Docker
-              </Link>
-              <Link href="/blockchain-cryptocurrencies" className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md">
-                Blockchain
-              </Link>
+              {resourceLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="px-3 py-2 text-sm hover:bg-slate-800 rounded-md"
+                  onClick={closeMobileMenu}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
-          <Link href="/links" className="block px-3 py-2 rounded-md bg-blue-600 text-white text-center font-bold">
-            Enlaces
+          <Link
+            href={contactLink.href}
+            className="block px-3 py-2 rounded-md bg-blue-600 text-white text-center font-bold"
+            onClick={closeMobileMenu}
+          >
+            {contactLink.label}
           </Link>
         </div>
       </div>

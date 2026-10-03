@@ -1,6 +1,6 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { Metadata } from "next";
+import ChecklistPage, { type Group } from "@/components/ChecklistPage";
 
 export const metadata: Metadata = {
   title: "Desarrollo de Software",
@@ -18,9 +18,6 @@ const featuredPost = {
 const Code = ({ children }: { children: ReactNode }) => (
   <code className="font-mono text-[0.85em] text-slate-700 bg-slate-100 px-1 py-0.5 rounded">{children}</code>
 );
-
-type Item = { term: string; rest?: ReactNode; href?: string };
-type Group = { icon: string; title: string; items: Item[] };
 
 const groups: Group[] = [
   {
@@ -50,6 +47,34 @@ const groups: Group[] = [
       {
         term: "Define los requisitos no funcionales antes de diseñar",
         rest: ": escalabilidad, disponibilidad, rendimiento y seguridad, con cifras concretas. Sin ellos no hay forma de saber si un diseño es bueno.",
+      },
+      {
+        term: "Elige la solución más simple que cumpla los requisitos",
+        rest: ": un monolito bien modularizado antes que microservicios, y nada de abstracciones para casos que todavía no existen. La complejidad se agrega cuando un requisito la justifica, porque quitarla después cuesta mucho más.",
+      },
+      {
+        term: "Organiza el sistema en capas con responsabilidades claras",
+        rest: ": presentación, lógica de negocio y acceso a datos, donde cada capa solo depende de la que tiene debajo y se comunica a través de interfaces. Las reglas de negocio no deben saber si los datos vienen de una base de datos o de una API externa, así cambiar una no obliga a reescribir la otra. La separación se ajusta al tamaño del proyecto: una capa que solo reenvía llamadas no aporta nada.",
+      },
+      {
+        term: "Aplica patrones de diseño para resolver problemas concretos",
+        rest: ", como Repository para aislar el acceso a datos, Strategy para variar un comportamiento o Adapter para integrar servicios externos. Un patrón le da al equipo un vocabulario común; aplicado sin necesidad, solo agrega indirección.",
+      },
+      {
+        term: "Escribe código pensando en quien lo va a mantener",
+        rest: ": nombres descriptivos, funciones pequeñas con una sola responsabilidad, bajo acoplamiento y cada regla de negocio en un solo lugar. Principios como SOLID y DRY son una guía, no un fin. El código se lee muchas más veces de las que se escribe.",
+      },
+      {
+        term: "Optimiza con mediciones, no por intuición",
+        rest: ": perfila y mide para encontrar el cuello de botella real, que suele estar en consultas N+1, índices faltantes, trabajo repetido que se puede cachear o algoritmos con una complejidad innecesaria. Optimizar sin medir complica el código que no era el problema.",
+      },
+      {
+        term: "Diseña para cuando las integraciones fallen",
+        rest: ": timeouts en toda llamada externa, reintentos con espera exponencial solo en operaciones idempotentes y un circuit breaker para no arrastrar al resto del sistema. Un servicio externo lento no debería tumbar el tuyo.",
+      },
+      {
+        term: "Cuida la compatibilidad de las APIs y los contratos",
+        rest: ": cada campo que expones es un compromiso. Versiona los cambios incompatibles, depreca con aviso y un plazo definido, y detecta las rupturas antes de publicar, no cuando las reporta quien consume la API.",
       },
       {
         term: "Revisa el diseño antes de implementarlo",
@@ -270,7 +295,10 @@ const groups: Group[] = [
         term: "Aplica autorización en el servidor",
         rest: ": toda operación sensible comprueba, antes de ejecutarse, que quien la pide puede pedirla. Ocultar un botón en la interfaz no impide la petición.",
       },
-      { term: "Restringe el acceso a registros", rest: " según usuario, rol, organización o tenant." },
+      {
+        term: "Restringe el acceso a cada registro",
+        rest: ": además de tener permiso sobre el tipo de recurso, comprueba que el registro pertenezca al usuario, rol, organización o tenant de quien lo pide.",
+      },
       {
         term: "Define qué campos puede modificar el cliente",
         rest: ": nunca vuelques el cuerpo de la petición sobre la entidad; el rol, el precio o el propietario no se cambian desde fuera.",
@@ -345,7 +373,7 @@ const groups: Group[] = [
       { term: "Protege las operaciones contra CSRF", rest: " cuando la arquitectura de autenticación lo requiera." },
       {
         term: "Evita exponer información sensible en mensajes de error",
-        rest: ", respuestas o logs: el detalle interno de un fallo le sirve a quien ataca, no a quien lo sufre.",
+        rest: " y logs: el detalle interno de un fallo le sirve a quien ataca, no a quien lo sufre.",
       },
     ],
   },
@@ -415,144 +443,41 @@ const groups: Group[] = [
   },
 ];
 
-const ExternalIcon = ({ className }: { className: string }) => (
-  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-    />
-  </svg>
-);
-
 export default function SoftwareDevelopment() {
   return (
-    <main className="min-h-screen bg-[#f8fafc]">
-      <header className="bg-white border-b border-slate-200 py-16 px-4">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-6 text-center">
-            Desarrollo de Software
-          </h1>
-          <div className="max-w-2xl mx-auto space-y-4 text-slate-600 leading-relaxed">
-            <p>
-              Profesionalmente, me he desempeñado en el campo del desarrollo de software desde el año{" "}
-              <strong className="font-semibold text-slate-900">2017</strong> en una empresa de consultoría de TI.
-              Especializado en automatización de procesos operativos, análisis y levantamiento de requerimientos
-              funcionales y desarrollo de soluciones escalables orientadas al usuario. Enfoque en la optimización de
-              tiempos operativos, mejora continua y resolución de problemas desde su causa raíz, asegurando estabilidad,
-              eficiencia y mantenibilidad en los sistemas.
-            </p>
-            <p>
-              Aquí comparto publicaciones y ejercicios que podrían servir como guía para otros y como validación de mis
-              conocimientos.
-            </p>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-5xl mx-auto px-4 py-16 space-y-16">
-        <section>
-          <div className="flex items-center mb-4 border-b border-slate-200 pb-4">
-            <div className="bg-blue-600/10 p-2.5 rounded-xl mr-4">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 12l2 2 4-4M12 3l7 4v5c0 4.418-2.865 8.166-7 9-4.135-.834-7-4.582-7-9V7l7-4z"
-                />
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-slate-800">Qué implementar en un proyecto de software</h2>
-          </div>
-          <p className="mb-8 text-sm text-slate-500">
-            Listado ordenado desde el arranque del proyecto hasta su operación y seguridad.
+    <ChecklistPage
+      title="Desarrollo de Software"
+      accent="blue"
+      intro={
+        <>
+          <p>
+            Profesionalmente, me he desempeñado en el campo del desarrollo de software desde el año{" "}
+            <strong className="font-semibold text-slate-900">2017</strong> en una empresa de consultoría de TI.
+            Especializado en automatización de procesos operativos, análisis y levantamiento de requerimientos
+            funcionales y desarrollo de soluciones escalables orientadas al usuario. Enfoque en la optimización de
+            tiempos operativos, mejora continua y resolución de problemas desde su causa raíz, asegurando estabilidad,
+            eficiencia y mantenibilidad en los sistemas.
           </p>
-
-          {/* Tarjeta principal */}
-          <Link
-            href={featuredPost.href}
-            target="_blank"
-            className="group block bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-md transition-shadow mb-6"
-          >
-            <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">Publicación principal</span>
-            <span className="mt-2 flex items-start justify-between gap-4">
-              <span className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-                {featuredPost.name}
-              </span>
-              <ExternalIcon className="w-5 h-5 mt-1 shrink-0 text-slate-300 group-hover:text-blue-600 transition-colors" />
-            </span>
-            <span className="mt-3 block text-slate-600 leading-relaxed">{featuredPost.description}</span>
-          </Link>
-
-          {/* Tarjetas del listado */}
-          <div className="columns-1 md:columns-2 gap-6">
-            {groups.map((group, index) => (
-              <div
-                key={group.title}
-                className="mb-6 break-inside-avoid bg-white rounded-2xl p-6 shadow-sm border border-slate-100"
-              >
-                <div className="flex items-center gap-3 mb-5">
-                  <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-lg"
-                    aria-hidden="true"
-                  >
-                    {group.icon}
-                  </span>
-                  <div>
-                    <span className="block text-xs font-semibold tracking-widest text-blue-600">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="font-bold text-slate-900">{group.title}</h3>
-                  </div>
-                </div>
-                <ul className="space-y-3">
-                  {group.items.map((item) => (
-                    <li key={item.term} className="flex items-start gap-3">
-                      <svg
-                        className="w-4 h-4 mt-1 shrink-0 text-blue-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-                      </svg>
-                      <div className="text-sm text-slate-600 leading-relaxed">
-                        <p>
-                          <strong className="font-semibold text-slate-900">{item.term}</strong>
-                          {item.rest}
-                        </p>
-                        {item.href && (
-                          <Link
-                            href={item.href}
-                            target="_blank"
-                            className="mt-1 flex w-fit items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700"
-                          >
-                            Leer publicación
-                            <ExternalIcon className="w-3 h-3" />
-                          </Link>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 text-center">
-          <p className="text-slate-600 mb-5">Si crees que puedo ayudarte en algo, no dudes en contactarme.</p>
-          <Link
-            href="/links"
-            className="inline-block bg-blue-600 text-white px-6 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
-          >
-            Contactar
-          </Link>
-        </section>
-      </div>
-    </main>
+          <p>
+            Aquí comparto publicaciones y ejercicios que podrían servir como guía para otros y como validación de mis
+            conocimientos.
+          </p>
+        </>
+      }
+      listTitle="Qué implementar en un proyecto de software"
+      listNote="Listado ordenado desde el arranque del proyecto hasta su operación y seguridad."
+      listIcon={
+        <>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M9 12l2 2 4-4M12 3l7 4v5c0 4.418-2.865 8.166-7 9-4.135-.834-7-4.582-7-9V7l7-4z"
+          />
+        </>
+      }
+      featuredPost={featuredPost}
+      groups={groups}
+    />
   );
 }

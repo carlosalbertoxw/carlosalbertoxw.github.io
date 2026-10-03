@@ -99,7 +99,12 @@ export default function Links() {
       </div>
 
       {/* Footer minimalista */}
-      <footer className="mt-16 text-slate-400 text-xs">&copy; {new Date().getFullYear()} Carlos Alberto</footer>
+      <footer className="mt-16 text-slate-400 text-xs">
+        &copy; {new Date().getFullYear()} Carlos Alberto ·{" "}
+        <Link href="/privacy" className="hover:text-slate-600 underline underline-offset-2">
+          Aviso de privacidad
+        </Link>
+      </footer>
     </main>
   );
 }
