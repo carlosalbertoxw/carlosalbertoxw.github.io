@@ -7,6 +7,10 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    # Solo propone versiones publicadas hace al menos 7 días: da tiempo a que se
+    # detecte y retire un paquete comprometido. No retrasa las de seguridad.
+    cooldown:
+      default-days: 7
     # Menores y parches en un solo PR; las versiones mayores llegan por separado
     groups:
       dependencias:
@@ -18,6 +22,8 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 7
     groups:
       # Las de Pages van en su propio PR: no se ejecutan en los pull requests, así
       # que solo se prueban al desplegar y conviene poder revertirlas por separado

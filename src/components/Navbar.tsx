@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 // Única fuente de las rutas del menú: la usan tanto la vista de escritorio como la móvil
@@ -20,17 +20,31 @@ const contactLink = { href: "/links", label: "Enlaces" };
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // El Navbar vive en el layout y no se desmonta al navegar: el menú móvil se cierra al elegir un enlace
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  // Los menús se cierran al hacer scroll y con Escape; el desplegable, además, con un clic fuera de él
   useEffect(() => {
     const closeMenus = () => {
       setIsDropdownOpen(false);
       setIsMobileMenuOpen(false);
     };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMenus();
+    };
+    const closeDropdownOutside = (event: PointerEvent) => {
+      if (!dropdownRef.current?.contains(event.target as Node)) setIsDropdownOpen(false);
+    };
     window.addEventListener("scroll", closeMenus);
-    return () => window.removeEventListener("scroll", closeMenus);
+    document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeDropdownOutside);
+    return () => {
+      window.removeEventListener("scroll", closeMenus);
+      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeDropdownOutside);
+    };
   }, []);
 
   return (
@@ -53,9 +67,9 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <div className="relative">
+            {/* Se abre solo con clic: abrirlo también con hover hacía que el clic siguiente lo cerrara */}
+            <div ref={dropdownRef} className="relative">
               <button
-                onMouseEnter={() => setIsDropdownOpen(true)}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 aria-expanded={isDropdownOpen}
                 aria-haspopup="true"
@@ -76,10 +90,7 @@ const Navbar = () => {
               </button>
 
               {isDropdownOpen && (
-                <div
-                  onMouseLeave={() => setIsDropdownOpen(false)}
-                  className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200"
-                >
+                <div className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200">
                   {resourceLinks.map((link) => (
                     <Link
                       key={link.href}
@@ -123,9 +134,11 @@ const Navbar = () => {
       </div>
 
       {/* Panel superpuesto bajo la barra (absolute) en lugar de dentro del flujo: si empujara el contenido,
-          a mitad de página el navegador compensaría el salto con un evento scroll que cerraría el menú */}
+          a mitad de página el navegador compensaría el salto con un evento scroll que cerraría el menú.
+          Cerrado solo mide 0 de alto, así que inert saca sus enlaces del orden de tabulación */}
       <div
         id="mobile-menu"
+        inert={!isMobileMenuOpen}
         className={`md:hidden absolute inset-x-0 top-full overflow-hidden shadow-lg transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-96 border-t border-slate-800" : "max-h-0"}`}
       >
         <div className="px-4 pt-2 pb-6 space-y-2 bg-[#0f172a]">

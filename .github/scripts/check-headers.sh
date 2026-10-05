@@ -13,7 +13,7 @@ HOST=$(echo "$URL" | sed -E 's#^https?://([^/]+).*#\1#')
 # Cabecera y valor esperado, separados por el primer "|"
 EXPECTED=$(cat <<'EOF'
 strict-transport-security|max-age=31536000; includeSubDomains; preload
-content-security-policy|default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-ancestors 'none'; connect-src 'self' https://cloudflareinsights.com;
+content-security-policy|default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-ancestors 'none'; connect-src 'self' https://cloudflareinsights.com; base-uri 'self'; form-action 'none'; object-src 'none';
 x-content-type-options|nosniff
 x-frame-options|SAMEORIGIN
 referrer-policy|strict-origin-when-cross-origin

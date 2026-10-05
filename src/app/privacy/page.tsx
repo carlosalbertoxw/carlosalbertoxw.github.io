@@ -10,6 +10,10 @@ export const metadata: Metadata = {
 // un formulario o un servicio de terceros, este aviso se actualiza en el mismo cambio.
 const sections = [
   {
+    title: "Responsable",
+    body: "Carlos Alberto, autor de este sitio, es el responsable del sitio y de lo que se describe en este aviso.",
+  },
+  {
     title: "Lo que recoge este sitio",
     body: "Nada directamente. Es un sitio estático: no tiene formularios, cuentas, cookies propias ni base de datos, y no guarda información de quien lo visita.",
   },
@@ -32,7 +36,7 @@ export default function Privacy() {
     <main className="min-h-screen bg-slate-50 py-16 px-6">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 mb-2">Aviso de privacidad</h1>
-        <p className="text-sm text-slate-500 mb-10">Última actualización: 3 de octubre de 2026</p>
+        <p className="text-sm text-slate-500 mb-10">Última actualización: 4 de octubre de 2026</p>
 
         <div className="space-y-6">
           {sections.map((section) => (
