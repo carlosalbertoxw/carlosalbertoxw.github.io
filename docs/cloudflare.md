@@ -41,7 +41,7 @@ Si algún día muestra `CN=carlosalbertoxw.com`, ya se puede pasar a *Full (stri
 
 Con el dominio en la lista de precarga, los navegadores usan HTTPS desde la primera visita, sin depender de haber recibido antes la cabecera. Los requisitos ya se cumplen: certificado válido, redirección `301` de HTTP a HTTPS y HSTS con `max-age` de al menos un año, `includeSubDomains` y `preload`.
 
-- **Estado:** pendiente de enviar. Se envía en [hstspreload.org](https://hstspreload.org/) con el dominio `carlosalbertoxw.com`. Al hacerlo, cambia esta línea por la fecha del envío.
+- **Estado:** enviado en [hstspreload.org](https://hstspreload.org/) el 2026-10-05; la API respondió `pending` ese mismo día. El envío dio un aviso sin efecto práctico: la redirección por `http://` también lleva la cabecera HSTS, que por HTTP se ignora.
 - **Comprobar:** `curl -s "https://hstspreload.org/api/v2/status?domain=carlosalbertoxw.com"` devuelve `pending` tras el envío y `preloaded` cuando ya está en Chrome (los demás navegadores toman la lista de ahí).
 - **Compromiso:** todos los subdominios, presentes y futuros (`blog.`, etc.), deben servir HTTPS con un certificado válido. Salir de la lista tarda meses, así que no hay vuelta atrás rápida.
 - **`Referrer-Policy`** y **`Permissions-Policy`**: no envían la ruta completa a otros sitios y desactivan cámara, micrófono, geolocalización y pagos, que el sitio no usa.
