@@ -32,6 +32,28 @@ test.describe("menú de escritorio", () => {
     await button.click();
     await expect(button).toHaveAttribute("aria-expanded", "false");
   });
+
+  // Regresión: se abría con hover, así que el clic de quien se detenía antes de pulsar lo cerraba
+  test("el desplegable se abre con clic aunque el mouse se detenga antes encima", async ({ page }) => {
+    await page.goto("/");
+    const button = page.getByRole("button", { name: "Recursos" });
+    await button.hover();
+    await page.waitForTimeout(300);
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+    await button.click();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+  });
+
+  test("el desplegable se cierra con Escape y con un clic fuera", async ({ page }) => {
+    await page.goto("/");
+    const button = page.getByRole("button", { name: "Recursos" });
+    await button.click();
+    await page.keyboard.press("Escape");
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+    await button.click();
+    await page.getByRole("heading", { level: 1 }).click();
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+  });
 });
 
 test.describe("menú móvil", () => {
@@ -67,6 +89,29 @@ test.describe("menú móvil", () => {
       await expect(menu(page).getByRole("link", { name: "Git", exact: true })).toBeVisible();
     });
   }
+
+  // Regresión: cerrado medía 0 de alto, pero sus enlaces seguían recibiendo el foco con Tab
+  test("cerrado, sus enlaces no reciben el foco con el teclado", async ({ page }) => {
+    await page.goto("/");
+    await menuButton(page).focus();
+    await page.keyboard.press("Tab");
+    const focusInMenu = await page.evaluate(() => !!document.activeElement?.closest("#mobile-menu"));
+    expect(focusInMenu).toBe(false);
+  });
+
+  test("abierto, sus enlaces sí reciben el foco con el teclado", async ({ page }) => {
+    await page.goto("/");
+    await menuButton(page).click();
+    await page.keyboard.press("Tab");
+    await expect(menu(page).getByRole("link", { name: "Desarrollo de Software" })).toBeFocused();
+  });
+
+  test("se cierra con Escape", async ({ page }) => {
+    await page.goto("/");
+    await menuButton(page).click();
+    await page.keyboard.press("Escape");
+    await expect(menuButton(page)).toHaveAttribute("aria-expanded", "false");
+  });
 
   test("se cierra al desplazar la página", async ({ page }) => {
     await page.goto("/software-development/");

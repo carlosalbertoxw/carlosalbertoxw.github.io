@@ -17,6 +17,7 @@ const types = {
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
   ".txt": "text/plain; charset=utf-8",
+  ".xml": "application/xml",
 };
 
 async function resolveFile(pathname) {

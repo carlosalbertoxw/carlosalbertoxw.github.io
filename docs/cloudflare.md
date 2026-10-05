@@ -15,7 +15,7 @@ Los valores exactos de las cabeceras están en [check-headers.sh](../.github/scr
 | Cabeceras de seguridad | Las seis de `check-headers.sh`: HSTS, CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` | Rules › Transform Rules › Modify Response Header |
 | Analítica | Cloudflare Web Analytics, inyectado automáticamente por el proxy (sin cookies) | Analytics & Logs › Web Analytics |
 
-> Las cabeceras, la redirección, el TLS mínimo y el modo de cifrado se verificaron el 2026-10-03. La ubicación de cada menú se anotó según la versión habitual del panel: si difiere, corrige esta tabla.
+> Las cabeceras, la redirección, el TLS mínimo y el modo de cifrado se verificaron el 2026-10-03. El 2026-10-04 se agregaron a la CSP `base-uri 'self'; form-action 'none'; object-src 'none';`: si `check-headers.sh` marca la CSP como distinta, falta copiarlas a la Transform Rule. La ubicación de cada menú se anotó según la versión habitual del panel: si difiere, corrige esta tabla.
 
 ## Por qué el modo de cifrado es *Full* y no *Full (strict)*
 
@@ -33,9 +33,17 @@ Si algún día muestra `CN=carlosalbertoxw.com`, ya se puede pasar a *Full (stri
 
 ## Por qué cada cabecera tiene ese valor
 
-- **`Content-Security-Policy`**: solo permite recursos del propio sitio, más el script y el endpoint de Cloudflare Web Analytics. `script-src` incluye `'unsafe-inline'` porque el export estático de Next.js inyecta scripts inline para hidratar la página, y en un sitio estático no se puede generar un nonce por petición. Los scripts propios llevan además SRI (`experimental.sri` en `next.config.ts`). `frame-ancestors 'none'` impide incrustar el sitio en un iframe.
+- **`Content-Security-Policy`**: solo permite recursos del propio sitio, más el script y el endpoint de Cloudflare Web Analytics. `script-src` incluye `'unsafe-inline'` porque el export estático de Next.js inyecta scripts inline para hidratar la página, y en un sitio estático no se puede generar un nonce por petición. Los scripts propios llevan además SRI (`experimental.sri` en `next.config.ts`). `frame-ancestors 'none'` impide incrustar el sitio en un iframe. `base-uri`, `form-action` y `object-src` se declaran aparte porque las dos primeras no heredan de `default-src`: así una etiqueta `<base>` o un formulario inyectados no pueden redirigir rutas ni enviar datos a otro sitio, y no se cargan plugins. El sitio no tiene formularios, por eso `form-action 'none'`.
 - **`X-Frame-Options: SAMEORIGIN`**: es la versión antigua de `frame-ancestors` para navegadores que no entienden CSP. Es más permisiva que la CSP (`'none'`), pero se deja así a propósito: los navegadores actuales aplican `frame-ancestors` e ignoran esta cabecera cuando hay CSP, y en los antiguos `SAMEORIGIN` sigue impidiendo que otro sitio incruste este (clickjacking). Es el valor que recomienda Cloudflare, y cambiarlo no aporta protección real.
-- **`Strict-Transport-Security`**: un año, con subdominios y `preload`. Antes de quitar `preload` o `includeSubDomains`, ten en cuenta que los navegadores lo recuerdan durante todo el `max-age`.
+- **`Strict-Transport-Security`**: un año, con subdominios y `preload`. Antes de quitar `preload` o `includeSubDomains`, ten en cuenta que los navegadores lo recuerdan durante todo el `max-age`. La directiva `preload` no basta por sí sola: el dominio tiene que estar en la lista de precarga de los navegadores (ver la sección siguiente).
+
+## Precarga de HSTS
+
+Con el dominio en la lista de precarga, los navegadores usan HTTPS desde la primera visita, sin depender de haber recibido antes la cabecera. Los requisitos ya se cumplen: certificado válido, redirección `301` de HTTP a HTTPS y HSTS con `max-age` de al menos un año, `includeSubDomains` y `preload`.
+
+- **Estado:** pendiente de enviar. Se envía en [hstspreload.org](https://hstspreload.org/) con el dominio `carlosalbertoxw.com`. Al hacerlo, cambia esta línea por la fecha del envío.
+- **Comprobar:** `curl -s "https://hstspreload.org/api/v2/status?domain=carlosalbertoxw.com"` devuelve `pending` tras el envío y `preloaded` cuando ya está en Chrome (los demás navegadores toman la lista de ahí).
+- **Compromiso:** todos los subdominios, presentes y futuros (`blog.`, etc.), deben servir HTTPS con un certificado válido. Salir de la lista tarda meses, así que no hay vuelta atrás rápida.
 - **`Referrer-Policy`** y **`Permissions-Policy`**: no envían la ruta completa a otros sitios y desactivan cámara, micrófono, geolocalización y pagos, que el sitio no usa.
 
 ## Restaurar desde cero

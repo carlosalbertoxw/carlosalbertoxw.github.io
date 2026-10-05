@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 
@@ -42,6 +43,13 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Navbar />
         {children}
+        {/* El año se fija al generar el sitio: se actualiza con el primer despliegue de cada año */}
+        <footer className="border-t border-slate-200 bg-slate-50 py-6 text-center text-xs text-slate-500">
+          &copy; {new Date().getFullYear()} Carlos Alberto ·{" "}
+          <Link href="/privacy" className="hover:text-slate-700 underline underline-offset-2">
+            Aviso de privacidad
+          </Link>
+        </footer>
       </body>
     </html>
   );

@@ -10,17 +10,21 @@ on:
     - cron: "30 14 * * 1"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  # Para abrir o actualizar el issue con el reporte
-  issues: write
+# Cada job pide solo los permisos que usa
+permissions: {}
 
 jobs:
+  # Solo ejecuta el script del repositorio y curl, así que puede reportar él mismo
   cabeceras:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       # Los valores esperados están en el propio script (ver docs/cloudflare.md)
       - name: Check security headers
@@ -45,16 +49,20 @@ jobs:
           issue-number: ${{ steps.issue.outputs.number }}
           labels: cabeceras
 
+  # Lighthouse CI instala y ejecuta paquetes de terceros: su token solo puede leer
   lighthouse:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       # Mide el sitio real, con Cloudflare delante, en tres corridas por página.
       # Las metas (90 en cada categoría) están en .github/lighthouserc.json.
       - name: Run Lighthouse
-        id: lighthouse
         uses: treosh/lighthouse-ci-action@3e7e23fb74242897f95c0ba9cabad3d0227b9b18 # 12.6.2
         with:
           urls: |
@@ -64,24 +72,31 @@ jobs:
           configPath: ./.github/lighthouserc.json
           uploadArtifacts: true
 
+  lighthouse-report:
+    needs: lighthouse
+    if: failure() && needs.lighthouse.result == 'failure'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
       - name: Write report
-        if: failure() && steps.lighthouse.outcome == 'failure'
         run: |
           {
             echo "Lighthouse no alcanzó alguna de las metas de \`.github/lighthouserc.json\`."
             echo
-            echo "El detalle de cada página está en los artefactos de la ejecución: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo "El detalle de cada página está en los artefactos de la ejecución: ${RUN_URL}"
           } > lighthouse.md
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Find open issue
         id: issue
-        if: failure() && steps.lighthouse.outcome == 'failure'
         run: echo "number=$(gh issue list --label rendimiento --state open --json number --jq '.[0].number')" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
 
       - name: Report Lighthouse results
-        if: failure() && steps.lighthouse.outcome == 'failure'
         uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6.0.0
         with:
           title: Lighthouse por debajo de las metas

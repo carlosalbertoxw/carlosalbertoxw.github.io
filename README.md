@@ -25,22 +25,24 @@ No hay backend ni base de datos: todo el contenido vive en el propio código. En
 
 El sitio usa el App Router de Next.js: cada sección temática es una carpeta con su `page.tsx` dentro de `src/app/`. Agregar una sección nueva es crear una carpeta, exportar su `metadata` (título y descripción para SEO) y añadir la ruta a `mainLinks` o `resourceLinks` en el Navbar, que alimentan tanto el menú de escritorio como el móvil.
 
-Las rutas publicadas funcionan como contrato: el blog y otros sitios enlazan a ellas, y GitHub Pages no permite redirecciones. No se renombra una carpeta de `src/app/` sin crear antes una *Redirect Rule* en Cloudflare desde la ruta anterior.
+Las rutas publicadas funcionan como contrato: el blog y otros sitios enlazan a ellas, y GitHub Pages no permite redirecciones. No se renombra una carpeta de `src/app/` sin crear antes una *Redirect Rule* en Cloudflare desde la ruta anterior. [e2e/routes.spec.ts](e2e/routes.spec.ts) lo hace cumplir: tiene la lista de rutas estables, comprueba que cada una exista y que [sitemap.ts](src/app/sitemap.ts) liste exactamente esas. Una página nueva se agrega a las dos listas.
 
 ```
 src/
 ├── app/
-│   ├── layout.tsx                      # Layout raíz: fuentes, metadata global, Navbar
+│   ├── layout.tsx                      # Layout raíz: fuentes, metadata global, Navbar y pie de página
 │   ├── page.tsx                        # Portada: hero + tarjetas de proyectos
 │   ├── globals.css                     # Import de Tailwind y variables de tema
 │   ├── opengraph-image.tsx             # Imagen Open Graph generada en el build
+│   ├── sitemap.ts                      # sitemap.xml con las rutas publicadas
+│   ├── robots.ts                       # robots.txt, que apunta al sitemap
 │   ├── software-development/page.tsx   # Secciones temáticas…
 │   ├── entrepreneurship-finance/page.tsx
 │   ├── git/page.tsx
 │   ├── docker/page.tsx
 │   ├── blockchain-cryptocurrencies/page.tsx
 │   ├── links/page.tsx
-│   └── privacy/page.tsx                # Aviso de privacidad (enlazado desde Enlaces)
+│   └── privacy/page.tsx                # Aviso de privacidad (enlazado desde el pie de página)
 └── components/
     ├── Navbar.tsx                      # Único componente cliente
     ├── ChecklistPage.tsx               # Plantilla de las páginas de listado
@@ -49,7 +51,7 @@ src/
 
 ### Componentes de servidor por defecto
 
-Casi todo son React Server Components (no llevan JavaScript al navegador). El único componente con `'use client'` es [Navbar.tsx](src/components/Navbar.tsx), porque necesita estado para el menú desplegable de "Recursos" y el menú móvil (que además se cierran solos al hacer scroll). El menú móvil se despliega superpuesto bajo la barra (`absolute`), sin empujar el contenido: si lo empujara, a mitad de página el navegador compensaría el salto con un evento `scroll` y el menú se cerraría al instante. También se cierra al elegir un enlace, porque el Navbar vive en el layout y no se desmonta al navegar.
+Casi todo son React Server Components (no llevan JavaScript al navegador). El único componente con `'use client'` es [Navbar.tsx](src/components/Navbar.tsx), porque necesita estado para el menú desplegable de "Recursos" y el menú móvil (que además se cierran solos al hacer scroll y con Escape). El desplegable se abre solo con clic, no con hover: abrirlo al pasar el mouse hacía que el clic siguiente lo cerrara; también se cierra con un clic fuera de él. El menú móvil se despliega superpuesto bajo la barra (`absolute`), sin empujar el contenido: si lo empujara, a mitad de página el navegador compensaría el salto con un evento `scroll` y el menú se cerraría al instante. También se cierra al elegir un enlace, porque el Navbar vive en el layout y no se desmonta al navegar. Cerrado mide 0 de alto pero sigue en el DOM, así que lleva `inert` para que sus enlaces no reciban el foco con Tab.
 
 ### Páginas de listado
 
@@ -74,13 +76,15 @@ Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.cs
 
 ### Despliegue
 
-El workflow [nextjs.yml](.github/workflows/nextjs.yml) se ejecuta en cada push y en cada pull request hacia `main`. Instala dependencias con pnpm (`--frozen-lockfile`, con caché de la store y de `.next/cache`), ejecuta `pnpm lint`, `pnpm format:check`, `pnpm audit --audit-level high`, `pnpm build` y las pruebas end-to-end (`pnpm test:e2e`). Si alguno falla, no se despliega. En los pull requests se queda ahí; en los push a `main` además publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
+El workflow [nextjs.yml](.github/workflows/nextjs.yml) se ejecuta en cada push y en cada pull request hacia `main`. Revisa los propios workflows con [zizmor](https://docs.zizmor.sh/) (permisos, inyección de expresiones, credenciales persistidas, Actions sin fijar), instala dependencias con pnpm (`--frozen-lockfile`, con caché de la store y de `.next/cache`) y ejecuta `pnpm lint`, `pnpm format:check`, `pnpm audit --audit-level high`, `pnpm build` y las pruebas end-to-end (`pnpm test:e2e`). Si alguno falla, no se despliega. En los pull requests se queda ahí; en los push a `main` además publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
 
 El dominio pasa por Cloudflare antes de llegar a GitHub Pages. GitHub Pages no permite cabeceras propias, así que las de seguridad (`Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) se añaden en Cloudflare, igual que la versión mínima de TLS (1.2; las versiones 1.0 y 1.1 se rechazan). Cloudflare también inyecta Cloudflare Web Analytics, una analítica sin cookies que se describe en el [aviso de privacidad](src/app/privacy/page.tsx). Todo eso se edita en el panel de Cloudflare; su respaldo y el motivo de cada valor están en [docs/cloudflare.md](docs/cloudflare.md).
 
-Las Actions de los workflows se fijan por SHA de commit, con la versión en un comentario (`actions/checkout@3d3c… # v7.0.1`), para que una etiqueta reescrita no cambie el código que se ejecuta.
+Las Actions de los workflows se fijan por SHA de commit, con la versión en un comentario (`actions/checkout@3d3c… # v7.0.1`), para que una etiqueta reescrita no cambie el código que se ejecuta. Cada job declara solo los permisos que usa, y `actions/checkout` no deja el token en `.git/config` (`persist-credentials: false`), porque ningún workflow hace `git push`. En los workflows semanales, los jobs que instalan dependencias o ejecutan herramientas de terceros solo pueden leer el repositorio; abrir el issue con el reporte lo hace un job aparte.
 
-[dependabot.yml](.github/dependabot.yml) abre cada mes hasta tres PR agrupados: las actualizaciones menores y de parche de las dependencias; las Actions de Pages (`configure-pages`, `upload-pages-artifact` y `deploy-pages`); y el resto de las Actions, actualizando el SHA y el comentario. Las de Pages van aparte porque no se ejecutan en los pull requests: solo se prueban al desplegar, así que conviene fusionarlas solas y revisar ese despliegue. Las actualizaciones de seguridad las abre Dependabot en cuanto sale el aviso.
+[dependabot.yml](.github/dependabot.yml) abre cada mes hasta tres PR agrupados: las actualizaciones menores y de parche de las dependencias; las Actions de Pages (`configure-pages`, `upload-pages-artifact` y `deploy-pages`); y el resto de las Actions, actualizando el SHA y el comentario. Las de Pages van aparte porque no se ejecutan en los pull requests: solo se prueban al desplegar, así que conviene fusionarlas solas y revisar ese despliegue. Solo se proponen versiones publicadas hace al menos 7 días (`cooldown`), para dar tiempo a que se detecte y retire un paquete comprometido. Las actualizaciones de seguridad no esperan: Dependabot las abre en cuanto sale el aviso.
+
+No se genera un SBOM en el pipeline: el lockfile ya fija cada versión, y si hace falta el inventario en formato SPDX se exporta desde *Insights › Dependency graph › Export SBOM* del repositorio.
 
 ### Dependencias forzadas por seguridad
 
@@ -104,7 +108,7 @@ Cuando un aviso no tiene versión parchada, no hay override posible. En ese caso
 
 ## Operación
 
-- **Revertir un despliegue:** `git revert <commit>` y push a `main`; el workflow vuelve a publicar la versión anterior en alrededor de un minuto. `git reset` seguido de `push --force` no funciona: la protección de `main` lo rechaza. Para salir del paso sin tocar el historial, se puede relanzar desde la pestaña Actions la ejecución de un commit anterior, pero el siguiente push a `main` la sustituye.
+- **Revertir un despliegue:** `git revert <commit>` en una rama y PR a `main`; al fusionarlo, el workflow vuelve a publicar la versión anterior en alrededor de un minuto. `git reset` seguido de `push --force` no funciona: la protección de `main` lo rechaza. Para salir del paso sin tocar el historial, se puede relanzar desde la pestaña Actions la ejecución de un commit anterior, pero el siguiente push a `main` la sustituye.
 - **Cabeceras de seguridad y TLS:** se editan en el panel de Cloudflare del dominio, según [docs/cloudflare.md](docs/cloudflare.md). Tras cambiarlas, actualiza los valores esperados en [check-headers.sh](.github/scripts/check-headers.sh) y ejecútalo (`bash .github/scripts/check-headers.sh`).
 - **Revisión semanal del sitio publicado:** el workflow [produccion.yml](.github/workflows/produccion.yml) corre cada lunes. Compara las cabeceras reales con las de `check-headers.sh` y mide con Lighthouse la portada, Desarrollo de Software y Git, con una meta de 90 en rendimiento, accesibilidad, buenas prácticas y SEO ([lighthouserc.json](.github/lighthouserc.json)). Si algo falla, abre o actualiza un issue con la etiqueta `cabeceras` o `rendimiento`. No bloquea despliegues.
 - **Dominio:** Pages (ajustes del repositorio) y el DNS en Cloudflare deben apuntar al mismo dominio. El registro del dominio se renueva en su registrador; conviene tener activada la renovación automática.
@@ -112,14 +116,14 @@ Cuando un aviso no tiene versión parchada, no hay override posible. En ese caso
 - **Alertas de dependencias:** llegan como alertas y PR de Dependabot. Cada PR ejecuta el mismo workflow, y no se puede fusionar hasta que el check `build` pase; al fusionarlo, el sitio se redespliega solo. Tras fusionar el PR de las Actions de Pages, revisa que ese despliegue termine bien.
 - **Seguridad del repositorio:** se configura en los ajustes de GitHub, no en archivos. Hoy están activos:
   - el ruleset *Proteger main*, que impide borrar la rama y reescribir su historial, sin excepciones;
-  - el ruleset *Checks en PR*, que exige el check `build` para fusionar un pull request. El rol de administrador puede saltárselo, así que los push directos a `main` siguen funcionando (Git lo avisa como *bypassed rule violations*);
+  - el ruleset *Checks en PR*, que exige que todo cambio a `main` llegue por pull request (sin aprobaciones requeridas, porque hay un solo mantenedor) y con el check `build` en verde. No tiene excepciones: ni el administrador puede hacer push directo;
   - el escaneo de secretos con protección de push, que rechaza un push que contenga una credencial reconocible;
   - CodeQL en modo *Default* para JavaScript/TypeScript y Actions, con los resultados en la pestaña Security;
   - el reporte privado de vulnerabilidades, anunciado en [SECURITY.md](SECURITY.md).
 - **Si se compromete una cuenta** (GitHub, Cloudflare o el registrador del dominio):
   1. Recupera el acceso, cambia la contraseña y cierra todas las sesiones abiertas.
   2. Revoca los tokens, llaves SSH, aplicaciones OAuth y llaves de API que no reconozcas, y revisa que el MFA siga activo y con tus métodos.
-  3. En GitHub, revisa los commits recientes de `main`, los rulesets, los secretos y las ejecuciones de Actions. Si alguien publicó contenido, haz `git revert` y push.
+  3. En GitHub, revisa los commits recientes de `main`, los rulesets, los secretos y las ejecuciones de Actions. Si alguien publicó contenido, revierte con `git revert` en un PR.
   4. En Cloudflare y en el registrador, revisa los registros DNS, los nameservers y las cabeceras. `bash .github/scripts/check-headers.sh` confirma estas últimas.
   5. Anota qué pasó y qué cambiaste para evitar que se repita.
 
@@ -134,14 +138,15 @@ pnpm lint        # revisar el código con ESLint
 pnpm format      # formatear el código con Prettier
 pnpm audit       # buscar vulnerabilidades conocidas en las dependencias
 pnpm build       # generar el sitio estático en out/
-pnpm test:e2e    # pruebas del menú con Playwright sobre out/ (requiere pnpm build)
+pnpm start       # servir out/ en http://localhost:4173, igual que GitHub Pages
+pnpm test:e2e    # pruebas con Playwright sobre out/ (requiere pnpm build)
 ```
 
 Antes de subir un cambio conviene ejecutar `pnpm lint`, `pnpm format:check`, `pnpm audit --audit-level high`, `pnpm build` y `pnpm test:e2e`: son los mismos pasos que corre el workflow, y si alguno falla el sitio no se despliega. La configuración de Prettier está en [.prettierrc.json](.prettierrc.json) (líneas de hasta 120 caracteres); el Markdown, el lockfile y los textos de licencia se excluyen en [.prettierignore](.prettierignore).
 
 ### Pruebas end-to-end
 
-[e2e/navbar.spec.ts](e2e/navbar.spec.ts) prueba con Playwright la única parte interactiva del sitio, el Navbar: que cada enlace del menú de escritorio y del móvil lleve a su página, que el desplegable de Recursos abra y cierre, que el menú móvil se cierre al navegar y al desplazarse, y que se quede abierto a mitad y al final de la página (regresión de un error real). Las pruebas corren contra el sitio ya exportado, servido por [e2e/serve.mjs](e2e/serve.mjs) igual que GitHub Pages (cada ruta es una carpeta con su `index.html`), así que prueban exactamente lo que se publica. La primera vez hay que instalar el navegador con `pnpm exec playwright install chromium`.
+[e2e/navbar.spec.ts](e2e/navbar.spec.ts) prueba con Playwright la única parte interactiva del sitio, el Navbar: que cada enlace del menú de escritorio y del móvil lleve a su página; que el desplegable de Recursos se abra con clic aunque el mouse se haya detenido antes encima, y se cierre con clic, Escape o un clic fuera; que el menú móvil se cierre al navegar, al desplazarse y con Escape; que se quede abierto a mitad y al final de la página; y que, cerrado, sus enlaces no reciban el foco con Tab. Las tres últimas son regresiones de errores reales. [e2e/routes.spec.ts](e2e/routes.spec.ts) comprueba que las rutas estables existan y coincidan con el sitemap, y que `robots.txt` apunte a él. Las pruebas corren contra el sitio ya exportado, servido por [e2e/serve.mjs](e2e/serve.mjs) igual que GitHub Pages (cada ruta es una carpeta con su `index.html`), así que prueban exactamente lo que se publica. La primera vez hay que instalar el navegador con `pnpm exec playwright install chromium`.
 
 ## Costos
 
