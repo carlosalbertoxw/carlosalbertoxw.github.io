@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ExternalLink from "./ExternalLink";
 import type { ReactNode } from "react";
 
 // Plantilla de las páginas de listado (Desarrollo de Software, Emprendimiento y
@@ -37,7 +38,7 @@ const accents = {
 };
 
 const ExternalIcon = ({ className }: { className: string }) => (
-  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -96,9 +97,8 @@ export default function ChecklistPage({
           <p className="mb-8 text-sm text-slate-500">{listNote}</p>
 
           {/* Tarjeta principal */}
-          <Link
+          <ExternalLink
             href={featuredPost.href}
-            target="_blank"
             className="group block bg-white rounded-2xl p-7 shadow-sm border border-slate-100 hover:shadow-md transition-shadow mb-6"
           >
             <span className={`text-xs font-semibold uppercase tracking-wider ${colors.label}`}>
@@ -113,7 +113,7 @@ export default function ChecklistPage({
               />
             </span>
             <span className="mt-3 block text-slate-600 leading-relaxed">{featuredPost.description}</span>
-          </Link>
+          </ExternalLink>
 
           {/* Tarjetas del listado */}
           <div className="columns-1 md:columns-2 gap-6">
@@ -154,14 +154,13 @@ export default function ChecklistPage({
                           {item.rest}
                         </p>
                         {item.href && (
-                          <Link
+                          <ExternalLink
                             href={item.href}
-                            target="_blank"
                             className={`mt-1 flex w-fit items-center gap-1 text-xs font-medium ${colors.readMore}`}
                           >
                             Leer publicación
                             <ExternalIcon className="w-3 h-3" />
-                          </Link>
+                          </ExternalLink>
                         )}
                       </div>
                     </li>

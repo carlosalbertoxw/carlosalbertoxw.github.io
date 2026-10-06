@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Metadata } from "next";
+import ExternalLink from "@/components/ExternalLink";
 
 export const metadata: Metadata = {
   title: "Enlaces",
@@ -65,12 +65,11 @@ export default function Links() {
 
       {/* Botones de Enlaces */}
       <div className="w-full max-w-md space-y-4">
-        {socialLinks.map((link, index) => (
-          <Link
-            key={index}
+        {socialLinks.map((link) => (
+          <ExternalLink
+            key={link.url}
             href={link.url}
             rel="me"
-            target="_blank"
             className={`
               flex items-center justify-between p-4 w-full
               bg-white border-2 border-slate-100 rounded-2xl
@@ -79,13 +78,16 @@ export default function Links() {
               ${link.color}
             `}
           >
-            <span className="text-xl ml-2">{link.icon}</span>
+            <span className="text-xl ml-2" aria-hidden="true">
+              {link.icon}
+            </span>
             <span className="flex-1 text-center">{link.name}</span>
             <svg
               className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity mr-2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -94,7 +96,7 @@ export default function Links() {
                 d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
               />
             </svg>
-          </Link>
+          </ExternalLink>
         ))}
       </div>
     </main>

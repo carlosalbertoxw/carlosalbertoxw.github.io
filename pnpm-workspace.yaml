@@ -35,6 +35,10 @@ overrides:
   # Next.js fija baseline-browser-mapping 2.10.x, que termina el proceso ante una
   # entrada inválida (DoS, GHSA-w5vr-8v7q-w6rv). Corregido en 2.11.0.
   baseline-browser-mapping: ^2.11.0
+  # source-map-js llega vía postcss (de Next.js y de Tailwind) y vía
+  # @tailwindcss/node. Hasta 1.2.1, los offsets de las secciones de un source map
+  # indexado bloquean el event loop (DoS, GHSA-68fv-2mgg-jv7q). Corregido en 1.2.2.
+  source-map-js: ^1.2.2
 
 # Avisos que `pnpm audit` ignora a propósito. Cada uno lleva el motivo y la
 # condición para quitarlo; si no se cumple el motivo, el aviso se corrige.

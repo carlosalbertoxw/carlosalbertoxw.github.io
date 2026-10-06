@@ -11,7 +11,7 @@ Mi sitio web personal — [carlosalbertoxw.com](https://carlosalbertoxw.com). Un
 | [Tailwind CSS 4](https://tailwindcss.com/) | Estilos (utilidades, sin CSS propio casi) |
 | [TypeScript 6](https://www.typescriptlang.org/) | Tipado de todo el código |
 | [pnpm](https://pnpm.io/) | Gestor de paquetes |
-| [Playwright](https://playwright.dev/) | Pruebas end-to-end del menú |
+| [Playwright](https://playwright.dev/) | Pruebas end-to-end del menú y de las rutas publicadas |
 | [GitHub Pages](https://docs.github.com/en/pages) + Actions | Hosting y despliegue automático |
 | [Cloudflare](https://www.cloudflare.com/) | Proxy delante de Pages: DNS, TLS y cabeceras de seguridad |
 
@@ -46,12 +46,13 @@ src/
 └── components/
     ├── Navbar.tsx                      # Único componente cliente
     ├── ChecklistPage.tsx               # Plantilla de las páginas de listado
-    └── TopicSheet.tsx                  # Plantilla de las guías por temas
+    ├── TopicSheet.tsx                  # Plantilla de las guías por temas
+    └── ExternalLink.tsx                # Enlace a otra pestaña, con aviso para lectores de pantalla
 ```
 
 ### Componentes de servidor por defecto
 
-Casi todo son React Server Components (no llevan JavaScript al navegador). El único componente con `'use client'` es [Navbar.tsx](src/components/Navbar.tsx), porque necesita estado para el menú desplegable de "Recursos" y el menú móvil (que además se cierran solos al hacer scroll y con Escape). El desplegable se abre solo con clic, no con hover: abrirlo al pasar el mouse hacía que el clic siguiente lo cerrara; también se cierra con un clic fuera de él. El menú móvil se despliega superpuesto bajo la barra (`absolute`), sin empujar el contenido: si lo empujara, a mitad de página el navegador compensaría el salto con un evento `scroll` y el menú se cerraría al instante. También se cierra al elegir un enlace, porque el Navbar vive en el layout y no se desmonta al navegar. Cerrado mide 0 de alto pero sigue en el DOM, así que lleva `inert` para que sus enlaces no reciban el foco con Tab.
+Casi todo son React Server Components (no llevan JavaScript al navegador). El único componente con `'use client'` es [Navbar.tsx](src/components/Navbar.tsx), porque necesita estado para el menú desplegable de "Recursos" y el menú móvil (que además se cierran solos al hacer scroll y con Escape). El desplegable se abre solo con clic, no con hover: abrirlo al pasar el mouse hacía que el clic siguiente lo cerrara; también se cierra con un clic fuera de él o cuando el foco sale de él con Tab. El menú móvil se despliega superpuesto bajo la barra (`absolute`), sin empujar el contenido: si lo empujara, a mitad de página el navegador compensaría el salto con un evento `scroll` y el menú se cerraría al instante. También se cierra al elegir un enlace, porque el Navbar vive en el layout y no se desmonta al navegar. Cerrado mide 0 de alto pero sigue en el DOM, así que lleva `inert` para que sus enlaces no reciban el foco con Tab.
 
 ### Páginas de listado
 
@@ -99,6 +100,7 @@ No se genera un SBOM en el pipeline: el lockfile ya fija cada versión, y si hac
 | `nanoid@3` | `^3.3.18` | postcss | Bucle infinito con `size` cero ([GHSA-2v37-7h3g-55p8](https://github.com/advisories/GHSA-2v37-7h3g-55p8)) |
 | `sharp` | `^0.35.4` | Next.js | libvips ([GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)) y libheif ([GHSA-rgj7-g3m4-5g8c](https://github.com/advisories/GHSA-rgj7-g3m4-5g8c)) vulnerables |
 | `baseline-browser-mapping` | `^2.11.0` | Next.js | Terminación del proceso ante entrada inválida ([GHSA-w5vr-8v7q-w6rv](https://github.com/advisories/GHSA-w5vr-8v7q-w6rv)) |
+| `source-map-js` | `^1.2.2` | postcss, @tailwindcss/node | Bloqueo del event loop con source maps indexados ([GHSA-68fv-2mgg-jv7q](https://github.com/advisories/GHSA-68fv-2mgg-jv7q)) |
 
 Cuando un aviso no tiene versión parchada, no hay override posible. En ese caso se ignora de forma explícita en `auditConfig.ignoreGhsas`, dentro del mismo archivo, con el motivo y la condición para quitarlo. Así `pnpm audit` deja de bloquear el despliegue solo por ese aviso. Hoy hay uno:
 
@@ -146,7 +148,7 @@ Antes de subir un cambio conviene ejecutar `pnpm lint`, `pnpm format:check`, `pn
 
 ### Pruebas end-to-end
 
-[e2e/navbar.spec.ts](e2e/navbar.spec.ts) prueba con Playwright la única parte interactiva del sitio, el Navbar: que cada enlace del menú de escritorio y del móvil lleve a su página; que el desplegable de Recursos se abra con clic aunque el mouse se haya detenido antes encima, y se cierre con clic, Escape o un clic fuera; que el menú móvil se cierre al navegar, al desplazarse y con Escape; que se quede abierto a mitad y al final de la página; y que, cerrado, sus enlaces no reciban el foco con Tab. Las tres últimas son regresiones de errores reales. [e2e/routes.spec.ts](e2e/routes.spec.ts) comprueba que las rutas estables existan y coincidan con el sitemap, y que `robots.txt` apunte a él. Las pruebas corren contra el sitio ya exportado, servido por [e2e/serve.mjs](e2e/serve.mjs) igual que GitHub Pages (cada ruta es una carpeta con su `index.html`), así que prueban exactamente lo que se publica. La primera vez hay que instalar el navegador con `pnpm exec playwright install chromium`.
+[e2e/navbar.spec.ts](e2e/navbar.spec.ts) prueba con Playwright la única parte interactiva del sitio, el Navbar: que cada enlace del menú de escritorio y del móvil lleve a su página; que el desplegable de Recursos se abra con clic aunque el mouse se haya detenido antes encima, y se cierre con clic, Escape, un clic fuera o al salir de él con Tab; que el menú móvil se cierre al navegar, al desplazarse y con Escape; que se quede abierto a mitad y al final de la página; y que, cerrado, sus enlaces no reciban el foco con Tab. Las tres últimas son regresiones de errores reales. [e2e/routes.spec.ts](e2e/routes.spec.ts) comprueba que las rutas estables existan y coincidan con el sitemap, y que `robots.txt` apunte a él. Las pruebas corren contra el sitio ya exportado, servido por [e2e/serve.mjs](e2e/serve.mjs) igual que GitHub Pages (cada ruta es una carpeta con su `index.html`), así que prueban exactamente lo que se publica. La primera vez hay que instalar el navegador con `pnpm exec playwright install chromium`.
 
 ## Costos
 

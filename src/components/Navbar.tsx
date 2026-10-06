@@ -67,12 +67,23 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            {/* Se abre solo con clic: abrirlo también con hover hacía que el clic siguiente lo cerrara */}
-            <div ref={dropdownRef} className="relative">
+            {/* Se abre solo con clic: abrirlo también con hover hacía que el clic siguiente lo cerrara.
+                Se cierra si el foco pasa con Tab a un elemento de fuera; sin relatedTarget (clic en algo no
+                enfocable) no se cierra aquí, porque Safari no enfoca los enlaces al hacer clic y el desplegable
+                desaparecería antes de recibir el clic: de ese caso se encarga el pointerdown de fuera */}
+            <div
+              ref={dropdownRef}
+              className="relative"
+              onBlur={(event) => {
+                if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget)) {
+                  setIsDropdownOpen(false);
+                }
+              }}
+            >
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 aria-expanded={isDropdownOpen}
-                aria-haspopup="true"
+                aria-controls={isDropdownOpen ? "resources-menu" : undefined}
                 className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all outline-none ${
                   isDropdownOpen ? "bg-slate-800 text-white" : "hover:text-white hover:bg-slate-800"
                 }`}
@@ -90,7 +101,10 @@ const Navbar = () => {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200">
+                <div
+                  id="resources-menu"
+                  className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200"
+                >
                   {resourceLinks.map((link) => (
                     <Link
                       key={link.href}

@@ -54,6 +54,20 @@ test.describe("menú de escritorio", () => {
     await page.getByRole("heading", { level: 1 }).click();
     await expect(button).toHaveAttribute("aria-expanded", "false");
   });
+
+  test("el desplegable sigue abierto al recorrerlo con Tab y se cierra al salir de él", async ({ page }) => {
+    await page.goto("/");
+    const button = page.getByRole("button", { name: "Recursos" });
+    await button.click();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("link", { name: "Git", exact: true })).toBeFocused();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("navigation").getByRole("link", { name: "Enlaces", exact: true })).toBeFocused();
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+  });
 });
 
 test.describe("menú móvil", () => {
