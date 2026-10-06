@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ExternalLink from "./ExternalLink";
 import type { ReactNode } from "react";
 
 // Plantilla de las guías por temas (Git, Docker, Blockchain): cada página solo
@@ -141,9 +142,8 @@ export default function TopicSheet({ title, icon, intro, sections, accent, marke
                 {section.topics.map((topic) => (
                   <li key={topic.title}>
                     {topic.href ? (
-                      <Link
+                      <ExternalLink
                         href={topic.href}
-                        target="_blank"
                         className={`group flex items-start gap-3 px-5 py-3 border-l-2 border-transparent ${colors.row} transition-all`}
                       >
                         <span className={`${colors.marker} font-mono font-bold text-sm leading-5`}>{marker}</span>
@@ -155,10 +155,11 @@ export default function TopicSheet({ title, icon, intro, sections, accent, marke
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
+                          aria-hidden="true"
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
-                      </Link>
+                      </ExternalLink>
                     ) : (
                       <div className="group flex items-start gap-3 px-5 py-3 border-l-2 border-transparent text-slate-400">
                         <span className="font-mono text-sm leading-5 text-slate-300">•</span>

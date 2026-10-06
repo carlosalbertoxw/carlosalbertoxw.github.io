@@ -33,9 +33,11 @@ async function resolveFile(pathname) {
 }
 
 createServer(async (req, res) => {
-  const { pathname } = new URL(req.url ?? "/", "http://localhost");
-  const file = await resolveFile(pathname);
+  // Todo dentro del try: una ruta mal codificada (/%E0%A4%A) hace que decodeURIComponent
+  // lance URIError, y fuera del try tumbaría el servidor en lugar de responder 404
   try {
+    const { pathname } = new URL(req.url ?? "/", "http://localhost");
+    const file = await resolveFile(pathname);
     if (!file) throw new Error("not found");
     const body = await readFile(file);
     res.writeHead(200, { "Content-Type": types[extname(file)] ?? "application/octet-stream" });
