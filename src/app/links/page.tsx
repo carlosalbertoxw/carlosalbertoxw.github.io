@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import ExternalIcon from "@/components/ExternalIcon";
 import ExternalLink from "@/components/ExternalLink";
 
 export const metadata: Metadata = {
@@ -82,20 +83,7 @@ export default function Links() {
               {link.icon}
             </span>
             <span className="flex-1 text-center">{link.name}</span>
-            <svg
-              className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
+            <ExternalIcon className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity mr-2" />
           </ExternalLink>
         ))}
       </div>

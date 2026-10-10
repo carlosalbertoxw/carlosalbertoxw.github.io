@@ -103,7 +103,7 @@ const Navbar = () => {
               {isDropdownOpen && (
                 <div
                   id="resources-menu"
-                  className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in zoom-in duration-200"
+                  className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50"
                 >
                   {resourceLinks.map((link) => (
                     <Link

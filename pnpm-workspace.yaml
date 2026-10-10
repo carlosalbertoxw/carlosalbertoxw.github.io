@@ -30,8 +30,9 @@ overrides:
   # Next.js fija sharp 0.34.x, que arrastra un libvips vulnerable
   # (GHSA-f88m-g3jw-g9cj: CVE-2026-33327/33328/35590/35591), parcheado en 0.35.0.
   # Además, hasta 0.35.3 incluye un libheif vulnerable (GHSA-rgj7-g3m4-5g8c),
-  # parcheado en 0.35.4.
-  sharp: ^0.35.4
+  # parcheado en 0.35.4, y hasta 0.35.4 un librsvg vulnerable
+  # (GHSA-wq5f-xc86-pv6w), parcheado en 0.35.5.
+  sharp: ^0.35.5
   # Next.js fija baseline-browser-mapping 2.10.x, que termina el proceso ante una
   # entrada inválida (DoS, GHSA-w5vr-8v7q-w6rv). Corregido en 2.11.0.
   baseline-browser-mapping: ^2.11.0

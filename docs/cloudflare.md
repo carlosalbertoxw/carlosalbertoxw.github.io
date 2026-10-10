@@ -33,7 +33,7 @@ Si algún día muestra `CN=carlosalbertoxw.com`, ya se puede pasar a *Full (stri
 
 ## Por qué cada cabecera tiene ese valor
 
-- **`Content-Security-Policy`**: solo permite recursos del propio sitio, más el script y el endpoint de Cloudflare Web Analytics. `script-src` incluye `'unsafe-inline'` porque el export estático de Next.js inyecta scripts inline para hidratar la página, y en un sitio estático no se puede generar un nonce por petición. Los scripts propios llevan además SRI (`experimental.sri` en `next.config.ts`). `frame-ancestors 'none'` impide incrustar el sitio en un iframe. `base-uri`, `form-action` y `object-src` se declaran aparte porque las dos primeras no heredan de `default-src`: así una etiqueta `<base>` o un formulario inyectados no pueden redirigir rutas ni enviar datos a otro sitio, y no se cargan plugins. El sitio no tiene formularios, por eso `form-action 'none'`.
+- **`Content-Security-Policy`**: solo permite recursos del propio sitio, más el script y el endpoint de Cloudflare Web Analytics. `script-src` incluye `'unsafe-inline'` porque el export estático de Next.js inyecta scripts inline para hidratar la página, y en un sitio estático no se puede generar un nonce por petición. Los scripts propios llevan además SRI (`experimental.sri` en `next.config.ts`), pero solo en parte: la función es experimental y algunos chunks de Turbopack se exportan sin el atributo `integrity`. Esos scripts se sirven desde el mismo origen que el HTML, así que el SRI es una capa adicional y no la protección principal contra scripts alterados. `frame-ancestors 'none'` impide incrustar el sitio en un iframe. `base-uri`, `form-action` y `object-src` se declaran aparte porque las dos primeras no heredan de `default-src`: así una etiqueta `<base>` o un formulario inyectados no pueden redirigir rutas ni enviar datos a otro sitio, y no se cargan plugins. El sitio no tiene formularios, por eso `form-action 'none'`.
 - **`X-Frame-Options: SAMEORIGIN`**: es la versión antigua de `frame-ancestors` para navegadores que no entienden CSP. Es más permisiva que la CSP (`'none'`), pero se deja así a propósito: los navegadores actuales aplican `frame-ancestors` e ignoran esta cabecera cuando hay CSP, y en los antiguos `SAMEORIGIN` sigue impidiendo que otro sitio incruste este (clickjacking). Es el valor que recomienda Cloudflare, y cambiarlo no aporta protección real.
 - **`Strict-Transport-Security`**: un año, con subdominios y `preload`. Antes de quitar `preload` o `includeSubDomains`, ten en cuenta que los navegadores lo recuerdan durante todo el `max-age`. La directiva `preload` no basta por sí sola: el dominio tiene que estar en la lista de precarga de los navegadores (ver la sección siguiente).
 - **`Referrer-Policy`** y **`Permissions-Policy`**: no envían la ruta completa a otros sitios y desactivan cámara, micrófono, geolocalización y pagos, que el sitio no usa.
@@ -46,9 +46,17 @@ Con el dominio en la lista de precarga, los navegadores usan HTTPS desde la prim
 - **Comprobar:** `curl -s "https://hstspreload.org/api/v2/status?domain=carlosalbertoxw.com"` devuelve `pending` tras el envío y `preloaded` cuando ya está en Chrome (los demás navegadores toman la lista de ahí).
 - **Compromiso:** todos los subdominios, presentes y futuros (`blog.`, etc.), deben servir HTTPS con un certificado válido. Salir de la lista tarda meses, así que no hay vuelta atrás rápida.
 
+## Respaldo privado de la zona DNS
+
+Este repositorio es público, así que aquí no se guardan los registros DNS, el registrador ni ningún otro dato de la cuenta. Una lista completa de la zona mostraría también subdominios y servicios que no se pueden descubrir desde fuera. Esa información vive en un respaldo privado, fuera del repositorio:
+
+- **Qué contiene:** la exportación de la zona (*DNS › Records › Export*, en formato BIND), el nombre y la expresión de la Transform Rule de cabeceras, el registrador donde se renueva el dominio y la fecha del respaldo.
+- **Qué no contiene:** contraseñas, códigos de recuperación, tokens de API ni el código de transferencia del dominio, que van en el gestor de contraseñas.
+- **Cuándo se actualiza:** cada vez que se agrega, cambia o elimina un registro DNS o la Transform Rule.
+
 ## Restaurar desde cero
 
-1. Agrega el dominio a Cloudflare y activa el proxy en sus registros DNS hacia GitHub Pages.
+1. Agrega el dominio a Cloudflare e importa la zona desde el respaldo privado (*DNS › Records › Import*). Comprueba que los registros del sitio tengan el proxy activo.
 2. Ajusta SSL/TLS como indica la tabla.
 3. Crea una Transform Rule de tipo *Modify Response Header* para todas las peticiones del dominio y agrega cada cabecera de `check-headers.sh` con la operación *Set*.
 4. Activa Web Analytics para el dominio.

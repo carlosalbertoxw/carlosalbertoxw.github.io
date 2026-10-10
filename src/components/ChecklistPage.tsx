@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ExternalIcon from "./ExternalIcon";
 import ExternalLink from "./ExternalLink";
 import type { ReactNode } from "react";
 
@@ -36,17 +37,6 @@ const accents = {
     cta: "bg-emerald-600 hover:bg-emerald-700",
   },
 };
-
-const ExternalIcon = ({ className }: { className: string }) => (
-  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-    />
-  </svg>
-);
 
 type ChecklistPageProps = {
   title: string;
@@ -88,7 +78,13 @@ export default function ChecklistPage({
         <section>
           <div className="flex items-center mb-4 border-b border-slate-200 pb-4">
             <div className={`${colors.iconBg} p-2.5 rounded-xl mr-4`}>
-              <svg className={`w-6 h-6 ${colors.icon}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className={`w-6 h-6 ${colors.icon}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
                 {listIcon}
               </svg>
             </div>
