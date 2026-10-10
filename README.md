@@ -47,7 +47,8 @@ src/
     ├── Navbar.tsx                      # Único componente cliente
     ├── ChecklistPage.tsx               # Plantilla de las páginas de listado
     ├── TopicSheet.tsx                  # Plantilla de las guías por temas
-    └── ExternalLink.tsx                # Enlace a otra pestaña, con aviso para lectores de pantalla
+    ├── ExternalLink.tsx                # Enlace a otra pestaña, con aviso para lectores de pantalla
+    └── ExternalIcon.tsx                # Ícono decorativo de enlace externo
 ```
 
 ### Componentes de servidor por defecto
@@ -77,7 +78,7 @@ Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.cs
 
 ### Despliegue
 
-El workflow [nextjs.yml](.github/workflows/nextjs.yml) se ejecuta en cada push y en cada pull request hacia `main`. Revisa los propios workflows con [zizmor](https://docs.zizmor.sh/) (permisos, inyección de expresiones, credenciales persistidas, Actions sin fijar), instala dependencias con pnpm (`--frozen-lockfile`, con caché de la store y de `.next/cache`) y ejecuta `pnpm lint`, `pnpm format:check`, `pnpm audit --audit-level high`, `pnpm build` y las pruebas end-to-end (`pnpm test:e2e`). Si alguno falla, no se despliega. En los pull requests se queda ahí; en los push a `main` además publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity) experimental para que los scripts exportados lleven hash de integridad.
+El workflow [nextjs.yml](.github/workflows/nextjs.yml) se ejecuta en cada push y en cada pull request hacia `main`. Revisa los propios workflows con [zizmor](https://docs.zizmor.sh/) (permisos, inyección de expresiones, credenciales persistidas, Actions sin fijar), instala dependencias con pnpm (`--frozen-lockfile`, con caché de la store y de `.next/cache`) y ejecuta `pnpm lint`, `pnpm format:check`, `pnpm audit --audit-level high`, `pnpm build` y las pruebas end-to-end (`pnpm test:e2e`). Si alguno falla, no se despliega. En los pull requests se queda ahí; en los push a `main` además publica `out/` en GitHub Pages. El dominio propio `carlosalbertoxw.com` se configura en los ajustes de Pages del repositorio, no con un archivo `CNAME`. El build activa además SRI (Subresource Integrity), que en Next.js todavía es experimental y solo cubre parte de los scripts: la mayoría de los exportados llevan hash de integridad, pero algunos chunks de Turbopack quedan sin el atributo `integrity`.
 
 El dominio pasa por Cloudflare antes de llegar a GitHub Pages. GitHub Pages no permite cabeceras propias, así que las de seguridad (`Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) se añaden en Cloudflare, igual que la versión mínima de TLS (1.2; las versiones 1.0 y 1.1 se rechazan). Cloudflare también inyecta Cloudflare Web Analytics, una analítica sin cookies que se describe en el [aviso de privacidad](src/app/privacy/page.tsx). Todo eso se edita en el panel de Cloudflare; su respaldo y el motivo de cada valor están en [docs/cloudflare.md](docs/cloudflare.md).
 
@@ -98,7 +99,7 @@ No se genera un SBOM en el pipeline: el lockfile ya fija cada versión, y si hac
 | `brace-expansion@5` | `^5.0.12` | ESLint › minimatch@10 | Los mismos cuatro DoS |
 | `browserslist` | `^4.28.7` | styled-jsx › @babel/core | Escritura en el prototipo ([GHSA-73wf-gq98-2v4g](https://github.com/advisories/GHSA-73wf-gq98-2v4g)) y caché sin límite ([GHSA-c83g-rgw3-j3cx](https://github.com/advisories/GHSA-c83g-rgw3-j3cx)) |
 | `nanoid@3` | `^3.3.18` | postcss | Bucle infinito con `size` cero ([GHSA-2v37-7h3g-55p8](https://github.com/advisories/GHSA-2v37-7h3g-55p8)) |
-| `sharp` | `^0.35.4` | Next.js | libvips ([GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)) y libheif ([GHSA-rgj7-g3m4-5g8c](https://github.com/advisories/GHSA-rgj7-g3m4-5g8c)) vulnerables |
+| `sharp` | `^0.35.5` | Next.js | libvips ([GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)), libheif ([GHSA-rgj7-g3m4-5g8c](https://github.com/advisories/GHSA-rgj7-g3m4-5g8c)) y librsvg ([GHSA-wq5f-xc86-pv6w](https://github.com/advisories/GHSA-wq5f-xc86-pv6w)) vulnerables |
 | `baseline-browser-mapping` | `^2.11.0` | Next.js | Terminación del proceso ante entrada inválida ([GHSA-w5vr-8v7q-w6rv](https://github.com/advisories/GHSA-w5vr-8v7q-w6rv)) |
 | `source-map-js` | `^1.2.2` | postcss, @tailwindcss/node | Bloqueo del event loop con source maps indexados ([GHSA-68fv-2mgg-jv7q](https://github.com/advisories/GHSA-68fv-2mgg-jv7q)) |
 
@@ -128,6 +129,17 @@ Cuando un aviso no tiene versión parchada, no hay override posible. En ese caso
   3. En GitHub, revisa los commits recientes de `main`, los rulesets, los secretos y las ejecuciones de Actions. Si alguien publicó contenido, revierte con `git revert` en un PR.
   4. En Cloudflare y en el registrador, revisa los registros DNS, los nameservers y las cabeceras. `bash .github/scripts/check-headers.sh` confirma estas últimas.
   5. Anota qué pasó y qué cambiaste para evitar que se repita.
+
+### Riesgos aceptados
+
+Son decisiones tomadas a propósito, cada una con su motivo, el control que la compensa y la condición para revisarla. Mientras esa condición no cambie, no se tratan como pendientes: solo se comprueba que el control se cumple.
+
+- **Sin monitor de disponibilidad externo.** Una caída del sitio se detecta en la revisión semanal de [produccion.yml](.github/workflows/produccion.yml) y [links.yml](.github/workflows/links.yml), hasta 7 días después. No se agrega un servicio de terceros (UptimeRobot o similares) porque sería otra cuenta que proteger, otro proveedor que declarar en el aviso de privacidad y una configuración fuera del repositorio. En un sitio personal sin datos de usuarios, detectar antes una caída no compensa ese costo.
+  - *Control:* GitHub desactiva los workflows programados de un repositorio público tras 60 días sin actividad. Por eso, cada mes, al fusionar el PR de Dependabot, se comprueba con `gh workflow list --all` que *Verificar enlaces* y *Revisar el sitio publicado* sigan `active`. Si alguno no lo está, se reactiva con `gh workflow enable "<nombre>"`.
+  - *Se revisa si* el sitio gana usuarios, formularios o cualquier cosa que dependa de que esté en línea.
+- **Tramo de Cloudflare a GitHub Pages sin validar el certificado** (cifrado *Full*). El motivo técnico está en [docs/cloudflare.md](docs/cloudflare.md#por-qué-el-modo-de-cifrado-es-full-y-no-full-strict). Se descartó servir el sitio desde Cloudflare en lugar de GitHub Pages. Eso eliminaría ese tramo y dejaría las cabeceras versionadas, pero el despliegue necesitaría un token de API de Cloudflare guardado como secreto en GitHub (hoy el repositorio no tiene ninguno), concentraría DNS, TLS, cabeceras y hosting en una sola cuenta, y obligaría a rehacer el workflow de despliegue. Interceptar el tráfico entre las redes de los dos proveedores es muy improbable, y el sitio es estático y sin datos de usuarios.
+  - *Control:* la comprobación con `openssl` de [docs/cloudflare.md](docs/cloudflare.md), que muestra qué certificado presenta GitHub Pages.
+  - *Se revisa si* GitHub Pages llega a presentar un certificado para el dominio (entonces se pasa a *Full (strict)*), o si el sitio necesita redirecciones o cabeceras versionadas en el repositorio.
 
 ## Desarrollo local
 
