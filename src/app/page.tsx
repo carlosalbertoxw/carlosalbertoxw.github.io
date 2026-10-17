@@ -13,13 +13,13 @@ const projects = [
       "Cotejo es una aplicación de escritorio para comparar archivos de texto y carpetas completas. Muestra los dos lados enfrentados línea a línea, deja editarlos, copiar bloques de uno a otro, y operar sobre los archivos desde la vista de carpetas.",
   },
   {
-    name: "YouTube Playlist Analyzer",
+    name: "HTTPS Verifier",
     links: [
-      { label: "Sitio Web", href: "https://herramientaswebsencillas.github.io/youtube-playlist-analyzer/" },
-      { label: "GitHub", href: "https://github.com/herramientaswebsencillas/youtube-playlist-analyzer" },
+      { label: "Chrome Store", href: "https://chromewebstore.google.com/detail/ogfgecooebcghjojlklphjjajaegcpen" },
+      { label: "GitHub", href: "https://github.com/carlosalbertoxw/HTTPSVerifier" },
     ],
     description:
-      "Herramienta web gratuita que revisa playlists públicas de YouTube y YouTube Music para encontrar canciones duplicadas y videos que ya no se pueden reproducir.",
+      "Extensión web para Google Chrome que comprueba y garantiza que las páginas web y sus recursos asociados utilicen conexiones HTTPS seguras.",
   },
   {
     name: "Herramientas Web Sencillas",
@@ -30,13 +30,13 @@ const projects = [
     description: "Colección de utilidades web.",
   },
   {
-    name: "HTTPS Verifier",
+    name: "YouTube Playlist Analyzer",
     links: [
-      { label: "Chrome Store", href: "https://chromewebstore.google.com/detail/ogfgecooebcghjojlklphjjajaegcpen" },
-      { label: "GitHub", href: "https://github.com/carlosalbertoxw/HTTPSVerifier" },
+      { label: "Sitio Web", href: "https://herramientaswebsencillas.github.io/youtube-playlist-analyzer/" },
+      { label: "GitHub", href: "https://github.com/herramientaswebsencillas/youtube-playlist-analyzer" },
     ],
     description:
-      "Extensión web para Google Chrome que comprueba y garantiza que las páginas web y sus recursos asociados utilicen conexiones HTTPS seguras.",
+      "Herramienta web gratuita que revisa playlists públicas de YouTube y YouTube Music para encontrar canciones duplicadas y videos que ya no se pueden reproducir.",
   },
   {
     name: "Ollin Finanzas",
