@@ -1,17 +1,13 @@
 import { ImageResponse } from "next/og";
+import { ogImage, tagline } from "@/site";
 
-// Imagen Open Graph generada en el build (out/opengraph-image.png),
-// con el mismo lenguaje visual del hero de la portada
+// Imagen Open Graph generada en el build (out/og.png), con el mismo lenguaje visual
+// del hero de la portada. Es un route handler y no un opengraph-image.tsx porque esa
+// convención exporta el archivo sin extensión, y GitHub Pages lo serviría como
+// application/octet-stream en lugar de image/png. La metadata la declara layout.tsx.
 export const dynamic = "force-static";
 
-export const alt = "Carlos Alberto";
-export const size = {
-  width: 1200,
-  height: 630,
-};
-export const contentType = "image/png";
-
-export default function OpenGraphImage() {
+export function GET() {
   return new ImageResponse(
     <div
       style={{
@@ -44,11 +40,12 @@ export default function OpenGraphImage() {
           maxWidth: 900,
         }}
       >
-        Conjunto de recursos digitales para exponer y recordar lo que he aprendido.
+        {tagline}
       </div>
     </div>,
     {
-      ...size,
+      width: ogImage.width,
+      height: ogImage.height,
     },
   );
 }

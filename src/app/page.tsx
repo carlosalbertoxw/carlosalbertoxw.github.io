@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import ExternalLink from "@/components/ExternalLink";
+import { tagline } from "@/site";
 
 // Proyectos de la portada: agregar uno es sumarlo a este arreglo
 const projects = [
@@ -60,16 +61,14 @@ const projects = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f8fafc]">
+    <main className="min-h-screen bg-slate-50">
       {/* Hero Section */}
-      <section className="bg-[#0f172a] text-white py-24 px-4">
+      <section className="bg-slate-900 text-white py-24 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
             Carlos Alberto
           </h1>
-          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Conjunto de recursos digitales para exponer y recordar lo que he aprendido.
-          </p>
+          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">{tagline}</p>
         </div>
       </section>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 // Única fuente de las rutas del menú: la usan tanto la vista de escritorio como la móvil
@@ -48,7 +48,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-[#0f172a] text-slate-200 shadow-lg border-b border-slate-800 sticky top-0 z-50">
+    <nav className="bg-slate-900 text-slate-200 shadow-lg border-b border-slate-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="group flex items-center space-x-2">
@@ -103,7 +103,7 @@ const Navbar = () => {
               {isDropdownOpen && (
                 <div
                   id="resources-menu"
-                  className="absolute right-0 mt-2 w-56 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl py-2 z-50"
+                  className="absolute right-0 mt-2 w-56 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl py-2 z-50"
                 >
                   {resourceLinks.map((link) => (
                     <Link
@@ -155,7 +155,7 @@ const Navbar = () => {
         inert={!isMobileMenuOpen}
         className={`md:hidden absolute inset-x-0 top-full overflow-hidden shadow-lg transition-all duration-300 ease-in-out ${isMobileMenuOpen ? "max-h-96 border-t border-slate-800" : "max-h-0"}`}
       >
-        <div className="px-4 pt-2 pb-6 space-y-2 bg-[#0f172a]">
+        <div className="px-4 pt-2 pb-6 space-y-2 bg-slate-900">
           {mainLinks.map((link) => (
             <Link
               key={link.href}

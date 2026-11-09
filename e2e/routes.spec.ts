@@ -22,6 +22,27 @@ for (const route of stableRoutes) {
   });
 }
 
+// Regresión: el og:url venía del layout y todas las páginas se compartían con la URL de la portada
+for (const route of stableRoutes) {
+  test(`la ruta ${route} se declara canónica a sí misma`, async ({ page }) => {
+    await page.goto(route);
+    const url = `https://carlosalbertoxw.com${route}`;
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", url);
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", url);
+  });
+}
+
+// Regresión: la imagen se exportaba sin extensión y GitHub Pages la servía como
+// application/octet-stream; con .png la sirve como image/png
+test("la imagen Open Graph es un PNG con extensión", async ({ page, request }) => {
+  await page.goto("/");
+  const src = await page.locator('meta[property="og:image"]').getAttribute("content");
+  expect(src).toBe("https://carlosalbertoxw.com/og.png");
+  const response = await request.get("/og.png");
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toBe("image/png");
+});
+
 test("el sitemap lista exactamente las rutas estables", async ({ request }) => {
   const response = await request.get("/sitemap.xml");
   expect(response.status()).toBe(200);

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ContactCta from "./ContactCta";
 import ExternalIcon from "./ExternalIcon";
 import ExternalLink from "./ExternalLink";
 import type { ReactNode } from "react";
@@ -64,7 +64,7 @@ export default function ChecklistPage({
   const colors = accents[accent];
 
   return (
-    <main className="min-h-screen bg-[#f8fafc]">
+    <main className="min-h-screen bg-slate-50">
       <header className="bg-white border-b border-slate-200 py-16 px-4">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-6 text-center">
@@ -167,15 +167,7 @@ export default function ChecklistPage({
           </div>
         </section>
 
-        <section className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8 text-center">
-          <p className="text-slate-600 mb-5">Si crees que puedo ayudarte en algo, no dudes en contactarme.</p>
-          <Link
-            href="/links"
-            className={`inline-block ${colors.cta} text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors`}
-          >
-            Contactar
-          </Link>
-        </section>
+        <ContactCta variant="button" accentClassName={colors.cta} />
       </div>
     </main>
   );

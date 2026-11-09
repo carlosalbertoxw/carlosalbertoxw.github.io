@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import { ogImage, siteUrl } from "@/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,16 +21,25 @@ export const metadata: Metadata = {
     template: "%s | Carlos Alberto",
   },
   description: "Portafolio personal y profesional de Carlos Alberto",
-  metadataBase: new URL("https://carlosalbertoxw.com"),
+  metadataBase: new URL(siteUrl),
+  // "./" se resuelve con la ruta de cada página: cada una se declara canónica a sí
+  // misma y se comparte con su propia URL, no con la de la portada
+  alternates: {
+    canonical: "./",
+  },
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
     type: "website",
     locale: "es_MX",
-    url: "https://carlosalbertoxw.com",
+    url: "./",
     siteName: "Carlos Alberto",
-    // La imagen la genera src/app/opengraph-image.tsx en el build
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [ogImage],
   },
 };
 
@@ -39,8 +49,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="es" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="bg-white text-neutral-900 antialiased">
         <Navbar />
         {children}
         {/* El año se fija al generar el sitio: se actualiza con el primer despliegue de cada año */}
