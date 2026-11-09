@@ -23,17 +23,20 @@ No hay backend ni base de datos: todo el contenido vive en el propio código. En
 
 ### Una ruta por tema
 
-El sitio usa el App Router de Next.js: cada sección temática es una carpeta con su `page.tsx` dentro de `src/app/`. Agregar una sección nueva es crear una carpeta, exportar su `metadata` (título y descripción para SEO) y añadir la ruta a `mainLinks` o `resourceLinks` en el Navbar, que alimentan tanto el menú de escritorio como el móvil.
+El sitio usa el App Router de Next.js: cada sección temática es una carpeta con su `page.tsx` dentro de `src/app/`. Agregar una sección nueva es crear una carpeta, exportar su `metadata` (título y descripción para SEO) y añadir la ruta a `mainLinks` o `resourceLinks` en el Navbar, que alimentan tanto el menú de escritorio como el móvil. El canonical y el `og:url` de cada página no se escriben a mano: el layout declara `"./"`, que Next.js resuelve con la ruta de cada página.
+
+La imagen para compartir en redes se genera en un route handler, [og.png/route.tsx](src/app/og.png/route.tsx), y no con la convención `opengraph-image.tsx`, porque esa convención exporta el archivo sin extensión y GitHub Pages lo serviría como `application/octet-stream`, un tipo que LinkedIn, Facebook o Slack pueden rechazar. Con la extensión `.png`, Pages la sirve como `image/png`.
 
 Las rutas publicadas funcionan como contrato: el blog y otros sitios enlazan a ellas, y GitHub Pages no permite redirecciones. No se renombra una carpeta de `src/app/` sin crear antes una *Redirect Rule* en Cloudflare desde la ruta anterior. [e2e/routes.spec.ts](e2e/routes.spec.ts) lo hace cumplir: tiene la lista de rutas estables, comprueba que cada una exista y que [sitemap.ts](src/app/sitemap.ts) liste exactamente esas. Una página nueva se agrega a las dos listas.
 
 ```
 src/
+├── site.ts                             # URL del sitio, lema e imagen para redes: se cambian solo aquí
 ├── app/
 │   ├── layout.tsx                      # Layout raíz: fuentes, metadata global, Navbar y pie de página
 │   ├── page.tsx                        # Portada: hero + tarjetas de proyectos
-│   ├── globals.css                     # Import de Tailwind y variables de tema
-│   ├── opengraph-image.tsx             # Imagen Open Graph generada en el build
+│   ├── globals.css                     # Import de Tailwind y fuentes del tema
+│   ├── og.png/route.tsx                # Imagen Open Graph generada en el build (out/og.png)
 │   ├── sitemap.ts                      # sitemap.xml con las rutas publicadas
 │   ├── robots.ts                       # robots.txt, que apunta al sitemap
 │   ├── software-development/page.tsx   # Secciones temáticas…
@@ -47,6 +50,7 @@ src/
     ├── Navbar.tsx                      # Único componente cliente
     ├── ChecklistPage.tsx               # Plantilla de las páginas de listado
     ├── TopicSheet.tsx                  # Plantilla de las guías por temas
+    ├── ContactCta.tsx                  # Invitación a contactar al final de ambas plantillas
     ├── ExternalLink.tsx                # Enlace a otra pestaña, con aviso para lectores de pantalla
     └── ExternalIcon.tsx                # Ícono decorativo de enlace externo
 ```
@@ -65,16 +69,16 @@ Las tarjetas se distribuyen con `columns-1 md:columns-2` en vez de `grid`, para 
 
 [git](src/app/git/page.tsx), [docker](src/app/docker/page.tsx) y [blockchain-cryptocurrencies](src/app/blockchain-cryptocurrencies/page.tsx) siguen el mismo esquema con otra plantilla, [TopicSheet.tsx](src/components/TopicSheet.tsx): cada página aporta su encabezado, su color de acento y un arreglo de secciones con sus temas. Los temas con `href` se pintan como enlace al artículo del blog y los demás quedan como índice pendiente, con un contador por sección.
 
-Las plantillas declaran las clases de cada color de acento completas (`hover:border-orange-400`, no `` `hover:border-${color}-400` ``) porque Tailwind solo genera las clases que encuentra escritas en el código.
+Las plantillas declaran las clases de cada color de acento completas (`hover:border-orange-400`, no `` `hover:border-${color}-400` ``) porque Tailwind solo genera las clases que encuentra escritas en el código. Las dos terminan con la misma invitación a contactar, [ContactCta.tsx](src/components/ContactCta.tsx): un botón relleno en los listados y un enlace subrayado en las guías.
 
 ### Lenguaje visual
 
-- **Paleta**: fondos oscuros `slate-900` (`#0f172a`) para navbar y hero de portada, contenido sobre fondo claro `slate-50`, y acentos en azul y esmeralda (el título de la portada usa un degradado azul → esmeralda). Cada sección temática mantiene un solo color de acento: azul en Desarrollo de Software, esmeralda en Emprendimiento y Finanzas.
-- **Tarjetas**: un único estilo en todo el sitio — blancas, `rounded-2xl`, `border-slate-100` y `shadow-sm` que crece al hacer hover. No hay variantes oscuras ni de color de fondo.
+- **Paleta**: fondos oscuros `slate-900` (`#0f172a`) para navbar y hero de portada, contenido sobre fondo claro `slate-50`, y acentos en azul y esmeralda (el título de la portada usa un degradado azul → esmeralda). Cada sección temática mantiene un solo color de acento: azul en Desarrollo de Software y Docker, esmeralda en Emprendimiento y Finanzas, naranja en Git e índigo en Blockchain.
+- **Tarjetas**: en la portada y los listados, blancas, `rounded-2xl`, `border-slate-100` y `shadow-sm` que crece al hacer hover. Las guías usan tarjetas de sección más sobrias (`rounded-xl`, `border-slate-200`, encabezado `slate-50`), y su invitación a contactar va sobre `slate-50` con borde punteado.
 - **Tipografía**: [Geist y Geist Mono](https://vercel.com/font) cargadas con `next/font` (se auto-hospedan en el build, sin peticiones a Google).
 - **Responsive**: mobile-first con los breakpoints de Tailwind; el Navbar colapsa a menú hamburguesa bajo `md`.
 
-Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.css](src/app/globals.css) solo importa Tailwind y define variables de tema.
+Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.css](src/app/globals.css) solo importa Tailwind y le asigna las fuentes Geist al tema. No hay colores propios: se usan los de la paleta de Tailwind.
 
 ### Despliegue
 
@@ -84,24 +88,23 @@ El dominio pasa por Cloudflare antes de llegar a GitHub Pages. GitHub Pages no p
 
 Las Actions de los workflows se fijan por SHA de commit, con la versión en un comentario (`actions/checkout@3d3c… # v7.0.1`), para que una etiqueta reescrita no cambie el código que se ejecuta. Cada job declara solo los permisos que usa, y `actions/checkout` no deja el token en `.git/config` (`persist-credentials: false`), porque ningún workflow hace `git push`. En los workflows semanales, los jobs que instalan dependencias o ejecutan herramientas de terceros solo pueden leer el repositorio; abrir el issue con el reporte lo hace un job aparte.
 
-[dependabot.yml](.github/dependabot.yml) abre cada mes hasta tres PR agrupados: las actualizaciones menores y de parche de las dependencias; las Actions de Pages (`configure-pages`, `upload-pages-artifact` y `deploy-pages`); y el resto de las Actions, actualizando el SHA y el comentario. Las de Pages van aparte porque no se ejecutan en los pull requests: solo se prueban al desplegar, así que conviene fusionarlas solas y revisar ese despliegue. Solo se proponen versiones publicadas hace al menos 7 días (`cooldown`), para dar tiempo a que se detecte y retire un paquete comprometido. Las actualizaciones de seguridad no esperan: Dependabot las abre en cuanto sale el aviso.
+[dependabot.yml](.github/dependabot.yml) abre cada semana hasta tres PR agrupados: las actualizaciones menores y de parche de las dependencias; las Actions de Pages (`configure-pages`, `upload-pages-artifact` y `deploy-pages`); y el resto de las Actions, actualizando el SHA y el comentario. Las de Pages van aparte porque no se ejecutan en los pull requests: solo se prueban al desplegar, así que conviene fusionarlas solas y revisar ese despliegue. Solo se proponen versiones publicadas hace al menos 7 días (`cooldown`), para dar tiempo a que se detecte y retire un paquete comprometido. Las actualizaciones de seguridad no esperan: Dependabot las abre en cuanto sale el aviso.
 
 No se genera un SBOM en el pipeline: el lockfile ya fija cada versión, y si hace falta el inventario en formato SPDX se exporta desde *Insights › Dependency graph › Export SBOM* del repositorio.
 
 ### Dependencias forzadas por seguridad
 
-[pnpm-workspace.yaml](pnpm-workspace.yaml) contiene `overrides` que suben versiones transitivas vulnerables que Next.js o ESLint fijan internamente. El motivo detallado de cada uno está comentado en ese archivo; si se agrega o se cambia uno, esta tabla se actualiza en el mismo commit.
+[pnpm-workspace.yaml](pnpm-workspace.yaml) contiene `overrides` que suben versiones transitivas vulnerables que Next.js o ESLint fijan o admiten en sus rangos. Un override se quita en cuanto el paquete que lo trae exige por sí mismo la versión parchada. El motivo detallado de cada uno está comentado en ese archivo; si se agrega o se cambia uno, esta tabla se actualiza en el mismo commit.
 
 | Paquete | Forzado a | Llega vía | Motivo |
 |---|---|---|---|
-| `postcss` | `^8.5.16` | Next.js | XSS ([GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93)) |
 | `brace-expansion@1` | `^1.1.21` | ESLint › minimatch@3 | Cuatro DoS: arrays intermedios sin límite ([GHSA-rgw5-rvv9-x895](https://github.com/advisories/GHSA-rgw5-rvv9-x895)), recursión sin límite ([GHSA-6j4f-fj2g-mc7p](https://github.com/advisories/GHSA-6j4f-fj2g-mc7p), [GHSA-qhr7-859c-m2p7](https://github.com/advisories/GHSA-qhr7-859c-m2p7)) y expansión cuadrática ([GHSA-q2hr-2g5m-vwhr](https://github.com/advisories/GHSA-q2hr-2g5m-vwhr)) |
-| `brace-expansion@5` | `^5.0.12` | ESLint › minimatch@10 | Los mismos cuatro DoS |
-| `browserslist` | `^4.28.7` | styled-jsx › @babel/core | Escritura en el prototipo ([GHSA-73wf-gq98-2v4g](https://github.com/advisories/GHSA-73wf-gq98-2v4g)) y caché sin límite ([GHSA-c83g-rgw3-j3cx](https://github.com/advisories/GHSA-c83g-rgw3-j3cx)) |
+| `browserslist` | `^4.28.7` | @babel/core (de styled-jsx y eslint-plugin-react-hooks) | Escritura en el prototipo ([GHSA-73wf-gq98-2v4g](https://github.com/advisories/GHSA-73wf-gq98-2v4g)) y caché sin límite ([GHSA-c83g-rgw3-j3cx](https://github.com/advisories/GHSA-c83g-rgw3-j3cx)) |
 | `nanoid@3` | `^3.3.18` | postcss | Bucle infinito con `size` cero ([GHSA-2v37-7h3g-55p8](https://github.com/advisories/GHSA-2v37-7h3g-55p8)) |
-| `sharp` | `^0.35.5` | Next.js | libvips ([GHSA-f88m-g3jw-g9cj](https://github.com/advisories/GHSA-f88m-g3jw-g9cj)), libheif ([GHSA-rgj7-g3m4-5g8c](https://github.com/advisories/GHSA-rgj7-g3m4-5g8c)) y librsvg ([GHSA-wq5f-xc86-pv6w](https://github.com/advisories/GHSA-wq5f-xc86-pv6w)) vulnerables |
 | `baseline-browser-mapping` | `^2.11.0` | Next.js | Terminación del proceso ante entrada inválida ([GHSA-w5vr-8v7q-w6rv](https://github.com/advisories/GHSA-w5vr-8v7q-w6rv)) |
 | `source-map-js` | `^1.2.2` | postcss, @tailwindcss/node | Bloqueo del event loop con source maps indexados ([GHSA-68fv-2mgg-jv7q](https://github.com/advisories/GHSA-68fv-2mgg-jv7q)) |
+| `zod` | `^4.6.6` | eslint-config-next › eslint-plugin-react-hooks | Memoria agotada al validar colecciones enormes ([GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5)) |
+| `minimatch@10` | `^11.0.1` | @typescript-eslint/typescript-estree | DoS por amplificación de patrones ([GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)). El parche es una versión mayor: se fuerza porque `pnpm lint` funciona igual, y si deja de hacerlo se quita y el aviso se acepta |
 
 Cuando un aviso no tiene versión parchada, no hay override posible. En ese caso se ignora de forma explícita en `auditConfig.ignoreGhsas`, dentro del mismo archivo, con el motivo y la condición para quitarlo. Así `pnpm audit` deja de bloquear el despliegue solo por ese aviso. Hoy hay uno:
 
@@ -135,7 +138,7 @@ Cuando un aviso no tiene versión parchada, no hay override posible. En ese caso
 Son decisiones tomadas a propósito, cada una con su motivo, el control que la compensa y la condición para revisarla. Mientras esa condición no cambie, no se tratan como pendientes: solo se comprueba que el control se cumple.
 
 - **Sin monitor de disponibilidad externo.** Una caída del sitio se detecta en la revisión semanal de [produccion.yml](.github/workflows/produccion.yml) y [links.yml](.github/workflows/links.yml), hasta 7 días después. No se agrega un servicio de terceros (UptimeRobot o similares) porque sería otra cuenta que proteger, otro proveedor que declarar en el aviso de privacidad y una configuración fuera del repositorio. En un sitio personal sin datos de usuarios, detectar antes una caída no compensa ese costo.
-  - *Control:* GitHub desactiva los workflows programados de un repositorio público tras 60 días sin actividad. Por eso, cada mes, al fusionar el PR de Dependabot, se comprueba con `gh workflow list --all` que *Verificar enlaces* y *Revisar el sitio publicado* sigan `active`. Si alguno no lo está, se reactiva con `gh workflow enable "<nombre>"`.
+  - *Control:* GitHub desactiva los workflows programados de un repositorio público tras 60 días sin actividad. Por eso, cada semana, al fusionar el PR de Dependabot, se comprueba con `gh workflow list --all` que *Verificar enlaces* y *Revisar el sitio publicado* sigan `active`. Si alguno no lo está, se reactiva con `gh workflow enable "<nombre>"`.
   - *Se revisa si* el sitio gana usuarios, formularios o cualquier cosa que dependa de que esté en línea.
 - **Tramo de Cloudflare a GitHub Pages sin validar el certificado** (cifrado *Full*). El motivo técnico está en [docs/cloudflare.md](docs/cloudflare.md#por-qué-el-modo-de-cifrado-es-full-y-no-full-strict). Se descartó servir el sitio desde Cloudflare en lugar de GitHub Pages. Eso eliminaría ese tramo y dejaría las cabeceras versionadas, pero el despliegue necesitaría un token de API de Cloudflare guardado como secreto en GitHub (hoy el repositorio no tiene ninguno), concentraría DNS, TLS, cabeceras y hosting en una sola cuenta, y obligaría a rehacer el workflow de despliegue. Interceptar el tráfico entre las redes de los dos proveedores es muy improbable, y el sitio es estático y sin datos de usuarios.
   - *Control:* la comprobación con `openssl` de [docs/cloudflare.md](docs/cloudflare.md), que muestra qué certificado presenta GitHub Pages.
@@ -160,7 +163,7 @@ Antes de subir un cambio conviene ejecutar `pnpm lint`, `pnpm format:check`, `pn
 
 ### Pruebas end-to-end
 
-[e2e/navbar.spec.ts](e2e/navbar.spec.ts) prueba con Playwright la única parte interactiva del sitio, el Navbar: que cada enlace del menú de escritorio y del móvil lleve a su página; que el desplegable de Recursos se abra con clic aunque el mouse se haya detenido antes encima, y se cierre con clic, Escape, un clic fuera o al salir de él con Tab; que el menú móvil se cierre al navegar, al desplazarse y con Escape; que se quede abierto a mitad y al final de la página; y que, cerrado, sus enlaces no reciban el foco con Tab. Las tres últimas son regresiones de errores reales. [e2e/routes.spec.ts](e2e/routes.spec.ts) comprueba que las rutas estables existan y coincidan con el sitemap, y que `robots.txt` apunte a él. Las pruebas corren contra el sitio ya exportado, servido por [e2e/serve.mjs](e2e/serve.mjs) igual que GitHub Pages (cada ruta es una carpeta con su `index.html`), así que prueban exactamente lo que se publica. La primera vez hay que instalar el navegador con `pnpm exec playwright install chromium`.
+[e2e/navbar.spec.ts](e2e/navbar.spec.ts) prueba con Playwright la única parte interactiva del sitio, el Navbar: que cada enlace del menú de escritorio y del móvil lleve a su página; que el desplegable de Recursos se abra con clic aunque el mouse se haya detenido antes encima, y se cierre con clic, Escape, un clic fuera o al salir de él con Tab; que el menú móvil se cierre al navegar, al desplazarse y con Escape; que se quede abierto a mitad y al final de la página; y que, cerrado, sus enlaces no reciban el foco con Tab. Las tres últimas son regresiones de errores reales. [e2e/routes.spec.ts](e2e/routes.spec.ts) comprueba que las rutas estables existan, se declaren canónicas a sí mismas (`canonical` y `og:url`) y coincidan con el sitemap; que la imagen Open Graph sea un `.png`; y que `robots.txt` apunte al sitemap. Las pruebas corren contra el sitio ya exportado, servido por [e2e/serve.mjs](e2e/serve.mjs) igual que GitHub Pages (cada ruta es una carpeta con su `index.html`), así que prueban exactamente lo que se publica. La primera vez hay que instalar el navegador con `pnpm exec playwright install chromium`.
 
 ## Costos
 

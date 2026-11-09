@@ -378,6 +378,77 @@ const groups: Group[] = [
     ],
   },
   {
+    icon: "📈",
+    title: "SEO y visibilidad en buscadores",
+    items: [
+      {
+        term: "Entrega el contenido en el HTML",
+        rest: ": con renderizado en el servidor o generación estática, para que buscadores y agentes de IA lean la página sin ejecutar JavaScript. Lo que solo aparece después de cargar scripts puede quedarse sin indexar.",
+      },
+      {
+        term: "Da a cada página un título y una descripción únicos",
+        rest: ", que digan de qué trata: son lo que aparece en los resultados y lo que decide si alguien hace clic.",
+      },
+      {
+        term: "Usa HTML semántico",
+        rest: (
+          <>
+            {": un solo "}
+            <Code>h1</Code> por página, encabezados en orden, enlaces con texto descriptivo y <Code>alt</Code> en las
+            imágenes. Lo que ayuda a un lector de pantalla también ayuda a un buscador.
+          </>
+        ),
+      },
+      {
+        term: "Declara la URL canónica de cada página",
+        rest: (
+          <>
+            {" con "}
+            <Code>rel=&quot;canonical&quot;</Code> y elige una sola forma de cada dirección (con o sin <Code>www</Code>,
+            con o sin barra final), redirigiendo las demás con un 301. Así las señales no se reparten entre duplicados.
+          </>
+        ),
+      },
+      {
+        term: "Publica un sitemap y un robots.txt",
+        rest: (
+          <>
+            {": el sitemap lista las URLs que quieres indexadas y "}
+            <Code>robots.txt</Code> indica qué se rastrea y dónde está el sitemap. Bloquear una ruta en{" "}
+            <Code>robots.txt</Code> no la saca del índice; para eso está <Code>noindex</Code>.
+          </>
+        ),
+      },
+      {
+        term: "Decide qué bots de IA pueden acceder",
+        rest: (
+          <>
+            {
+              ": distingue los crawlers que recogen contenido para entrenar modelos de los que buscan y citan en tiempo real, y declara tu política en "
+            }
+            <Code>robots.txt</Code>. Bloquearlos a todos también te saca de las respuestas de los asistentes.
+          </>
+        ),
+      },
+      {
+        term: "Agrega metadatos para compartir y datos estructurados",
+        rest: ": Open Graph para que el enlace se vea bien en redes y mensajería, y JSON-LD con schema.org para que los buscadores sepan qué es cada página: un artículo, un producto, una persona.",
+      },
+      {
+        term: "Cuida el rendimiento y la versión móvil",
+        rest: ": las Core Web Vitals (LCP, INP y CLS) influyen en el posicionamiento, y Google indexa primero la versión móvil de cada página.",
+      },
+      {
+        term: "Conserva las URLs o redirige las que cambien",
+        rest: ": una URL publicada es un contrato. Renombrarla sin un 301 pierde los enlaces y la posición que había ganado, y una página eliminada debe responder 404 o 410, no 200.",
+      },
+      {
+        term: "Mide la indexación",
+        rest: " con Google Search Console y Bing Webmaster Tools: qué páginas están indexadas, con qué búsquedas apareces y qué errores encuentran los rastreadores.",
+      },
+    ],
+  },
+  {
     icon: "🔍",
     title: "Dependencias y vigilancia",
     items: [

@@ -6,7 +6,7 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: monthly
+      interval: weekly
     # Solo propone versiones publicadas hace al menos 7 días: da tiempo a que se
     # detecte y retire un paquete comprometido. No retrasa las de seguridad.
     cooldown:
@@ -21,7 +21,7 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: monthly
+      interval: weekly
     cooldown:
       default-days: 7
     groups:

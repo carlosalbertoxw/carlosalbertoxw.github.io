@@ -1,9 +1,7 @@
-# Generados
-.claude/
-.next/
-out/
-test-results/
-playwright-report/
+# Prettier ya respeta .gitignore (node_modules, .next, out, resultados de pruebas);
+# aquí solo va lo que sí se versiona pero no se formatea
+
+# Generado por pnpm
 pnpm-lock.yaml
 
 # Textos de licencia: se conservan tal como se publicaron

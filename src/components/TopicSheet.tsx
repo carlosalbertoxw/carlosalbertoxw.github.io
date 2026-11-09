@@ -1,11 +1,11 @@
-import Link from "next/link";
+import ContactCta from "./ContactCta";
 import ExternalLink from "./ExternalLink";
 import type { ReactNode } from "react";
 
 // Plantilla de las guías por temas (Git, Docker, Blockchain): cada página solo
 // aporta su metadata, su encabezado y el arreglo de secciones.
 
-export type Topic = {
+type Topic = {
   title: string;
   detail?: string;
   mono?: boolean;
@@ -175,13 +175,7 @@ export default function TopicSheet({ title, icon, intro, sections, accent, marke
           ))}
         </div>
 
-        {/* Footer de la página */}
-        <div className="mt-16 p-8 bg-slate-50 rounded-2xl border border-dashed border-slate-300 text-center">
-          <p className="text-slate-600 mb-4">Si crees que puedo ayudarte en algo, no dudes en contactarme.</p>
-          <Link href="/links" className={`${colors.contact} font-bold underline decoration-2 underline-offset-4`}>
-            Contactar
-          </Link>
-        </div>
+        <ContactCta variant="link" accentClassName={colors.contact} />
       </div>
     </main>
   );
