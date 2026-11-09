@@ -69,16 +69,16 @@ Las tarjetas se distribuyen con `columns-1 md:columns-2` en vez de `grid`, para 
 
 [git](src/app/git/page.tsx), [docker](src/app/docker/page.tsx) y [blockchain-cryptocurrencies](src/app/blockchain-cryptocurrencies/page.tsx) siguen el mismo esquema con otra plantilla, [TopicSheet.tsx](src/components/TopicSheet.tsx): cada página aporta su encabezado, su color de acento y un arreglo de secciones con sus temas. Los temas con `href` se pintan como enlace al artículo del blog y los demás quedan como índice pendiente, con un contador por sección.
 
-Las plantillas declaran las clases de cada color de acento completas (`hover:border-orange-400`, no `` `hover:border-${color}-400` ``) porque Tailwind solo genera las clases que encuentra escritas en el código.
+Las plantillas declaran las clases de cada color de acento completas (`hover:border-orange-400`, no `` `hover:border-${color}-400` ``) porque Tailwind solo genera las clases que encuentra escritas en el código. Las dos terminan con la misma invitación a contactar, [ContactCta.tsx](src/components/ContactCta.tsx): un botón relleno en los listados y un enlace subrayado en las guías.
 
 ### Lenguaje visual
 
-- **Paleta**: fondos oscuros `slate-900` (`#0f172a`) para navbar y hero de portada, contenido sobre fondo claro `slate-50`, y acentos en azul y esmeralda (el título de la portada usa un degradado azul → esmeralda). Cada sección temática mantiene un solo color de acento: azul en Desarrollo de Software, esmeralda en Emprendimiento y Finanzas.
-- **Tarjetas**: un único estilo en todo el sitio — blancas, `rounded-2xl`, `border-slate-100` y `shadow-sm` que crece al hacer hover. No hay variantes oscuras ni de color de fondo.
+- **Paleta**: fondos oscuros `slate-900` (`#0f172a`) para navbar y hero de portada, contenido sobre fondo claro `slate-50`, y acentos en azul y esmeralda (el título de la portada usa un degradado azul → esmeralda). Cada sección temática mantiene un solo color de acento: azul en Desarrollo de Software y Docker, esmeralda en Emprendimiento y Finanzas, naranja en Git e índigo en Blockchain.
+- **Tarjetas**: en la portada y los listados, blancas, `rounded-2xl`, `border-slate-100` y `shadow-sm` que crece al hacer hover. Las guías usan tarjetas de sección más sobrias (`rounded-xl`, `border-slate-200`, encabezado `slate-50`), y su invitación a contactar va sobre `slate-50` con borde punteado.
 - **Tipografía**: [Geist y Geist Mono](https://vercel.com/font) cargadas con `next/font` (se auto-hospedan en el build, sin peticiones a Google).
 - **Responsive**: mobile-first con los breakpoints de Tailwind; el Navbar colapsa a menú hamburguesa bajo `md`.
 
-Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.css](src/app/globals.css) solo importa Tailwind y define variables de tema.
+Todo el estilo son utilidades de Tailwind directamente en el JSX — [globals.css](src/app/globals.css) solo importa Tailwind y le asigna las fuentes Geist al tema. No hay colores propios: se usan los de la paleta de Tailwind.
 
 ### Despliegue
 

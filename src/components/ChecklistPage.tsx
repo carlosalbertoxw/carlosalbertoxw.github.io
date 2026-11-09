@@ -7,9 +7,9 @@ import type { ReactNode } from "react";
 // Finanzas): cada página solo aporta su presentación, la publicación destacada y
 // el arreglo de grupos.
 
-export type Item = { term: string; rest?: ReactNode; href?: string };
+type Item = { term: string; rest?: ReactNode; href?: string };
 export type Group = { icon: string; title: string; items: Item[] };
-export type FeaturedPost = { name: string; description: string; href: string };
+type FeaturedPost = { name: string; description: string; href: string };
 
 // Tailwind solo genera las clases que encuentra escritas completas en el código,
 // así que cada acento declara sus clases enteras en lugar de armarlas con plantillas.

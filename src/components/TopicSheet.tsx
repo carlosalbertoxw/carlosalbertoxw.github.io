@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 // Plantilla de las guías por temas (Git, Docker, Blockchain): cada página solo
 // aporta su metadata, su encabezado y el arreglo de secciones.
 
-export type Topic = {
+type Topic = {
   title: string;
   detail?: string;
   mono?: boolean;
