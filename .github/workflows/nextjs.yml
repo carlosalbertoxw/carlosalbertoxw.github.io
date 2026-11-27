@@ -144,13 +144,16 @@ jobs:
 
       # Se fusiona exactamente el commit que se probó. Un merge hecho con el
       # GITHUB_TOKEN no dispara el push a main, así que el despliegue se lanza aparte.
+      # --delete-branch borra la rama de Dependabot al fusionar: el ajuste
+      # delete_branch_on_merge del repo no se aplica a los merges hechos con el
+      # GITHUB_TOKEN, y sin esta opción la rama se queda.
       - name: Merge and deploy
         if: >-
           steps.meta.outputs.dependency-group != 'pages' &&
           (steps.meta.outputs.update-type == 'version-update:semver-patch' ||
            steps.meta.outputs.update-type == 'version-update:semver-minor')
         run: |
-          gh pr merge "$PR_URL" --merge --match-head-commit "$HEAD_SHA"
+          gh pr merge "$PR_URL" --merge --match-head-commit "$HEAD_SHA" --delete-branch
           gh workflow run nextjs.yml --ref main
         env:
           GH_TOKEN: ${{ github.token }}
